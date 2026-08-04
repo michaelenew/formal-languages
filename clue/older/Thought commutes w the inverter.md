@@ -1,0 +1,1 @@
+Take an operator that reverses the order of inputs. Then it may be that * commutes w it like (a * b) * / + inverter equals it's own commute
