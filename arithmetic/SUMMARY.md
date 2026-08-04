@@ -66,30 +66,52 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0003_verification_log.md` — what was checked and how.
 - `exploration/0004_reconciliation_with_clue_corpus.md` — notation map,
   status of the corpus's open asks, corrections made.
+- `exploration/0005_zero_law_or_guarded_convexity_scope.md` — the OR
+  without ×, guarded convexity, and the V_ω/well-ordering scope result.
 - `output/bitset_arithmetic.py` — verified implementation; termination
   measures asserted per-step. Run directly for the suite.
 
+**Redirections adopted (0005):** the logical OR needs only the zero law
+(X ⊗ Y = ∅ iff either is ∅), which needs no arithmetic — it lives in a
+statement layer above the expression algebra, a distributive lattice of
+emptiness-assertions with CNF/DNF canonical forms; componentwise zero
+rules alone are provably insufficient under disjunctive knowledge (Clue
+refutations), the lattice laws do the work. Undecidability of × becomes a
+*guard line*, not a wall: **guarded convexity** = soundness everywhere +
+completeness on a syntactically marked core, with × readmitted sound-only
+(two conservativity lemmas owed). Scope settled: the encoding is the
+Ackermann bijection with V_ω (hereditary ∈ = BIT, which is
+arithmetic-strength — top-level-only access is what stays under the
+ceiling), and a small observation shows any convex semantics is countable
+and canonically well-ordered — arbitrary/non-well-orderable sets are out
+of scope for every convex framework, by theorem rather than by choice of
+axioms.
+
 ## Next steps, in order of leverage
 
-1. **Symbolic convexity via canonical automata.** Ground terms are solved;
-   free variables are not (the carry recursion has no ground popcount to
-   bound it symbolically). Candidate canonical form: minimal synchronous
-   DFA of the denoted automatic relation (Myhill–Nerode canonicity as the
-   arithmetic analogue of ANF uniqueness). Concrete first milestone:
-   compile terms over {^, &, a, b, add, free variables} to minimal DFAs,
-   and show sentence-truth = the automaton for the H^HK term accepting
-   everything/nothing (fix polarity when the Clue reading is confirmed).
-2. **State and prove the closure principle** (convexity preserved under
-   bounded stabilizing series) as a theorem about convex languages, not
-   per-instance. Identify the exact side conditions (finite-subset lattice;
-   what replaces it for ω-words in the infinite game).
-3. **Reconnect to Clue** (corpus now recovered in `clue/`): finite Clue's
-   "player holds exactly n cards" via binary counters built from `add`
-   (polynomial-size, vs exponential pure-ANF cardinality constraints —
-   `clue/code/2025-08-16_figuring_out_plus.py` already computes exactly
-   these majority/sum-bit forms by brute force); infinite Clue iff the
-   deal constraints phrase additively (they do for exact-size hands over
-   indexed card families).
-4. **Optional, bounded-risk:** map how far multiplication-by-constant and
-   congruences (both Presburger-definable) reach before the ceiling — they
-   are free expressiveness if step 1's automata carry them.
+1. **Symbolic addition via canonical automata — the first prize.** Ground
+   terms are solved; free variables are not (the carry recursion has no
+   ground popcount to bound it symbolically). Candidate canonical form:
+   minimal synchronous DFA of the denoted automatic relation
+   (Myhill–Nerode canonicity as the arithmetic analogue of ANF
+   uniqueness). Concrete first milestone: compile terms over
+   {^, &, a, b, add, free variables} to minimal DFAs, and show
+   sentence-truth = the automaton for the KH ^ H term reducing to the
+   empty/universal automaton. Known caveat for the ω-extension: minimal
+   Büchi automata are not unique; the ω-side canonical object is a real
+   design decision (0005 §3).
+2. **Statement layer {∪, ⊗}** (0005 §1): formalize the distributive
+   lattice of emptiness-assertions, discharge the proof obligation
+   (entailment of monotone formulas over the expression-layer atom poset,
+   decidable relative to layer below), and encode a real Clue refutation.
+   Nonemptiness = size ≥ 1 keeps refutations additive.
+3. **Guarded convexity** (0005 §2): prove the two conservativity lemmas;
+   then × re-enters sound-only without fear.
+4. **The closure principle** (0002): convexity preserved under bounded
+   stabilizing series, as a theorem with exact side conditions rather
+   than per-instance.
+5. **Reconnect to Clue** (corpus in `clue/`): finite Clue's "player holds
+   exactly n cards" via binary counters built from `add`
+   (polynomial-size, vs exponential pure-ANF cardinality —
+   `clue/code/2025-08-16_figuring_out_plus.py` already computes these
+   majority/sum-bit forms by brute force).

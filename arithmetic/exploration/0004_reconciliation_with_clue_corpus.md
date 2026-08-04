@@ -76,7 +76,10 @@ of the same per-bit bookkeeping.
   worth having for *ground computation* — the impossibility bites only at
   the symbolic/sentence level. The honest target is: how much
   multiplicative structure survives below the ceiling (constants ✓,
-  congruences ✓ — both Presburger; full × ✗).
+  congruences ✓ — both Presburger; full × ✗). *Superseded in part by
+  0005: the logical need that motivated × (the zero-law OR) requires no
+  arithmetic at all, and × can be readmitted sound-only under guarded
+  convexity.*
 - **Symbolic correlation of x, n0(x), n1(x), !x** (the degrees-of-freedom
   question, also `2025-12-17 Focus.md`'s "semantic minimality"): the
   2026-06-21 session established each of n0(x), n1(x), !x is semantically
