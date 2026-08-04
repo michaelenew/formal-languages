@@ -73,9 +73,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   canonical automata, results, and the sharp fragment boundary.
 - `output/bitset_arithmetic.py` — ground-term implementation; termination
   measures asserted per-step. Run directly for the suite.
+- `exploration/0007_clue_k_workflow_findings.md` — the K workflow run on
+  mini-Clue with hand sizes; findings.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
+- `output/clue_k_workflow.py` — mini-Clue end-to-end on the automata
+  layer, brute-force cross-validated. Run directly.
 
 **Scope and guard results (0005):** the encoding is the Ackermann
 bijection with V_ω (hereditary ∈ = BIT, which is arithmetic-strength —
@@ -110,22 +114,34 @@ of the fragment: automatic relations (Büchi arithmetic ⊃ Presburger);
 z = x·y and y = 2^x are provably outside, so closed × / exponentiation
 need a guarded tier or a genuinely new canonical object.
 
+**The K workflow, run on the toy problem (0007):** mini-Clue (6 cards,
+2 players + envelope, hand sizes 2/1/3) solved end-to-end with K as one
+canonical automaton — update by intersection, deduction by containment —
+cross-validated exactly against brute force at every stage (262,144 deals
+× 4 stages, zero disagreements). Cardinality proved definable inside the
+term language with no new primitive: pow2(y) := ∃w. add(w,1) = y ∧
+y & w = 0, and |h| = k via k disjoint pow2 witnesses; |E| = 3 was
+*derived*, never asserted. The one-sided trichotomy shows up concretely
+(mustard-in-A unknown, its converse unknown, mustard-not-in-E known).
+Observed but unproven: canonical size shrank monotonically with knowledge
+(17 → 16 → 13 → 8 states).
+
 ## Next steps, in order of leverage
 
-1. **The K-workflow on the automata layer**: K as a canonical automaton
-   updated by intersection, deduction as containment; run finite Clue
-   end-to-end with hand sizes via counter circuits built from add. This
-   is the framework meeting its toy problem with sizes included.
-2. **Closed × / exponentiation under guard**: sharply posed by 0006 —
+1. **Closed × / exponentiation under guard**: sharply posed by 0006 —
    both are provably non-automatic, so their complete home must be a
    guarded tier (prove the two conservativity lemmas of 0005 §2) or a new
    canonical object. Exponentiation is the corpus's {x} = 2^x level-shift
    map; any progress here is progress on the level dimension flagged in
    the 2026-06-21 note.
-3. **The closure principle** (0002): convexity preserved under bounded
+2. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
    automatic fragment (0006's "automata are the closed forms").
-4. **ω-extension** for the infinite game: S1S/Büchi territory; the
+3. **ω-extension** for the infinite game: S1S/Büchi territory; the
    canonical object needs a design decision (minimal Büchi automata not
    unique).
+4. **Variable-size counting**: 0007's sizes are constant-k (one witness
+   per card). "Hands of equal unknown size" needs Presburger-style
+   counting over the automatic layer; also investigate the observed
+   monotone shrinkage of K's canonical size under knowledge updates.
