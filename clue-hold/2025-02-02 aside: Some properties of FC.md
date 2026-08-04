@@ -1,0 +1,23 @@
+
+Just building ground up and recording thoughts for now:
+
+An increment function like
+
+```
+0 0 0 0 ...
+1 2 3 4 ...
+0 0 0 0 ...
+0 0 0 0 ...
+```
+
+and a "choice" function like
+
+```
+1 0 0 0 0 ...
+0 1 0 0 0 ...
+0 0 1 0 0 ...
+```
+
+Should make for a simple FC (or nearly FC) pair. It's easy to do a choose-and-increment construction of any particular desired output.
+
+Choose-and-decrement might also 
