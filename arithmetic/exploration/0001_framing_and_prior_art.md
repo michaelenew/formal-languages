@@ -1,24 +1,30 @@
 # 0001 — Framing, and where this sits in known theory
 
-## Reconstruction of the framework (needs confirmation)
+## The framework (per the clue/ corpus)
 
-The Clue workstream's files are unreachable in this clone (`Clue/` is a bare
-gitlink to an unpushed nested repo — see root README). The following is
-reconstructed from the synopsis and should be checked against the original
-notes; everything downstream is stated so that a polarity fix would be
-mechanical.
+*Originally written as a reconstruction while the Clue files were
+unreachable; now corrected against the recovered corpus, chiefly
+`clue/2026-06-21 AI exploration.md`. See 0004 for the full reconciliation.*
 
-- Statements are sets. The **empty set is TRUE** (written 0).
-- Operators: XOR (symmetric difference), AND (intersection), and the
-  constant 1. These are functionally complete.
-- The deduction test: hypothesis H is knowably true from known world K iff
-  `H ^ HK` reduces syntactically to 0.
-
-A reading that makes all three consistent: identify a statement with its
-**exclusion set** — what it rules out. TRUE excludes nothing (∅). Then
-`H ^ HK = H & ¬K`, which is empty iff H's exclusions are already among K's,
-i.e. iff K entails H. Conjunction of knowledge is union of exclusions
-(`X ^ Y ^ XY`), disjunction is intersection. *[reconstruction — confirm]*
+- Statements are **object-level set expressions asserted empty**: the
+  expression's symbols denote sets of import (`alice`'s hand, the card
+  `lead_pipe`), and the statement is the assertion that the expression
+  equals ∅, which is TRUE (written 0). E.g. `alice & lead_pipe` asserts
+  alice does not hold the lead pipe.
+- Operators: `^` (symmetric difference / XOR), `&` (intersection / AND,
+  juxtaposition allowed), and the constant `1` (the universe). Functionally
+  complete; union is derived: `a U b = a ^ b ^ ab`.
+- Knowledge is one statement K, updated by union — `K := K U A` — sound
+  because a union is empty iff both operands are (conjunction of empties).
+- The deduction test: hypothesis H is knowably true from K iff `KH ^ H`
+  (= `H & (1 ^ K)`) rewrites to 0, i.e. iff H is syntactically contained
+  in K. Containment "a ⊆ b" is itself the term `ab ^ a`.
+- Semantic convexity as the corpus defines it: a Galois alpha-map onto the
+  semantics, plus a rewrite system converging to a unique canonical form
+  (for the {^, &, 1} core: the multilinear XOR-of-AND-terms form). The
+  formulation in the next section unpacks the same property operationally
+  and adds one demand the corpus states informally ("knowably
+  terminating"): the termination bound must be evident from the term.
 
 ## Semantic convexity, made precise
 
@@ -92,25 +98,30 @@ constraints can be phrased additively (they can for "exactly n cards"
 deals; see SUMMARY next steps).
 
 **5. The product musing, placed.** The synopsis floats an operator with
-"zero iff either operand is zero" (an OR at the truth level, since 0 =
-TRUE). Two candidates share that property and behave very differently:
+"zero iff either operand is zero" — a genuine OR at the truth level, since
+statements are expressions asserted empty. Two candidates:
 
-- Intersection: cheap, already in the algebra — this is disjunction under
-  the exclusion-set reading, and costs nothing.
-- Cartesian-product-with-collapse (i + j addition of positions):
-  numerically this is *multiplication* (2^i · 2^j = 2^(i+j); general
-  product is the carry-convolution). It has the OR-like zero law — and it
-  is exactly where undecidability enters (point 2).
+- Intersection is already in the algebra but gives only the *if* direction:
+  X & Y = ∅ follows from either being empty, yet also holds for disjoint
+  nonempty sets — so `KH` in the deduction test is a sound weakening, not a
+  disjunction.
+- The exact law needs Cartesian-product-with-collapse (positions add,
+  i + j): X × Y = ∅ iff X = ∅ or Y = ∅. Numerically this *is*
+  multiplication (2^i · 2^j = 2^(i+j); the general product is the
+  carry-convolution) — and it is exactly where undecidability enters
+  (point 2).
 
-So the OR-like zero law is not itself dangerous; the *convolution* realizing
-it numerically is. Clue's needs are counting needs, which stay on the
-additive (decidable) side. Speculative but suggestive: the price of
-unrestricted multiplicative structure is the price of internalizing
-unbounded disjunction over interactions of positions — not pursued further
-here.
+So the honest OR is inseparable from arithmetic product, and its full
+symbolic use is priced at the ceiling. Clue's needs are counting needs,
+which stay on the additive (decidable) side. Speculative but suggestive:
+unrestricted disjunction-via-product internalizes unbounded interaction of
+positions — the same phenomenon Matiyasevich exploits — not pursued
+further here.
 
 ## Reading order
 
 0002 gives the constructions and proofs; `output/bitset_arithmetic.py` is
 the verified implementation (its assertions check the termination measures,
-not just answers); 0003 is the verification log.
+not just answers); 0003 is the verification log; 0004 reconciles this
+workstream with the recovered clue/ corpus (notation map, which of its open
+asks are now closed, and where the ceiling redirects one of them).

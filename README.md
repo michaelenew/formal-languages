@@ -8,19 +8,19 @@ one-sided — true / undecided, never false.
 
 ## Workstreams
 
-- `Clue/` — the original workstream: bridging binary truth statements with
-  set theory ({XOR, AND, 1} over sets, empty set = TRUE), the H ^ HK
-  deduction test, applied to the game Clue.
-  **⚠ Broken in this repository:** `Clue/` was committed as a bare gitlink
-  (submodule pointer to commit `ebdc91a`) with no `.gitmodules`, and the
-  inner repository was never pushed anywhere. Fresh clones see an empty
-  directory. To repair: either push the inner repo and add a proper
-  `.gitmodules` entry, or delete the inner `.git/` and commit the files
-  directly into this repo.
+- `clue/` — the original workstream: bridging binary truth statements with
+  set theory ({XOR, AND, 1} over sets, empty set = TRUE), the KH ^ H
+  deduction test, applied to the game Clue. A dated journal of notes and
+  code (later dates = more recent; `older/` predates the dating scheme).
+  Recent entry points: `2026-06-21 AI exploration.md` (best single summary
+  of the framework and the arithmetic push),
+  `2026-01-01 Semantic convexity, syntax vs semantics, and universal
+  algebra.md` (term-rewriting background), `2026-02-02 +1 operation.md`.
 - `arithmetic/` — extending the convex framework with arithmetic
-  (first target: addition), toward deciding infinite-Clue-style games.
-  See `arithmetic/SUMMARY.md`.
+  (first target: addition, now done for ground terms), toward deciding
+  infinite-Clue-style games. See `arithmetic/SUMMARY.md`;
+  `exploration/0004` maps its notation to the clue/ corpus.
 
-Each workstream folder carries a `SUMMARY.md` (exact current state),
+New workstream folders carry a `SUMMARY.md` (exact current state),
 `exploration/` (numbered working files, later = more recent), and
 `output/` (material artifacts: proofs, verified code).

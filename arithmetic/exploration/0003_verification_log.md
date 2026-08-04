@@ -15,6 +15,7 @@ Results (2026-08-04, all passing):
 | Prop 3: succ(x) = x+1 | exhaustive x < 2^14, plus 500 random 256-bit |
 | Prop 5: add = +, ≤ popcount(x)+popcount(y) steps | exhaustive 256×256, 500 random 512-bit; strict measure decrease asserted per step |
 | Prop 6: lfp carry-lookahead = + | 500 random 512-bit; Kleene chain increase asserted per step |
+| Doubling-limit form (clue/2026-06-21) = + | exhaustive 256×256 + 500 random 512-bit; both XOR-for-OR disjointness invariants and the ~log₂(width) step bound asserted per step |
 | offset family n+1, n+2, n+3, n+7 | x < 1000 |
 | Prop 4 witness | bit 96 of succ flips when only bit 0 of input flips |
 | deduction test add(u,v) ^ w | reduces to 0 on a true instance, not on a false one |

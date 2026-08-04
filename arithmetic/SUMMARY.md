@@ -22,9 +22,12 @@ unreduced (undecided).
 - **The series is necessary**: no finite composition of the base operators
   computes succ (locality argument, Prop 4). Carry propagation is exactly
   the unbounded influence finite terms cannot express.
-- **Addition**: (x, y) ↦ (x^y, a(x&y)) iterated; terminates in ≤
-  popcount(x)+popcount(y) steps by a strictly decreasing popcount measure
-  (Prop 5). Equivalent carry-lookahead least-fixpoint form (Prop 6).
+- **Addition, in three verified equivalent forms**: (1) carry recursion
+  (x, y) ↦ (x^y, a(x&y)), ≤ popcount(x)+popcount(y) steps by a strictly
+  decreasing measure (Prop 5); (2) unit-step Kleene least fixpoint
+  (Prop 6); (3) the corpus's doubling-limit / Kogge–Stone form
+  (clue/2026-06-21 AI exploration.md), now with its XOR-for-OR
+  disjointness invariants asserted per step and a ~log₂(width) bound.
 - Deduction test extends: "u+v = w" is the term add(u,v) ^ w, reducing to
   0 iff true; judgment stays one-sided.
 - Candidate unifying principle (unproved in general, proved per-instance):
@@ -42,13 +45,27 @@ problem is diagnosed exactly: cardinality of arbitrary sets is non-regular
 (equicardinality is not WS1S-definable), so sizes must enter as first-class
 numbers with additive bookkeeping, not as an operator on raw sets.
 
+**Reconciled with the recovered clue/ corpus (0004):** notation map
+(a = n0/inc, b = n1, T = $/[&n1]); T and succ were independently rederived
+identically to `clue/2026-02-02 +1 operation.md` — what this workstream
+adds there is the plateau-soundness proof and a-priori bounds. Of the
+corpus's "Looking for" list: general addition closed (three forms);
+×-by-constant closed and safely below the ceiling; general × redirected
+(ground computation fine, sentence-level convexity impossible); the
+n0/n1/!/x degrees-of-freedom question identified as the same problem as
+symbolic addition — both are the symbolic-convexity gap, with canonical
+minimal automata as the shared candidate fix. One stale corpus identity
+flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
+
 ## Files
 
-- `exploration/0001_framing_and_prior_art.md` — framework reconstruction
-  (flagged; original Clue files unreachable — see root README), convexity
-  defined, prior-art anchors and the exact ceiling.
+- `exploration/0001_framing_and_prior_art.md` — the framework (corrected
+  against the corpus), convexity defined, prior-art anchors and the exact
+  ceiling.
 - `exploration/0002_addition_construction.md` — constructions and proofs.
 - `exploration/0003_verification_log.md` — what was checked and how.
+- `exploration/0004_reconciliation_with_clue_corpus.md` — notation map,
+  status of the corpus's open asks, corrections made.
 - `output/bitset_arithmetic.py` — verified implementation; termination
   measures asserted per-step. Run directly for the suite.
 
@@ -66,11 +83,13 @@ numbers with additive bookkeeping, not as an operator on raw sets.
    bounded stabilizing series) as a theorem about convex languages, not
    per-instance. Identify the exact side conditions (finite-subset lattice;
    what replaces it for ω-words in the infinite game).
-3. **Reconnect to Clue.** Recover the original Clue files (unpushed nested
-   repo). Then: finite Clue's "player holds exactly n cards" via binary
-   counters built from `add` (polynomial-size, vs exponential pure-ANF
-   cardinality constraints); infinite Clue iff the deal constraints phrase
-   additively (they do for exact-size hands over indexed card families).
+3. **Reconnect to Clue** (corpus now recovered in `clue/`): finite Clue's
+   "player holds exactly n cards" via binary counters built from `add`
+   (polynomial-size, vs exponential pure-ANF cardinality constraints —
+   `clue/code/2025-08-16_figuring_out_plus.py` already computes exactly
+   these majority/sum-bit forms by brute force); infinite Clue iff the
+   deal constraints phrase additively (they do for exact-size hands over
+   indexed card families).
 4. **Optional, bounded-risk:** map how far multiplication-by-constant and
    congruences (both Presburger-definable) reach before the ceiling — they
    are free expressiveness if step 1's automata carry them.

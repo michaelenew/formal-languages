@@ -110,6 +110,36 @@ def add_lfp(x: int, y: int) -> tuple[int, int]:
         c = nxt
 
 
+def add_ks(x: int, y: int) -> tuple[int, int]:
+    """x + y via the doubling-limit (Kogge-Stone) form from
+    clue/2026-06-21 AI exploration.md:
+
+        G_0 = x & y,  P_0 = x ^ y
+        G_{s+1} = G_s ^ (P_s & Sh_s(G_s)),  P_{s+1} = P_s & Sh_s(P_s)
+        x + y = x ^ y ^ a(lim G_s)          (Sh_s = shift by 2^s)
+
+    Note it uses only ^ and & — the XOR stands in for OR because the two
+    terms are disjoint (a block cannot both generate and fully propagate);
+    asserted below. Termination: P_{s+1} strictly shrinks while nonzero
+    (P & Sh(P) = P forces P = 0 since shifting raises the min element), and
+    P_s = 0 once 2^s exceeds the bit width, so ~log2(width) steps; G is
+    increasing and stabilizes once P = 0. Returns (sum, doubling_steps).
+    """
+    g, p = x & y, x ^ y
+    shift = 1
+    steps = 0
+    bound = max(x.bit_length(), y.bit_length(), 1).bit_length() + 2
+    while p:
+        assert g & p == 0, "generate/propagate not disjoint"
+        step_term = p & (g << shift)
+        assert g & step_term == 0, "XOR-for-OR disjointness violated"
+        g, p = g ^ step_term, p & (p << shift)
+        shift <<= 1
+        steps += 1
+        assert steps <= bound, "log-step bound violated"
+    return x ^ y ^ a(g), steps
+
+
 def plus_const(x: int, c: int) -> int:
     """The constant-offset family n -> n + c, as iterated succ."""
     for _ in range(c):
@@ -170,6 +200,18 @@ def _verify(seed: int = 20260804) -> None:
         s, _ = add_lfp(x, y)
         assert s == x + y
     print("        add_lfp: 500 random 512-bit  OK")
+
+    # Doubling-limit (Kogge-Stone) form from clue/2026-06-21
+    for x in range(256):
+        for y in range(256):
+            s, _ = add_ks(x, y)
+            assert s == x + y, f"add_ks failed at {x},{y}"
+    for _ in range(500):
+        x, y = rng.getrandbits(512), rng.getrandbits(512)
+        s, steps = add_ks(x, y)
+        assert s == x + y
+    print("        add_ks (doubling form, XOR-for-OR disjointness "
+          "asserted): exhaustive 256x256 + 500 random 512-bit  OK")
 
     # Constant-offset family
     for x in range(1000):

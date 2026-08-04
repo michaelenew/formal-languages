@@ -79,6 +79,12 @@ offset sets; a, b shift offsets by one; there are no right shifts). But bit
 k of x+1 depends on bit 0 for every k: witness x = 2ᵏ−1 vs x = 2ᵏ−2, which
 differ only in bit 0 yet differ in bit k of the successor. Take k > d. ∎
 
+The argument tolerates adding the right-shift primitive h (h(2x) = h(2x+1)
+= x, introduced for multiplication in `clue/2026-06-21 AI exploration.md`):
+offsets then range over a window {i−d, …, i+d}, still bounded, and the same
+witness at k > d applies. The barrier is about *bounded influence*, not
+shift direction.
+
 So the stabilizing series strictly extends the algebra's expressive power
 while preserving convexity — carry propagation is exactly the unbounded-
 influence phenomenon that finite terms cannot reach.
