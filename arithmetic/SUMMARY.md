@@ -67,51 +67,65 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0004_reconciliation_with_clue_corpus.md` — notation map,
   status of the corpus's open asks, corrections made.
 - `exploration/0005_zero_law_or_guarded_convexity_scope.md` — the OR
-  without ×, guarded convexity, and the V_ω/well-ordering scope result.
-- `output/bitset_arithmetic.py` — verified implementation; termination
+  without ×, guarded convexity, and the V_ω/well-ordering scope result
+  (statement-layer path subsequently declined by design; see 0006).
+- `exploration/0006_canonical_symbolic_addition.md` — the symbolic layer:
+  canonical automata, results, and the sharp fragment boundary.
+- `output/bitset_arithmetic.py` — ground-term implementation; termination
   measures asserted per-step. Run directly for the suite.
+- `output/canonical_automata.py` — the symbolic canonical-form engine
+  (compile / minimize / universality / entailment). Run directly for the
+  suite.
 
-**Redirections adopted (0005):** the logical OR needs only the zero law
-(X ⊗ Y = ∅ iff either is ∅), which needs no arithmetic — it lives in a
-statement layer above the expression algebra, a distributive lattice of
-emptiness-assertions with CNF/DNF canonical forms; componentwise zero
-rules alone are provably insufficient under disjunctive knowledge (Clue
-refutations), the lattice laws do the work. Undecidability of × becomes a
-*guard line*, not a wall: **guarded convexity** = soundness everywhere +
-completeness on a syntactically marked core, with × readmitted sound-only
-(two conservativity lemmas owed). Scope settled: the encoding is the
-Ackermann bijection with V_ω (hereditary ∈ = BIT, which is
-arithmetic-strength — top-level-only access is what stays under the
-ceiling), and a small observation shows any convex semantics is countable
-and canonically well-ordered — arbitrary/non-well-orderable sets are out
-of scope for every convex framework, by theorem rather than by choice of
-axioms.
+**Scope and guard results (0005):** the encoding is the Ackermann
+bijection with V_ω (hereditary ∈ = BIT, which is arithmetic-strength —
+top-level-only access is what stays under the ceiling), and a small
+observation shows any convex semantics is countable and canonically
+well-ordered — arbitrary/non-well-orderable sets are out of scope for
+every convex framework, by theorem rather than by choice of axioms.
+**Guarded convexity** (soundness everywhere, completeness on a
+syntactically marked core; two conservativity lemmas owed) remains the
+frame under which a closed × can coexist with the decidable core. The
+statement-layer ⊗ analyzed in 0005 §1 was **declined by design**: operator
+economy — each operator interacts with every other and convexity must
+survive all interactions — and a closed multiplication is preferred as the
+OR-carrier since it also grounds exponentiation. 0005 records why the
+zero law itself is arithmetically cheap; the open design problem is giving
+it a *closed* home.
+
+**Symbolic addition — the first prize, claimed (0006):** statements over
+{^, &, a, b, T, add} with free variables compile to **canonical minimal
+synchronous DFAs** (Myhill–Nerode uniqueness = the arithmetic ANF;
+a-priori size bounds composable from the term = knowable termination;
+truth = universality; entailment = containment; judgment one-sided).
+Machine-checked in `output/canonical_automata.py`: the series successor
+x ^ b(T(x)) and add(x, 1) reduce to the *identical* 3-state canonical
+automaton; commutativity/associativity/unit and the corpus's carry-save
+identity come out universal; strict entailment (y = 2x ⊨ ∃w. y = w+w, not
+conversely) works via projection; ×-by-constant stays in the fragment
+(z = 3x: 4 states). Conceptual core: the canonical automaton is the
+closed form of the stabilizing series — state across positions is what
+the locality barrier (Prop 4) says bounded windows cannot do. Sharp edge
+of the fragment: automatic relations (Büchi arithmetic ⊃ Presburger);
+z = x·y and y = 2^x are provably outside, so closed × / exponentiation
+need a guarded tier or a genuinely new canonical object.
 
 ## Next steps, in order of leverage
 
-1. **Symbolic addition via canonical automata — the first prize.** Ground
-   terms are solved; free variables are not (the carry recursion has no
-   ground popcount to bound it symbolically). Candidate canonical form:
-   minimal synchronous DFA of the denoted automatic relation
-   (Myhill–Nerode canonicity as the arithmetic analogue of ANF
-   uniqueness). Concrete first milestone: compile terms over
-   {^, &, a, b, add, free variables} to minimal DFAs, and show
-   sentence-truth = the automaton for the KH ^ H term reducing to the
-   empty/universal automaton. Known caveat for the ω-extension: minimal
-   Büchi automata are not unique; the ω-side canonical object is a real
-   design decision (0005 §3).
-2. **Statement layer {∪, ⊗}** (0005 §1): formalize the distributive
-   lattice of emptiness-assertions, discharge the proof obligation
-   (entailment of monotone formulas over the expression-layer atom poset,
-   decidable relative to layer below), and encode a real Clue refutation.
-   Nonemptiness = size ≥ 1 keeps refutations additive.
-3. **Guarded convexity** (0005 §2): prove the two conservativity lemmas;
-   then × re-enters sound-only without fear.
-4. **The closure principle** (0002): convexity preserved under bounded
-   stabilizing series, as a theorem with exact side conditions rather
-   than per-instance.
-5. **Reconnect to Clue** (corpus in `clue/`): finite Clue's "player holds
-   exactly n cards" via binary counters built from `add`
-   (polynomial-size, vs exponential pure-ANF cardinality —
-   `clue/code/2025-08-16_figuring_out_plus.py` already computes these
-   majority/sum-bit forms by brute force).
+1. **The K-workflow on the automata layer**: K as a canonical automaton
+   updated by intersection, deduction as containment; run finite Clue
+   end-to-end with hand sizes via counter circuits built from add. This
+   is the framework meeting its toy problem with sizes included.
+2. **Closed × / exponentiation under guard**: sharply posed by 0006 —
+   both are provably non-automatic, so their complete home must be a
+   guarded tier (prove the two conservativity lemmas of 0005 §2) or a new
+   canonical object. Exponentiation is the corpus's {x} = 2^x level-shift
+   map; any progress here is progress on the level dimension flagged in
+   the 2026-06-21 note.
+3. **The closure principle** (0002): convexity preserved under bounded
+   stabilizing series, as a theorem — now with the sharper conjectured
+   form: series with finite-state transition structure land in the
+   automatic fragment (0006's "automata are the closed forms").
+4. **ω-extension** for the infinite game: S1S/Büchi territory; the
+   canonical object needs a design decision (minimal Büchi automata not
+   unique).
