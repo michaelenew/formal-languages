@@ -79,8 +79,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   calculus and the {^, &, a} basis theorem for the layer.
 - `exploration/0009_guarded_multiplication.md` — width-guarded × inside
   the layer; the measured cost curves; the unbounded-case fork.
+- `exploration/0010_finite_clue_solved.md` — the finite game solved:
+  the solver, the one-sweep deduction extraction, full-size numbers.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
+- `output/clue_solver.py` — the mechanical solver for finite Clue-like
+  games; suite plays compact and full-size Clue to verified
+  accusations. Run directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -160,6 +165,23 @@ bound B: exponential in bits, only quadratic in magnitude. Unbounded ×
 is a sharp two-path choice: level crossing (exponent encoding over the
 {x} = 2^x map — also the exponentiation path) or sound-partial rules
 (pending the two conservativity lemmas).
+
+**Finite Clue-like games: SOLVED (0010).** `output/clue_solver.py` is a
+generic mechanical solver on the canonical layer — real mechanics
+including the unseen refutation ("holds at least one": a nonemptiness
+fact, impossible in the original expression algebra, one flip on the
+automata layer), passes, seen refutations, own hand. "The most you can
+deduce" is computed as one forward/backward sweep of canonical K: every
+card×hand cell's three-valued verdict (KNOWN IN / KNOWN OUT / unknown,
+provably matching semantics) plus the exact consistent-deal count, with
+no enumeration. Full-size 21-card Clue solves in ~5 s over 8 rounds; K
+peaked at 145 states while tracking 110,880 consistent deals (~760:1
+description compression) and shrank monotonically to 29. Every round
+validated: true deal never excluded, every KNOWN verdict true, counts
+monotone, sweep ≡ entailment on spot checks. Assumption noted: the
+refuter's card-choice policy is treated as uninformative. The original
+problem statement is met for the bounded case; this is the scaffold for
+extensions.
 
 ## Next steps, in order of leverage
 
