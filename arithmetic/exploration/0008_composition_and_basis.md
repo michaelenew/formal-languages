@@ -142,3 +142,43 @@ unique-solution equation, and the hidden wire is its limit.)
   n0(x), !x, T(x) that are semantically determined but term-irreducible
   are all *wiring-definable* from x — the degrees of freedom collapse
   exactly when hiding is admitted into the syntax.
+
+## Addendum: state = hidden channel (the dictionary)
+
+The carry appears in three costumes, and they are the same information:
+the stabilizing series' *limit* (term level: the whole carry set,
+computed by iteration until stable), the *hidden wire* (wiring level:
+the same set characterized as the unique solution of the one-line
+equation), and the *automaton state* (machine level: bit i of that
+strip at moment i, never materialized whole). A run's state trace IS
+the hidden strip read out in time; the series iteration IS the machine
+execution unrolled.
+
+The trade goes both directions: hiding a wire manufactures state (the
+subset construction — states are "what is known about the hidden strip
+so far", bound 2^n), and the basis theorem dissolves any state back
+into hidden wires over {^, &, a}. The engineering reading is exact:
+this layer is **sequential circuit theory** — ^ and & are combinational
+gates (memoryless, per-column), the shift a is the register (the unit
+delay, the only element carrying information between positions), hidden
+channels are internal signals. "Any finite-state machine =
+combinational logic + registers + internal wires" is the basis theorem;
+"a is independent of {^, &}" is *you cannot build a register out of
+gates* — the locality barrier in its third costume.
+
+Consequence for syntax: the "one-line" formula language for this layer
+exists — **systems of {^, &, a}-equations with ∃-bound hidden
+channels** (the carry equation is addition's one-liner). The canonical
+minimal machine is that language's *solved form*: wiring expressions
+are to canonical automata exactly what {^, &, 1} expressions are to
+ANF. Machines and formulas are not rival notations; the machine is the
+normal form of the formula.
+
+One correction worth recording against a natural misreading: the
+entailment test is not transition-table containment. K: x = 2 entails
+H: x even, but neither minimal table is a sub-table of the other — they
+do not even share a shape. Containment is of *languages* (the
+world-sets the tables describe), decided by walking the product of K
+with flipped H and finding no accepting path. Canonical forms make
+description-*equality* meaningful; containment always goes through the
+joint walk.
