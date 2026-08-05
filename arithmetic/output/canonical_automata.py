@@ -6,7 +6,7 @@ ground terms reduce by the carry recursion, but symbolic terms like
 Addition(x, y) have no ground popcount to bound the recursion. This
 module closes the gap for the addition fragment. The canonical form of a
 statement is the minimal complete synchronous DFA of the relation it
-denotes, read least-significant-bit first over one track per free
+denotes, read least-significant-bit first over one channel per free
 variable:
 
   - Myhill-Nerode: the minimal complete DFA is unique, so the canonical
@@ -22,10 +22,15 @@ variable:
     stays one-sided: universal / not-universal, containment /
     no-containment.
 
-Encoding: a tuple of finite sets (numbers) is a word over bit columns,
-one bit per track per letter, letter index i giving bit i of every
-track; any amount of zero-padding is accepted (decode-based languages),
-which is what makes projection of internal tracks sound.
+Encoding: one letter of input is a *bit column* -- a dict mapping each
+variable name (channel) to that variable's bit at the current position.
+A word of columns, least significant position first, spells out one
+value per channel; any amount of zero-padding is accepted (decode-based
+languages), which is what makes projection of internal channels sound.
+A column may carry more channels than an automaton knows: every
+automaton reads only its own channels and ignores the rest, which is
+what makes intersection over different variable sets work with no
+alignment bookkeeping.
 
 Base relations (each a hand-built DFA, correctness sampled in the
 suite): exclusive-or, intersection, shift-fill-zero (2x), shift-fill-one
@@ -41,131 +46,158 @@ Addition.  Run this file directly for the verification suite.
 from __future__ import annotations
 
 from itertools import product as cartesian_product
+from typing import Iterator
 
 
-BitColumn = tuple[int, ...]
+BitColumn = dict[str, int]
 StateIndex = int
-TransitionTable = dict[tuple[StateIndex, BitColumn], StateIndex]
 VariableAssignment = dict[str, int]
 
+# Internal only: dicts are not hashable, so the transition table is
+# keyed by a frozen snapshot of the column. Nothing outside the DFA
+# class ever sees this type -- every boundary speaks dict columns.
+_FrozenColumn = frozenset[tuple[str, int]]
 
-def _column_projection(column: BitColumn,
-                       source_variables: tuple[str, ...],
-                       target_variables: tuple[str, ...]) -> BitColumn:
-    """Restrict a bit column to the named target tracks."""
-    position_of: dict[str, int] = {
-        name: position for position, name in enumerate(source_variables)}
-    return tuple(column[position_of[name]] for name in target_variables)
+
+def _frozen(column: BitColumn) -> _FrozenColumn:
+    return frozenset(column.items())
+
+
+def _all_columns_over(variable_names: tuple[str, ...]) -> list[BitColumn]:
+    return [dict(zip(variable_names, bits))
+            for bits in cartesian_product(
+                (0, 1), repeat=len(variable_names))]
+
+
+def _column_sort_key(column: BitColumn) -> tuple[tuple[str, int], ...]:
+    return tuple(sorted(column.items()))
+
+
+Transition = tuple[StateIndex, BitColumn, StateIndex]
 
 
 class DFA:
-    """A synchronous multi-track DFA denoting a relation on numbers.
+    """A synchronous multi-channel DFA denoting a relation on numbers.
 
-    Transitions may be partial; a missing transition is an implicit dead
-    state. Tracks are named by `variable_names` (kept sorted), and each
-    letter of the alphabet is one bit column aligned with those names.
-    All transforming methods return new automata; nothing mutates.
+    Transitions may be partial; a missing transition is an implicit
+    dead state. Channels are named by `variable_names`. All
+    transforming methods return new automata; nothing mutates.
     """
 
     def __init__(self,
                  variable_names: tuple[str, ...],
                  state_count: int,
                  initial_state: StateIndex,
-                 transition_table: TransitionTable,
+                 transitions: list[Transition],
                  accepting_states: frozenset[StateIndex]) -> None:
-        self.variable_names: tuple[str, ...] = tuple(variable_names)
+        self.variable_names: tuple[str, ...] = tuple(
+            sorted(variable_names))
         self.state_count: int = state_count
         self.initial_state: StateIndex = initial_state
-        self.transition_table: TransitionTable = transition_table
-        self.accepting_states: frozenset[StateIndex] = (
-            frozenset(accepting_states))
+        self.accepting_states: frozenset[StateIndex] = frozenset(
+            accepting_states)
+        self._transition_table: dict[
+            tuple[StateIndex, _FrozenColumn], StateIndex] = {
+            (state, _frozen(column)): target
+            for state, column, target in transitions}
 
     def alphabet(self) -> list[BitColumn]:
-        """Every bit column over this automaton's tracks."""
-        return list(cartesian_product(
-            (0, 1), repeat=len(self.variable_names)))
+        """Every bit column over this automaton's own channels."""
+        return _all_columns_over(self.variable_names)
+
+    def transition_target(self, state: StateIndex,
+                          column: BitColumn) -> StateIndex | None:
+        """Follow one transition. The column may carry extra channels;
+        only this automaton's own channels are read."""
+        own_column: BitColumn = {
+            name: column[name] for name in self.variable_names}
+        return self._transition_table.get((state, _frozen(own_column)))
+
+    def transitions(self) -> Iterator[Transition]:
+        """Every stored transition, with its column as a dict."""
+        for (state, frozen_column), target in (
+                self._transition_table.items()):
+            yield state, dict(frozen_column), target
 
     def completed(self) -> DFA:
         """The same relation with a total transition table (an explicit
         dead state absorbs every missing transition)."""
         alphabet = self.alphabet()
-        if all((state, column) in self.transition_table
-               for state in range(self.state_count) for column in alphabet):
+        if all(self.transition_target(state, column) is not None
+               for state in range(self.state_count)
+               for column in alphabet):
             return self
-        transition_table: TransitionTable = dict(self.transition_table)
         dead_state: StateIndex = self.state_count
+        transitions: list[Transition] = list(self.transitions())
         for state in range(self.state_count + 1):
             for column in alphabet:
-                transition_table.setdefault((state, column), dead_state)
+                if (state == dead_state
+                        or self.transition_target(state, column) is None):
+                    transitions.append((state, column, dead_state))
         return DFA(self.variable_names, self.state_count + 1,
-                   self.initial_state, transition_table,
+                   self.initial_state, transitions,
                    self.accepting_states)
 
     def complemented(self) -> DFA:
         """The complementary relation (all tuples this one rejects)."""
         total: DFA = self.completed()
         return DFA(total.variable_names, total.state_count,
-                   total.initial_state, total.transition_table,
+                   total.initial_state, list(total.transitions()),
                    frozenset(range(total.state_count))
                    - total.accepting_states)
 
     def intersected_with(self, other: DFA) -> DFA:
-        """Conjunction: run both automata in lockstep. Tracks appearing
-        in only one operand are unconstrained in the other
-        (cylindrification). State bound: |self| * |other|, a priori."""
+        """Conjunction: run both automata in lockstep on shared
+        columns. Each automaton reads its own channels; channels known
+        to only one operand are unconstrained in the other. State
+        bound: |self| * |other|, a priori."""
         joint_variables: tuple[str, ...] = tuple(sorted(
             set(self.variable_names) | set(other.variable_names)))
-        joint_alphabet = list(cartesian_product(
-            (0, 1), repeat=len(joint_variables)))
         pair_index: dict[tuple[StateIndex, StateIndex], StateIndex] = {
             (self.initial_state, other.initial_state): 0}
         pair_order: list[tuple[StateIndex, StateIndex]] = [
             (self.initial_state, other.initial_state)]
-        transition_table: TransitionTable = {}
+        transitions: list[Transition] = []
         current: StateIndex = 0
         while current < len(pair_order):
             self_state, other_state = pair_order[current]
-            for column in joint_alphabet:
-                self_target = self.transition_table.get(
-                    (self_state, _column_projection(
-                        column, joint_variables, self.variable_names)))
-                other_target = other.transition_table.get(
-                    (other_state, _column_projection(
-                        column, joint_variables, other.variable_names)))
+            for column in _all_columns_over(joint_variables):
+                self_target = self.transition_target(self_state, column)
+                other_target = other.transition_target(other_state,
+                                                       column)
                 if self_target is None or other_target is None:
                     continue
-                if (self_target, other_target) not in pair_index:
-                    pair_index[(self_target, other_target)] = len(pair_order)
-                    pair_order.append((self_target, other_target))
-                transition_table[(current, column)] = (
-                    pair_index[(self_target, other_target)])
+                target_pair = (self_target, other_target)
+                if target_pair not in pair_index:
+                    pair_index[target_pair] = len(pair_order)
+                    pair_order.append(target_pair)
+                transitions.append(
+                    (current, column, pair_index[target_pair]))
             current += 1
         accepting_states = frozenset(
             index for pair, index in pair_index.items()
             if pair[0] in self.accepting_states
             and pair[1] in other.accepting_states)
-        return DFA(joint_variables, len(pair_order), 0,
-                   transition_table, accepting_states)
+        return DFA(joint_variables, len(pair_order), 0, transitions,
+                   accepting_states)
 
     def existentially_projected(self,
                                 variables_to_remove: set[str]) -> DFA:
-        """Existential quantification: forget the named tracks.
+        """Existential quantification: forget the named channels.
 
-        The removed tracks' bits become nondeterministic guesses, fixed
-        by the subset construction. Padding closure first: a state is
-        made accepting if an accepting state is reachable from it via
-        columns that are zero on every surviving track (the removed
-        tracks may need more bits than the surviving word carries).
-        State bound after determinization: 2^|self|, a priori."""
+        The removed channels' bits become nondeterministic guesses,
+        fixed by the subset construction. Padding closure first: a
+        state is made accepting if an accepting state is reachable from
+        it via columns that are zero on every surviving channel (the
+        removed channels may need more bits than the surviving word
+        carries). State bound after determinization: 2^|self|."""
         surviving_variables: tuple[str, ...] = tuple(
             name for name in self.variable_names
             if name not in variables_to_remove)
         zero_successors: dict[StateIndex, set[StateIndex]] = {
             state: set() for state in range(self.state_count)}
-        for (state, column), target in self.transition_table.items():
-            surviving_bits = _column_projection(
-                column, self.variable_names, surviving_variables)
-            if all(bit == 0 for bit in surviving_bits):
+        for state, column, target in self.transitions():
+            if all(column[name] == 0 for name in surviving_variables):
                 zero_successors[state].add(target)
         padding_closed_accepting: set[StateIndex] = set(
             self.accepting_states)
@@ -176,56 +208,56 @@ class DFA:
                 if state not in padding_closed_accepting
                 and zero_successors[state] & padding_closed_accepting}
             padding_closed_accepting |= newly_accepting
-        nondeterministic_transitions: dict[
-            tuple[StateIndex, BitColumn], set[StateIndex]] = {}
-        for (state, column), target in self.transition_table.items():
-            surviving_bits = _column_projection(
-                column, self.variable_names, surviving_variables)
-            nondeterministic_transitions.setdefault(
-                (state, surviving_bits), set()).add(target)
-        surviving_alphabet = list(cartesian_product(
-            (0, 1), repeat=len(surviving_variables)))
+        guessing_successors: dict[
+            tuple[StateIndex, _FrozenColumn], set[StateIndex]] = {}
+        for state, column, target in self.transitions():
+            surviving_column: BitColumn = {
+                name: column[name] for name in surviving_variables}
+            guessing_successors.setdefault(
+                (state, _frozen(surviving_column)), set()).add(target)
         initial_subset: frozenset[StateIndex] = frozenset(
             [self.initial_state])
         subset_index: dict[frozenset[StateIndex], StateIndex] = {
             initial_subset: 0}
         subset_order: list[frozenset[StateIndex]] = [initial_subset]
-        transition_table: TransitionTable = {}
+        transitions: list[Transition] = []
         current: StateIndex = 0
         while current < len(subset_order):
             current_subset = subset_order[current]
-            for column in surviving_alphabet:
+            for column in _all_columns_over(surviving_variables):
                 successor_subset = frozenset(
                     target for state in current_subset
-                    for target in nondeterministic_transitions.get(
-                        (state, column), ()))
+                    for target in guessing_successors.get(
+                        (state, _frozen(column)), ()))
                 if not successor_subset:
                     continue
                 if successor_subset not in subset_index:
                     subset_index[successor_subset] = len(subset_order)
                     subset_order.append(successor_subset)
-                transition_table[(current, column)] = (
-                    subset_index[successor_subset])
+                transitions.append(
+                    (current, column, subset_index[successor_subset]))
             current += 1
         accepting_states = frozenset(
             index for subset, index in subset_index.items()
             if subset & padding_closed_accepting)
         return DFA(surviving_variables, len(subset_order), 0,
-                   transition_table, accepting_states)
+                   transitions, accepting_states)
 
     def minimized(self) -> DFA:
         """The canonical form: the unique minimal complete DFA
-        (Myhill-Nerode), with states renamed in breadth-first order over
-        sorted columns so that two canonical automata describe the same
-        relation exactly when their fields are equal."""
+        (Myhill-Nerode), with states renamed in breadth-first order
+        over sorted columns so that two canonical automata describe the
+        same relation exactly when their fields are equal."""
         total: DFA = self.completed()
-        sorted_alphabet = sorted(total.alphabet())
+        sorted_alphabet: list[BitColumn] = sorted(
+            total.alphabet(), key=_column_sort_key)
         reachable_states: set[StateIndex] = {total.initial_state}
         exploration_stack: list[StateIndex] = [total.initial_state]
         while exploration_stack:
             state = exploration_stack.pop()
             for column in sorted_alphabet:
-                target = total.transition_table[(state, column)]
+                target = total.transition_target(state, column)
+                assert target is not None
                 if target not in reachable_states:
                     reachable_states.add(target)
                     exploration_stack.append(target)
@@ -233,11 +265,12 @@ class DFA:
             state: int(state in total.accepting_states)
             for state in reachable_states}
         while True:
-            signature_of: dict[StateIndex, tuple[int, ...]] = {
-                state: (block_of[state],) + tuple(
-                    block_of[total.transition_table[(state, column)]]
+            signature_of: dict[StateIndex, tuple[int, ...]] = {}
+            for state in reachable_states:
+                targets = tuple(
+                    block_of[total.transition_target(state, column)]
                     for column in sorted_alphabet)
-                for state in reachable_states}
+                signature_of[state] = (block_of[state],) + targets
             block_index_of_signature: dict[tuple[int, ...], int] = {}
             for state in sorted(reachable_states):
                 block_index_of_signature.setdefault(
@@ -248,32 +281,35 @@ class DFA:
             if refined_block_of == block_of:
                 break
             block_of = refined_block_of
+        representative_of_block: dict[int, StateIndex] = {}
+        for state in sorted(reachable_states):
+            representative_of_block.setdefault(block_of[state], state)
         canonical_name_of_block: dict[int, StateIndex] = {
             block_of[total.initial_state]: 0}
         block_order: list[int] = [block_of[total.initial_state]]
-        canonical_transitions: TransitionTable = {}
+        transitions: list[Transition] = []
         current: StateIndex = 0
         while current < len(block_order):
             block = block_order[current]
-            representative = next(
-                state for state in reachable_states
-                if block_of[state] == block)
+            representative = representative_of_block[block]
             for column in sorted_alphabet:
-                target_block = block_of[
-                    total.transition_table[(representative, column)]]
+                target = total.transition_target(representative, column)
+                assert target is not None
+                target_block = block_of[target]
                 if target_block not in canonical_name_of_block:
-                    canonical_name_of_block[target_block] = (
-                        len(block_order))
+                    canonical_name_of_block[target_block] = len(
+                        block_order)
                     block_order.append(target_block)
-                canonical_transitions[(current, column)] = (
-                    canonical_name_of_block[target_block])
+                transitions.append(
+                    (current, column,
+                     canonical_name_of_block[target_block]))
             current += 1
         canonical_accepting = frozenset(
             canonical_name_of_block[block_of[state]]
             for state in reachable_states
             if state in total.accepting_states)
         return DFA(total.variable_names, len(block_order), 0,
-                   canonical_transitions, canonical_accepting)
+                   transitions, canonical_accepting)
 
     def describes_same_relation_as(self, other: DFA) -> bool:
         """Semantic equality by comparison of canonical forms -- the
@@ -284,25 +320,27 @@ class DFA:
                 == other_canonical.variable_names
                 and self_canonical.state_count
                 == other_canonical.state_count
-                and self_canonical.transition_table
-                == other_canonical.transition_table
+                and self_canonical._transition_table
+                == other_canonical._transition_table
                 and self_canonical.accepting_states
                 == other_canonical.accepting_states)
 
     def is_empty(self) -> bool:
         """Does this automaton reject every tuple?"""
+        successors_of: dict[StateIndex, set[StateIndex]] = {}
+        for state, _column, target in self.transitions():
+            successors_of.setdefault(state, set()).add(target)
         visited_states: set[StateIndex] = {self.initial_state}
         exploration_stack: list[StateIndex] = [self.initial_state]
         while exploration_stack:
             state = exploration_stack.pop()
             if state in self.accepting_states:
                 return False
-            for column in self.alphabet():
-                target = self.transition_table.get((state, column))
-                if target is not None and target not in visited_states:
+            for target in successors_of.get(state, ()):
+                if target not in visited_states:
                     visited_states.add(target)
                     exploration_stack.append(target)
-        return self.initial_state not in self.accepting_states
+        return True
 
     def is_universal(self) -> bool:
         """Does this automaton accept every tuple? This is the
@@ -310,123 +348,92 @@ class DFA:
         return self.complemented().is_empty()
 
     def entails(self, hypothesis: DFA) -> bool:
-        """One-sided deduction: everything this relation (the knowledge)
-        allows also satisfies the hypothesis. Decided by emptiness of
-        knowledge intersected with the hypothesis's complement -- the
-        KH ^ H test with the complement on the knowledge side's dual."""
+        """One-sided deduction: everything this relation (the
+        knowledge) allows also satisfies the hypothesis. Decided by
+        emptiness of knowledge intersected with the hypothesis's
+        complement."""
         return self.intersected_with(
             hypothesis.complemented()).is_empty()
 
     def accepts_assignment(self,
                            assignment: VariableAssignment) -> bool:
-        """Does this automaton accept the given values for its tracks?"""
+        """Does this automaton accept the given values for its
+        channels?"""
         column_count: int = max(
             [value.bit_length() for value in assignment.values()]
             + [1]) + 1
         state: StateIndex | None = self.initial_state
         for bit_position in range(column_count):
-            column: BitColumn = tuple(
-                (assignment[name] >> bit_position) & 1
-                for name in self.variable_names)
-            state = self.transition_table.get((state, column))
+            column: BitColumn = {
+                name: (assignment[name] >> bit_position) & 1
+                for name in self.variable_names}
             if state is None:
                 return False
+            state = self.transition_target(state, column)
         return state in self.accepting_states
 
 
 # ---------------------------------------------------------------------
-# Base relation automata
+# Base relation automata.  With dict columns these read as direct
+# statements of the per-column logic: enumerate the bit combinations,
+# keep the legal ones, name the states after what they remember.
 # ---------------------------------------------------------------------
-
-def _two_track_relation(
-        input_variable: str,
-        output_variable: str,
-        table: dict[tuple[StateIndex, int, int], StateIndex],
-        state_count: int,
-        initial_state: StateIndex,
-        accepting_states: frozenset[StateIndex]) -> DFA:
-    """Build a 2-track DFA from (state, input_bit, output_bit) rows,
-    aligning the letter order with the sorted track names."""
-    variable_names: tuple[str, ...] = tuple(
-        sorted((input_variable, output_variable)))
-    tracks_are_flipped: bool = variable_names != (
-        input_variable, output_variable)
-    transition_table: TransitionTable = {}
-    for (state, input_bit, output_bit), target in table.items():
-        column: BitColumn = ((output_bit, input_bit)
-                             if tracks_are_flipped
-                             else (input_bit, output_bit))
-        transition_table[(state, column)] = target
-    return DFA(variable_names, state_count, initial_state,
-               transition_table, accepting_states)
-
-
-def _three_track_bitwise_relation(
-        left_variable: str, right_variable: str, result_variable: str,
-        result_bit_of) -> DFA:
-    """One-state DFA for a bitwise law result = f(left, right)."""
-    variable_names: tuple[str, ...] = tuple(
-        sorted((left_variable, right_variable, result_variable)))
-    position_of: dict[str, int] = {
-        name: position for position, name in enumerate(variable_names)}
-    transition_table: TransitionTable = {}
-    for column in cartesian_product((0, 1), repeat=3):
-        left_bit = column[position_of[left_variable]]
-        right_bit = column[position_of[right_variable]]
-        result_bit = column[position_of[result_variable]]
-        if result_bit == result_bit_of(left_bit, right_bit):
-            transition_table[(0, column)] = 0
-    return DFA(variable_names, 1, 0, transition_table, frozenset({0}))
-
 
 def relation_exclusive_or(left_variable: str, right_variable: str,
                           result_variable: str) -> DFA:
-    """result = left ^ right (symmetric difference)."""
-    return _three_track_bitwise_relation(
-        left_variable, right_variable, result_variable,
-        lambda left_bit, right_bit: left_bit ^ right_bit)
+    """result = left ^ right (symmetric difference). Stateless."""
+    transitions: list[Transition] = [
+        (0, {left_variable: left_bit, right_variable: right_bit,
+             result_variable: left_bit ^ right_bit}, 0)
+        for left_bit in (0, 1) for right_bit in (0, 1)]
+    return DFA((left_variable, right_variable, result_variable),
+               1, 0, transitions, frozenset({0}))
 
 
 def relation_intersection(left_variable: str, right_variable: str,
                           result_variable: str) -> DFA:
-    """result = left & right (set intersection)."""
-    return _three_track_bitwise_relation(
-        left_variable, right_variable, result_variable,
-        lambda left_bit, right_bit: left_bit & right_bit)
+    """result = left & right (set intersection). Stateless."""
+    transitions: list[Transition] = [
+        (0, {left_variable: left_bit, right_variable: right_bit,
+             result_variable: left_bit & right_bit}, 0)
+        for left_bit in (0, 1) for right_bit in (0, 1)]
+    return DFA((left_variable, right_variable, result_variable),
+               1, 0, transitions, frozenset({0}))
 
 
 def relation_addition(left_variable: str, right_variable: str,
                       result_variable: str) -> DFA:
     """result = left + right: the 2-state carry automaton -- the closed
-    form of the stabilizing carry series (0002 Props 5/6)."""
-    variable_names: tuple[str, ...] = tuple(
-        sorted((left_variable, right_variable, result_variable)))
-    position_of: dict[str, int] = {
-        name: position for position, name in enumerate(variable_names)}
-    transition_table: TransitionTable = {}
+    form of the stabilizing carry series (0002 Props 5/6). The state IS
+    the carry bit; accept with no carry outstanding."""
+    transitions: list[Transition] = []
     for carry_bit in (0, 1):
-        for column in cartesian_product((0, 1), repeat=3):
-            left_bit = column[position_of[left_variable]]
-            right_bit = column[position_of[right_variable]]
-            result_bit = column[position_of[result_variable]]
-            if result_bit == left_bit ^ right_bit ^ carry_bit:
+        for left_bit in (0, 1):
+            for right_bit in (0, 1):
                 next_carry: StateIndex = (
                     (left_bit & right_bit) | (left_bit & carry_bit)
                     | (right_bit & carry_bit))
-                transition_table[(carry_bit, column)] = next_carry
-    return DFA(variable_names, 2, 0, transition_table, frozenset({0}))
+                transitions.append((
+                    carry_bit,
+                    {left_variable: left_bit,
+                     right_variable: right_bit,
+                     result_variable: left_bit ^ right_bit ^ carry_bit},
+                    next_carry))
+    return DFA((left_variable, right_variable, result_variable),
+               2, 0, transitions, frozenset({0}))
 
 
 def relation_shift_fill_zero(input_variable: str,
                              output_variable: str) -> DFA:
     """output = 2 * input (the corpus's n0/inc; 0002's a).
-    State = the bit owed to the output track."""
-    table: dict[tuple[StateIndex, int, int], StateIndex] = {}
-    for owed_bit in (0, 1):
-        for input_bit in (0, 1):
-            table[(owed_bit, input_bit, owed_bit)] = input_bit
-    return _two_track_relation(input_variable, output_variable, table,
-                               2, 0, frozenset({0}))
+    The state is the bit owed to the output channel."""
+    transitions: list[Transition] = [
+        (owed_bit,
+         {input_variable: input_bit, output_variable: owed_bit},
+         input_bit)
+        for owed_bit in (0, 1) for input_bit in (0, 1)]
+    return DFA((input_variable, output_variable), 2, 0, transitions,
+               frozenset({0}))
 
 
 def relation_shift_fill_one(input_variable: str,
@@ -435,55 +442,65 @@ def relation_shift_fill_one(input_variable: str,
     state demands the output's low bit be 1, then behaves as
     shift-fill-zero."""
     start_state: StateIndex = 2
-    table: dict[tuple[StateIndex, int, int], StateIndex] = {}
-    for input_bit in (0, 1):
-        table[(start_state, input_bit, 1)] = input_bit
-        for owed_bit in (0, 1):
-            table[(owed_bit, input_bit, owed_bit)] = input_bit
-    return _two_track_relation(input_variable, output_variable, table,
-                               3, start_state, frozenset({0}))
+    transitions: list[Transition] = [
+        (start_state,
+         {input_variable: input_bit, output_variable: 1},
+         input_bit)
+        for input_bit in (0, 1)]
+    transitions += [
+        (owed_bit,
+         {input_variable: input_bit, output_variable: owed_bit},
+         input_bit)
+        for owed_bit in (0, 1) for input_bit in (0, 1)]
+    return DFA((input_variable, output_variable), 3, start_state,
+               transitions, frozenset({0}))
 
 
 def relation_trailing_ones(input_variable: str,
                            output_variable: str) -> DFA:
-    """output = T(input), the trailing-ones mask: 2 states (inside /
-    outside the trailing-ones region) -- the closed form of the series
+    """output = T(input), the trailing-ones mask: two states, inside /
+    outside the trailing-ones region -- the closed form of the series
     x & b(x) & b(b(x)) & ... (0002 Prop 2; the corpus's $)."""
-    inside_region: StateIndex = 1
     outside_region: StateIndex = 0
-    table: dict[tuple[StateIndex, int, int], StateIndex] = {
-        (inside_region, 1, 1): inside_region,
-        (inside_region, 0, 0): outside_region,
-        (outside_region, 0, 0): outside_region,
-        (outside_region, 1, 0): outside_region,
-    }
-    return _two_track_relation(input_variable, output_variable, table,
-                               2, inside_region, frozenset({0, 1}))
+    inside_region: StateIndex = 1
+    transitions: list[Transition] = [
+        (inside_region, {input_variable: 1, output_variable: 1},
+         inside_region),
+        (inside_region, {input_variable: 0, output_variable: 0},
+         outside_region),
+        (outside_region, {input_variable: 0, output_variable: 0},
+         outside_region),
+        (outside_region, {input_variable: 1, output_variable: 0},
+         outside_region),
+    ]
+    return DFA((input_variable, output_variable), 2, inside_region,
+               transitions, frozenset({0, 1}))
 
 
 def relation_equality(input_variable: str,
                       output_variable: str) -> DFA:
-    """output = input."""
-    table: dict[tuple[StateIndex, int, int], StateIndex] = {
-        (0, 0, 0): 0, (0, 1, 1): 0}
-    return _two_track_relation(input_variable, output_variable, table,
-                               1, 0, frozenset({0}))
+    """output = input. Stateless."""
+    transitions: list[Transition] = [
+        (0, {input_variable: shared_bit, output_variable: shared_bit}, 0)
+        for shared_bit in (0, 1)]
+    return DFA((input_variable, output_variable), 1, 0, transitions,
+               frozenset({0}))
 
 
 def relation_constant(variable_name: str, constant_value: int) -> DFA:
     """variable = constant. States count matched bit positions; state i
     is accepting exactly when no 1-bits of the constant remain above."""
     bit_length: int = max(constant_value.bit_length(), 1)
-    transition_table: TransitionTable = {}
-    for bit_position in range(bit_length):
-        expected_bit: int = (constant_value >> bit_position) & 1
-        transition_table[(bit_position, (expected_bit,))] = (
-            bit_position + 1)
-    transition_table[(bit_length, (0,))] = bit_length
+    transitions: list[Transition] = [
+        (bit_position,
+         {variable_name: (constant_value >> bit_position) & 1},
+         bit_position + 1)
+        for bit_position in range(bit_length)]
+    transitions.append((bit_length, {variable_name: 0}, bit_length))
     accepting_states = frozenset(
         bit_position for bit_position in range(bit_length + 1)
         if constant_value >> bit_position == 0)
-    return DFA((variable_name,), bit_length + 1, 0, transition_table,
+    return DFA((variable_name,), bit_length + 1, 0, transitions,
                accepting_states)
 
 
@@ -499,7 +516,7 @@ def is_internal_variable(variable_name: str) -> bool:
 
 
 class FreshVariableSource:
-    """Supplies internal track names, one per compiled term node."""
+    """Supplies internal channel names, one per compiled term node."""
 
     def __init__(self) -> None:
         self.next_index: int = 0
@@ -511,7 +528,7 @@ class FreshVariableSource:
 
 class CompiledRelation:
     """The result of compiling a term: an automaton relating the term's
-    free variables to a result track."""
+    free variables to a result channel."""
 
     def __init__(self, automaton: DFA,
                  result_variable_name: str) -> None:
@@ -534,19 +551,20 @@ class Term:
             base_relation: DFA,
             result_variable_name: str) -> CompiledRelation:
         """Conjoin operand automata with a base relation, then project
-        away the operands' internal result tracks (eager projection
-        keeps the track count small at every step)."""
+        away the operands' internal result channels (eager projection
+        keeps the channel count small at every step)."""
         combined: DFA = base_relation
         for operand_relation in operand_relations:
             combined = combined.intersected_with(
                 operand_relation.automaton)
-        internal_tracks: set[str] = {
+        internal_channels: set[str] = {
             operand_relation.result_variable_name
             for operand_relation in operand_relations
             if is_internal_variable(
                 operand_relation.result_variable_name)}
-        if internal_tracks:
-            combined = combined.existentially_projected(internal_tracks)
+        if internal_channels:
+            combined = combined.existentially_projected(
+                internal_channels)
         return CompiledRelation(combined.minimized(),
                                 result_variable_name)
 
@@ -559,7 +577,8 @@ class Variable(Term):
                  fresh_source: FreshVariableSource) -> CompiledRelation:
         unconstrained = DFA(
             (self.variable_name,), 1, 0,
-            {(0, (0,)): 0, (0, (1,)): 0}, frozenset({0}))
+            [(0, {self.variable_name: bit}, 0) for bit in (0, 1)],
+            frozenset({0}))
         return CompiledRelation(unconstrained, self.variable_name)
 
 
@@ -668,7 +687,8 @@ def statement_of_equality(left_term: Term, right_term: Term) -> DFA:
     """The statement 'left_term = right_term' as a canonical automaton
     over the free variables. This is the symbolic H ^ HK substrate:
     equality is XOR reducing to 0, here realized as the equality
-    relation on the two result tracks with internals projected away."""
+    relation on the two result channels with internals projected
+    away."""
     fresh_source = FreshVariableSource()
     left_relation: CompiledRelation = left_term.compiled(fresh_source)
     right_relation: CompiledRelation = right_term.compiled(fresh_source)
@@ -681,12 +701,12 @@ def statement_of_equality(left_term: Term, right_term: Term) -> DFA:
             right_relation.automaton).intersected_with(
             relation_equality(left_relation.result_variable_name,
                               right_relation.result_variable_name))
-    internal_tracks: set[str] = {
+    internal_channels: set[str] = {
         name for name in (left_relation.result_variable_name,
                           right_relation.result_variable_name)
         if is_internal_variable(name)}
-    if internal_tracks:
-        combined = combined.existentially_projected(internal_tracks)
+    if internal_channels:
+        combined = combined.existentially_projected(internal_channels)
     return combined.minimized()
 
 
