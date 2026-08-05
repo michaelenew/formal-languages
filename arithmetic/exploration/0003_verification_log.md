@@ -25,7 +25,8 @@ Notes for the next agent:
 - Empirically the carry recursion (Prop 5) runs far fewer steps than the
   popcount bound — the bound is loose but that is irrelevant to convexity;
   only its syntactic evidence matters.
-- The assertions in `trailing_ones` and `add_lfp` also confirm Lemma 2b /
+- The assertions in `trailing_ones_mask` and `add_by_least_fixpoint`
+  also confirm Lemma 2b /
   Kleene plateau soundness on every input exercised: no false plateaus
   observed (and none possible, per the proofs).
 - Nothing here is symbolic: all inputs are ground bitsets. The symbolic

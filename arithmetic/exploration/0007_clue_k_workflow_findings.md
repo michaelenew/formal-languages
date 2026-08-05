@@ -18,10 +18,12 @@ three envelope category constraints. |E| is deliberately *not* asserted.
 
 The corpus's original set-size gap closes with no new primitive:
 
-    pow2(y)  :=  ∃w. add(w, 1) = y  ∧  y & w = 0
-    |h| = k  :=  ∃p₁…p_k pairwise-disjoint pow2's with h = p₁ ^ ⋯ ^ p_k
+    power_of_two(y)  :=  ∃w. add(w, 1) = y  ∧  y & w = 0
+    |h| = k          :=  ∃p₁…p_k pairwise-disjoint powers of two
+                         with h = p₁ ^ ⋯ ^ p_k
 
-The pow2 characterization works because y = w+1 with y & w = 0 forces w
+The power-of-two characterization works because y = w+1 with y&w = 0
+forces w
 to be all-ones below y's single bit (and y = 0 is impossible as a
 successor). Sizes therefore enter through add and projection alone —
 the "sizes as additive bookkeeping" claim of 0001 §4, now constructive.
@@ -29,7 +31,8 @@ Cost: one existential witness per counted card, fine for constant sizes.
 
 ## Finding 2: deduction through sizes works — |E| = 3 was derived
 
-`K0 ⊨ size_is(E, 3)` returns KNOWN TRUE even though no size fact about E
+`K0 ⊨ hand_size_statement(E, 3)` returns KNOWN TRUE even though no size
+fact about E
 was ever stated: it follows from the partition and |A|, |B|. First
 nontrivial arithmetic deduction of the framework on its own toy problem.
 

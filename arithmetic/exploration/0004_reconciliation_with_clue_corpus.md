@@ -47,7 +47,7 @@ natural ones for this algebra.
    F(C) = a(g ∨ (p & C)); plateau soundness free from monotonicity.
 3. **Doubling limit** (`2026-06-21 AI exploration.md`, the Kogge–Stone
    form): G_{s+1} = G_s ^ (P_s & Sh_s(G_s)), P_{s+1} = P_s & Sh_s(P_s),
-   sum = x ^ y ^ a(lim G). Now implemented as `add_ks` in
+   sum = x ^ y ^ a(lim G). Now implemented as `add_by_doubling_limit` in
    `output/bitset_arithmetic.py` with the two disjointness invariants
    *asserted per step* (G_s & P_s = 0 and G_s & (P_s & Sh_s(G_s)) = 0 —
    these are what let ^ stand in for ∨, keeping the form inside {^, &, a}
