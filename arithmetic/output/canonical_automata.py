@@ -347,6 +347,15 @@ class DFA:
         'reduces to 0' verdict of the symbolic layer."""
         return self.complemented().is_empty()
 
+    def unioned_with(self, other: DFA) -> DFA:
+        """Disjunction of relations: the tuples either automaton
+        accepts. Derived from the existing moves -- share and flip --
+        as the complement of the intersection of the complements; no
+        new primitive is involved. Channels known to only one operand
+        are unconstrained in the other, as with intersection."""
+        return self.complemented().intersected_with(
+            other.complemented()).complemented()
+
     def entails(self, hypothesis: DFA) -> bool:
         """One-sided deduction: everything this relation (the
         knowledge) allows also satisfies the hypothesis. Decided by

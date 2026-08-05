@@ -77,6 +77,10 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   mini-Clue with hand sizes; findings.
 - `exploration/0008_composition_and_basis.md` — the three-move wiring
   calculus and the {^, &, a} basis theorem for the layer.
+- `exploration/0009_guarded_multiplication.md` — width-guarded × inside
+  the layer; the measured cost curves; the unbounded-case fork.
+- `output/guarded_multiplication.py` — the guarded family and constant
+  multiplication, with the measurement suite. Run directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -143,14 +147,30 @@ generator. Independence of a from {^, &, constants} proved by
 bit-permutation invariance; mutual independence of ^ and & is open
 (Baur–Monk route sketched).
 
+**Guarded multiplication, measured (0009):** the width-guarded family
+mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
+built by wiring (schoolbook rows via the union move ¬(¬A ∩ ¬B), now a
+DFA method), complete inside the guard, rejecting outside it, so
+convexity is fully preserved and **bounded games get real multiplication
+for free** (the guard is knowledge a bounded game already has). Measured
+laws: z = c·x costs exactly c + 1 canonical states (carry argument for
+the upper bound; minimality observed); the guard curve is 4, 13, 51, 207
+states for k = 1..4 — ratio → 4 per guard bit, i.e. Θ(B²) in the guard
+bound B: exponential in bits, only quadratic in magnitude. Unbounded ×
+is a sharp two-path choice: level crossing (exponent encoding over the
+{x} = 2^x map — also the exponentiation path) or sound-partial rules
+(pending the two conservativity lemmas).
+
 ## Next steps, in order of leverage
 
-1. **Closed × / exponentiation under guard**: sharply posed by 0006 —
-   both are provably non-automatic, so their complete home must be a
-   guarded tier (prove the two conservativity lemmas of 0005 §2) or a new
-   canonical object. Exponentiation is the corpus's {x} = 2^x level-shift
-   map; any progress here is progress on the level dimension flagged in
-   the 2026-06-21 note.
+1. **The level-crossing extension** (0009's path 1): a two-level system
+   — value-level automata and exponent-level automata joined only by
+   the {x} = 2^x map — to make unbounded pow2-multiplication and
+   genuine exponentiation statements convex per level. This is the
+   remaining half of the × prize (bounded factors are done) and the
+   whole of the exponentiation prize. Alternative if it stalls:
+   sound-partial × after proving the two conservativity lemmas of
+   0005 §2.
 2. **Finish the basis independence proofs** (0008): mutual independence
    of ^ and & within {^, &, a, constants} — the Baur–Monk module route
    for &, and the dual question for ^. The cleanest small theory
