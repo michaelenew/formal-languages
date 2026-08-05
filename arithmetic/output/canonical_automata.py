@@ -813,6 +813,73 @@ def run_verification_suite(random_seed: int = 20260804) -> None:
         print(f"    canonical size  {label}: "
               f"{automaton.minimized().state_count} states")
 
+    # Basis derivations (0008): the wiring-closure of {^, &, a} plus
+    # constants generates the other primitives, and via Buechi-Bruyere
+    # (the {+, V_2}-definable relations are exactly the 2-automatic
+    # ones) the entire canonical layer.
+
+    def union_term(left: Term, right: Term) -> Term:
+        return ExclusiveOr(ExclusiveOr(left, right),
+                           Intersection(left, right))
+
+    # b from {a, ^, 1}
+    assert statement_of_equality(
+        ShiftFillOne(x_term),
+        ExclusiveOr(ShiftFillZero(x_term), Constant(1))).is_universal()
+
+    # T's graph, quantifier-free from {^, &, a, b, 1}:
+    # z = T(x) <=> z is an all-ones prefix (z & b(z) = z), z lies
+    # inside x, and the next position up (b(z) ^ z) is not in x.
+    all_ones_prefix: DFA = statement_of_equality(
+        Intersection(z_term, ShiftFillOne(z_term)), z_term)
+    derived_trailing_ones: DFA = all_ones_prefix.intersected_with(
+        statement_of_equality(Intersection(z_term, x_term), z_term)
+    ).intersected_with(statement_of_equality(
+        Intersection(ExclusiveOr(ShiftFillOne(z_term), z_term), x_term),
+        Constant(0))).minimized()
+    assert derived_trailing_ones.describes_same_relation_as(
+        statement_of_equality(TrailingOnes(x_term), z_term))
+
+    # Addition from {^, &, a} with one hidden carry wire whose defining
+    # equation has a unique solution (bit 0 is 0, bit i+1 is determined
+    # by bit i):  z = x + y  <=>
+    #   exists C: C = a(xy or ((x^y) & C))  and  z = x ^ y ^ C
+    carry_term: Term = Variable('Carry')
+    derived_addition: DFA = statement_of_equality(
+        carry_term,
+        ShiftFillZero(union_term(
+            Intersection(x_term, y_term),
+            Intersection(ExclusiveOr(x_term, y_term), carry_term)))
+    ).intersected_with(statement_of_equality(
+        z_term, ExclusiveOr(ExclusiveOr(x_term, y_term), carry_term))
+    ).existentially_projected({'Carry'}).minimized()
+    assert derived_addition.describes_same_relation_as(
+        addition_relation.minimized())
+
+    # V_2 (lowest set bit) with one hidden mask wire, completing the
+    # bridge to Buechi-Bruyere:  z = V_2(x)  <=>
+    #   exists m: m all-ones prefix, z = b(m) ^ m, z inside x, m&x = 0
+    mask_term: Term = Variable('Mask')
+    derived_lowest_bit: DFA = statement_of_equality(
+        Intersection(mask_term, ShiftFillOne(mask_term)), mask_term
+    ).intersected_with(statement_of_equality(
+        z_term, ExclusiveOr(ShiftFillOne(mask_term), mask_term))
+    ).intersected_with(statement_of_equality(
+        Intersection(z_term, x_term), z_term)
+    ).intersected_with(statement_of_equality(
+        Intersection(mask_term, x_term), Constant(0))
+    ).existentially_projected({'Mask'}).minimized()
+    for _ in range(1000):
+        sample_value = random_source.randrange(1, 1 << 20)
+        lowest_set_bit = sample_value & -sample_value
+        assert derived_lowest_bit.accepts_assignment(
+            {'x': sample_value, 'z': lowest_set_bit})
+        assert not derived_lowest_bit.accepts_assignment(
+            {'x': sample_value, 'z': lowest_set_bit << 1})
+    assert not derived_lowest_bit.accepts_assignment({'x': 0, 'z': 0})
+    print("basis derivations: b, T (quantifier-free), addition "
+          "(one hidden wire), V_2 -- all from {^, &, a, constants}  OK")
+
     print("all checks passed")
 
 

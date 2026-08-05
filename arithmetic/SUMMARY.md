@@ -75,6 +75,8 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   measures asserted per-step. Run directly for the suite.
 - `exploration/0007_clue_k_workflow_findings.md` — the K workflow run on
   mini-Clue with hand sizes; findings.
+- `exploration/0008_composition_and_basis.md` — the three-move wiring
+  calculus and the {^, &, a} basis theorem for the layer.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -126,6 +128,21 @@ y & w = 0, and |h| = k via k disjoint pow2 witnesses; |E| = 3 was
 Observed but unproven: canonical size shrank monotonically with knowledge
 (17 → 16 → 13 → 8 states).
 
+**Composition calculus and a basis (0008):** composition of automata has
+exactly three moves — share a channel (product/conjunction), hide a
+channel (projection/∃), flip (complement) — with "output feeds input" as
+the share-then-hide special case. Machine-checked derivations: b = a ^ 1;
+T's graph is quantifier-free definable from {^, &, a, 1} (relation
+definability and term composability come apart — the locality barrier
+governs only the latter); **addition is derivable with exactly one
+hidden, uniquely-determined carry wire**; V₂ (lowest set bit) likewise.
+Hence, modulo Büchi–Bruyère ((ℕ, +, V₂)-definable = 2-automatic), **the
+wiring-closure of {^, &, a} with constants is the entire canonical
+layer** — the corpus's original {^, &, 1} needed exactly one new
+generator. Independence of a from {^, &, constants} proved by
+bit-permutation invariance; mutual independence of ^ and & is open
+(Baur–Monk route sketched).
+
 ## Next steps, in order of leverage
 
 1. **Closed × / exponentiation under guard**: sharply posed by 0006 —
@@ -134,14 +151,19 @@ Observed but unproven: canonical size shrank monotonically with knowledge
    canonical object. Exponentiation is the corpus's {x} = 2^x level-shift
    map; any progress here is progress on the level dimension flagged in
    the 2026-06-21 note.
-2. **The closure principle** (0002): convexity preserved under bounded
+2. **Finish the basis independence proofs** (0008): mutual independence
+   of ^ and & within {^, &, a, constants} — the Baur–Monk module route
+   for &, and the dual question for ^. The cleanest small theory
+   problem currently open.
+3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
-   automatic fragment (0006's "automata are the closed forms").
-3. **ω-extension** for the infinite game: S1S/Büchi territory; the
+   automatic fragment (0006's "automata are the closed forms"), and
+   0008's addition-as-one-hidden-wire as the worked exemplar.
+4. **ω-extension** for the infinite game: S1S/Büchi territory; the
    canonical object needs a design decision (minimal Büchi automata not
    unique).
-4. **Variable-size counting**: 0007's sizes are constant-k (one witness
+5. **Variable-size counting**: 0007's sizes are constant-k (one witness
    per card). "Hands of equal unknown size" needs Presburger-style
    counting over the automatic layer; also investigate the observed
    monotone shrinkage of K's canonical size under knowledge updates.
