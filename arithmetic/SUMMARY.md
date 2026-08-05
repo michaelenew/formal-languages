@@ -81,6 +81,8 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the layer; the measured cost curves; the unbounded-case fork.
 - `exploration/0010_finite_clue_solved.md` — the finite game solved:
   the solver, the one-sweep deduction extraction, full-size numbers.
+- `exploration/0011_thresholds_and_order.md` — at-least-k counting and
+  unbounded order are inside the layer; the boundary located exactly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -182,6 +184,17 @@ monotone, sweep ≡ entailment on spot checks. Assumption noted: the
 refuter's card-choice policy is treated as uninformative. The original
 problem statement is met for the bounded case; this is the scaffold for
 extensions.
+
+**Thresholds and order (0011):** two conjectured limits refuted by
+construction. Fixed-threshold counting is regular via clamped counters
+(|h| ≥ k costs k+1 states with *no bound on the set*; nonemptiness is
+the k = 1 case; machine-checked equal to the flip of the union of
+below-threshold counts). Order x ≤ y is automatic with 2 canonical
+states and no bounds, and its wiring derivation (∃ gap: x + gap = y)
+collapses to the identical canonical form. The true boundary: coupling
+an unbounded set channel to its own cardinality channel, and comparing
+two unbounded cardinalities — unbounded (unclampable) counting, nothing
+else. Threshold clue events added to the solver.
 
 ## Next steps, in order of leverage
 

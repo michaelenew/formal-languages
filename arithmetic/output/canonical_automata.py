@@ -719,6 +719,22 @@ def statement_of_equality(left_term: Term, right_term: Term) -> DFA:
     return combined.minimized()
 
 
+GAP_WITNESS_VARIABLE_NAME: str = "LessOrEqualGapWitness"
+
+
+def statement_of_less_or_equal(left_term: Term,
+                               right_term: Term) -> DFA:
+    """The order left <= right, derived by pure wiring with one hidden
+    gap wire: exists gap. left + gap = right. No bound on either side
+    is needed -- the order on numbers is automatic (the suite checks
+    this derivation against the direct 3-state comparison automaton).
+    The witness name is reserved; do not use it as a term variable."""
+    return statement_of_equality(
+        Addition(left_term, Variable(GAP_WITNESS_VARIABLE_NAME)),
+        right_term).existentially_projected(
+        {GAP_WITNESS_VARIABLE_NAME}).minimized()
+
+
 # ---------------------------------------------------------------------
 # Verification suite
 # ---------------------------------------------------------------------
@@ -888,6 +904,37 @@ def run_verification_suite(random_seed: int = 20260804) -> None:
     assert not derived_lowest_bit.accepts_assignment({'x': 0, 'z': 0})
     print("basis derivations: b, T (quantifier-free), addition "
           "(one hidden wire), V_2 -- all from {^, &, a, constants}  OK")
+
+    # Order without any bound: x <= y is a 3-state automaton (a later
+    # differing bit overrides the verdict, since later = more
+    # significant), and the wiring derivation exists-gap x + gap = y
+    # collapses to exactly it.
+    equal_so_far, less_so_far, greater_so_far = 0, 1, 2
+    comparison_transitions: list[Transition] = []
+    for state in (equal_so_far, less_so_far, greater_so_far):
+        for shared_bit in (0, 1):
+            comparison_transitions.append(
+                (state, {'x': shared_bit, 'y': shared_bit}, state))
+        comparison_transitions.append(
+            (state, {'x': 0, 'y': 1}, less_so_far))
+        comparison_transitions.append(
+            (state, {'x': 1, 'y': 0}, greater_so_far))
+    direct_comparison: DFA = DFA(
+        ('x', 'y'), 3, equal_so_far, comparison_transitions,
+        frozenset({equal_so_far, less_so_far}))
+    wired_comparison: DFA = statement_of_less_or_equal(x_term, y_term)
+    assert wired_comparison.describes_same_relation_as(
+        direct_comparison)
+    for _ in range(500):
+        left_value = random_source.getrandbits(512)
+        right_value = random_source.getrandbits(512)
+        expected = left_value <= right_value
+        assert wired_comparison.accepts_assignment(
+            {'x': left_value, 'y': right_value}) == expected
+    print(f"x <= y: wiring derivation (exists gap: x + gap = y) == "
+          f"direct comparison automaton "
+          f"({wired_comparison.state_count} states), 500 random "
+          f"512-bit samples, no bounds anywhere  OK")
 
     print("all checks passed")
 

@@ -75,6 +75,37 @@ def cardinality_statement(channel_name: str, count: int) -> DFA:
                frozenset({count}))
 
 
+def cardinality_at_least_statement(channel_name: str,
+                                   minimum_count: int) -> DFA:
+    """The hand holds AT LEAST `minimum_count` cards: the counter
+    CLAMPS at the threshold and accepts there, so no bound on the hand
+    is ever needed -- threshold counting requires only threshold-many
+    states regardless of how large the set is. Nonemptiness
+    (holds_at_least_one_statement) is the minimum_count = 1 case."""
+    transitions: list[Transition] = []
+    for bits_seen in range(minimum_count + 1):
+        transitions.append((bits_seen, {channel_name: 0}, bits_seen))
+        transitions.append((bits_seen, {channel_name: 1},
+                            min(bits_seen + 1, minimum_count)))
+    return DFA((channel_name,), minimum_count + 1, 0, transitions,
+               frozenset({minimum_count}))
+
+
+def masked_cardinality_at_least_statement(
+        channel_name: str, card_mask: int, minimum_count: int,
+        hidden_tag: str) -> DFA:
+    """At least `minimum_count` of the cards in `card_mask` lie on this
+    channel -- the threshold clue event ('they hold at least two
+    rooms')."""
+    hidden_name: str = f"MaskedAtLeast_{hidden_tag}"
+    masked_hand: DFA = statement_of_equality(
+        Intersection(Variable(channel_name), Constant(card_mask)),
+        Variable(hidden_name))
+    counted: DFA = masked_hand.intersected_with(
+        cardinality_at_least_statement(hidden_name, minimum_count))
+    return counted.existentially_projected({hidden_name}).minimized()
+
+
 def masked_cardinality_statement(channel_name: str, card_mask: int,
                                  count: int, hidden_tag: str) -> DFA:
     """Exactly `count` of the cards in `card_mask` lie on this channel,
@@ -475,6 +506,31 @@ def run_verification_suite() -> None:
             witness_version)
     print("cardinality counter == witness-based derivation "
           "(k = 1, 2, 3, full relation equality)  OK")
+
+    # 'At least k' generalizes the nonemptiness flip exactly: the
+    # clamped counter equals the complement of the union of the
+    # below-threshold exact counts -- full relation equality, and no
+    # bound on the counted set anywhere.
+    for minimum_count in (1, 2, 3):
+        below_threshold: DFA = cardinality_statement('A', 0)
+        for exact_count in range(1, minimum_count):
+            below_threshold = below_threshold.unioned_with(
+                cardinality_statement('A', exact_count))
+        assert cardinality_at_least_statement(
+            'A', minimum_count).describes_same_relation_as(
+            below_threshold.complemented())
+    print("at-least-k counter == flip of union of exact counts "
+          "below k (k = 1, 2, 3, full relation equality)  OK")
+
+    # Threshold clue event against ground truth
+    threshold_statement = masked_cardinality_at_least_statement(
+        'A', 0b1101, 2, "unit_test")
+    for hand_mask in range(64):
+        expected = bin(hand_mask & 0b1101).count('1') >= 2
+        assert threshold_statement.accepts_assignment(
+            {'A': hand_mask}) == expected
+    print("masked at-least threshold event: exhaustive 6-bit ground "
+          "truth  OK")
 
     compact_specification = GameSpecification(
         category_to_cards={
