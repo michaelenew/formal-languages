@@ -83,13 +83,17 @@ proved inline and valid over any domain — so the results stand; the
 completeness claim has been withdrawn to a mention of Pol–Inv as the
 general form of the corpus's own symmetry observation.
 
-## Open, and sharpened by this reframing
+## Open, and sharpened by this reframing — now ANSWERED in 0015
 
 Can flip *always* be traded, not just in the XOR instance? I.e. is
 there a finite set of relations R with
 pp-closure(base ∪ R) = FO-closure(base) = all automatic relations?
-If yes, negation is fully eliminable from this layer's presentation
-and the "levels" collapse into pure accounting. If no, there is
-something genuinely irreducible about flip after all — which would
-partially rehabilitate the free/costly framing, in a form precise
-enough to defend. Unsettled; a good target.
+
+**Yes.** R = {^-graph} suffices: every automatic relation is
+pp-definable from {&, ^, <<, 0, 1} by carrying the target automaton's
+run in hidden channels bounded by a hidden finite horizon (0015,
+machine-verified with negation physically disabled). So negation is
+fully eliminable from this layer's presentation and the levels are
+pure accounting, exactly as this file argued. The exchange rate is
+one relation: holding {&, <<, constants} fixed, ^ in the signature
+and flip in the logic buy the same thing.

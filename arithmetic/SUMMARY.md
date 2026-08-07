@@ -92,6 +92,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0014_presentation_not_cost.md` — the operator/logic
   split is bookkeeping; the presentation-independent content is the
   obstruction table.
+- `exploration/0015_flip_is_not_irreducible.md` — negation traded for
+  ^ in full generality; the run-in-hidden-channels construction; what
+  it means for the original framing.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -103,6 +106,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/closure_hierarchy.py` — the three closure levels with every
   checkable claim checked; the minimal basis and its necessity
   arguments. Run directly.
+- `output/flip_elimination.py` — rebuilds any automatic relation with
+  share and hide only, negation physically disabled. Run directly
+  (~4 min).
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -204,6 +210,26 @@ three levels are a budget split, not a discount. *Also corrected in
 and is not claimed for this infinite domain; only the preservation
 lemma, valid everywhere, is used.*
 
+**Flip is not irreducible — negation is worth exactly one relation
+(0015).** Every automatic relation is rebuilt using conjunction and
+existential projection ALONE — no negation, enforced by disabling
+`DFA.complemented` during the construction — over the fixed signature
+{&, ^, <<, 0, 1}, by carrying the target automaton's run in hidden
+state tracks bounded by a hidden finite horizon (the horizon is what
+keeps every track a finite set; relative complement inside it,
+`HL ^ (HL & v)`, is where ^ earns its keep). Verified on targets
+obtained by complementation (x ≠ 0, x odd, x not a power of two,
+x > y). So: pp-closure{&, <<, constants} ⊊ everything, but
+pp-closure{&, ^, <<, 0, 1} = everything = FO-closure{&, <<,
+constants}. **^ in the signature and flip in the logic are
+interchangeable**, which reverses 0013's reading symmetrically — the
+corpus carrying ^ as an operator was paying for negation up front,
+not being redundant. Consequence for the original framing:
+emptiness-assertions **plus hidden channels** are exactly
+DFA-equivalent; what the framing lacked was never negation but ∃
+(nonemptiness needs one hidden channel: ∃q, q an all-ones prefix
+missing x with the position above it in x).
+
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
 built by wiring (schoolbook rows via the union move ¬(¬A ∩ ¬B), now a
@@ -262,11 +288,11 @@ else. Threshold clue events added to the solver.
    it would give "a set of ingredients generates the layer iff it
    breaks stability and breaks permutation invariance", the exact
    analogue of Post's criterion, and stated obstruction-first it is
-   presentation-independent. Companion question from 0014: is flip
-   *always* tradeable — is there a finite R with
-   pp-closure(base ∪ R) = all automatic relations? If yes the levels
-   are pure accounting; if no, something about negation is genuinely
-   irreducible.
+   presentation-independent. (The companion question from 0014 —
+   whether flip is always tradeable — is now answered yes, 0015.)
+   Two follow-ons from 0015: is {&, ^, <<, 0, 1} a *minimal* positive
+   signature, and does a polynomial-size positive definition always
+   exist, or is the one-track-per-state blow-up necessary?
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
