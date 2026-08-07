@@ -123,10 +123,12 @@ unique-solution equation, and the hidden wire is its limit.)
   GF(2)[t] over itself, hence stable; but & would define addition and
   so the numeric order (0011), giving the strict order property.
   See 0012 for the full proof.
-- **^ from {&, a, constants} — still open.** The stability argument
-  does not transfer: (finite sets, &, a) already defines the subset
-  order and is unstable on its own. A different invariant is needed;
-  this is now the single remaining gap in the basis result.
+- **^ from {&, a, constants} — ANSWERED in 0013: derivable.** At the
+  first-order level the finite-subset lattice defines relative
+  complements by subset-extremality, so ^ comes from {&, constants}
+  alone and the minimal basis is **{&, a} + constants**. ^ is still
+  necessary at the *term* level (monotonicity — the corpus's own Post
+  argument). The basis question is level-dependent; see 0013.
 
 ## Consequences
 

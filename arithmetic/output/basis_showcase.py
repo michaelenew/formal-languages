@@ -270,13 +270,19 @@ and independence claims become standard definability questions.
     print("""      an infinite linear order, which a module cannot have
       -> intersection is not derivable from {^, <<, constants}
 
-(c) EXCLUSIVE OR over {&, <<, constants} -- still open. The stability
-    argument does not transfer: (finite sets, &, <<) already defines
-    the subset order, so it is unstable on its own and no
-    contradiction arises. A different invariant is needed.
+(c) EXCLUSIVE OR is NOT necessary -- it is derivable from {&,
+    constants} alone. The finite-subset lattice defines its own
+    relative complements by subset-extremality:
 
-So two of the three generators are proved necessary and generation
-gives the whole layer; only the necessity of ^ itself is still open.""")
+        z = x minus y   iff  z sits inside x, misses y, and contains
+                             every set that does the same
+        z = x ^ y       iff  z is the union of the two differences
+
+    both first-order over & and constants. See closure_hierarchy.py:
+    the minimal first-order basis is { &, << } + constants, and ^ is
+    a convenience, not a generator -- at this level. At the TERM
+    level it is genuinely necessary (monotonicity), which is why the
+    corpus needed it.""")
     print()
 
 

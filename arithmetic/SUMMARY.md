@@ -86,6 +86,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0012_basis_showcase_and_and_independence.md` — the
   formula surface (wiring-closure = first-order definability) and the
   proof that & is independent.
+- `exploration/0013_closure_hierarchy_post_structure.md` — the three
+  closure levels, the Pol–Inv connection to the corpus's Post notes,
+  and the minimal basis {&, <<}.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -94,6 +97,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/basis_showcase.py` — **start here**: a four-part executable
   tour of the basis, the derivations, the independence arguments, and
   the catalog of canonical sizes. Run directly.
+- `output/closure_hierarchy.py` — the three closure levels with every
+  checkable claim checked; the minimal basis and its necessity
+  arguments. Run directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -155,12 +161,32 @@ governs only the latter); **addition is derivable with exactly one
 hidden, uniquely-determined carry wire**; V₂ (lowest set bit) likewise.
 Hence, modulo Büchi–Bruyère ((ℕ, +, V₂)-definable = 2-automatic), **the
 wiring-closure of {^, &, a} with constants is the entire canonical
-layer** — the corpus's original {^, &, 1} needed exactly one new
-generator. Independence of a from {^, &, constants} proved by
+layer**. Independence of a from {^, &, constants} proved by
 bit-permutation invariance; **independence of & proved in 0012** (the
 module GF(2)[t] is stable, but & yields addition hence the numeric
-order, i.e. the strict order property); independence of ^ from
-{&, a, constants} is the single remaining gap.
+order, i.e. the strict order property).
+
+**The Post-style structure, and the minimal basis (0013).** The basis
+question turned out to be *level-dependent*, and all three levels are
+now settled — the corpus's own Post notes supplied the engine (their
+"f satisfies t iff t satisfies f" is the commutation relation behind
+the Pol–Inv Galois connection):
+
+| closure | invariant | is ^ needed? |
+|---|---|---|
+| term (composition) | monotonicity, Post's M | yes |
+| pp (∧, ∃, =) | polymorphisms (Geiger/BKKR) | yes — and ∪ too |
+| first-order (+ ¬) | invariance; stability | **no** |
+
+Negation collapses the basis: the finite-subset lattice defines its
+own relative complements by subset-extremality, so ^ is derivable
+from {&, constants} alone. **The minimal first-order basis of the
+canonical layer is {&, <<} + constants, both generators provably
+necessary** — & is exactly the escape from stability (order,
+arithmetic, nonlinearity), << exactly the escape from permutation
+invariance (position structure, the register). Conjectured Post-style
+criterion, not yet proved: a relation set generates the layer iff it
+escapes both.
 
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
@@ -214,10 +240,12 @@ else. Threshold clue events added to the solver.
    whole of the exponentiation prize. Alternative if it stalls:
    sound-partial × after proving the two conservativity lemmas of
    0005 §2.
-2. **Close the last basis gap** (0012): is ^ derivable from
-   {&, a, constants}? The stability route is unavailable there
-   ((sets, &, a) defines the subset order, so it is already
-   unstable); a different invariant is needed.
+2. **Prove the Post-style completeness criterion** (0013): the two
+   known proper fragments — permutation-invariant {&, constants} and
+   stable {<<, constants} — are not yet proved *maximal*. Proving it
+   would give "a relation set generates the layer iff it escapes
+   stability and escapes permutation invariance", the exact analogue
+   of Post's five-maximal-class criterion.
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the

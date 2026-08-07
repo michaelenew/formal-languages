@@ -80,17 +80,23 @@ while refuting a conjectured limitation — is exactly what powers this
 independence proof. A construction became the load-bearing step of an
 impossibility result.
 
-**Still open: is ^ derivable from {&, <<, constants}?** The same
-argument does not transfer: (finite sets, &, <<) already defines the
-subset order (x ⊆ y iff x & y = x), which has infinite chains, so
-that structure is unstable on its own and no contradiction arises.
-A different invariant is needed. This is now the single remaining gap
-in the basis result.
+**Is ^ derivable from {&, <<, constants}? — ANSWERED in 0013: yes.**
+The stability argument indeed does not transfer ((finite sets, &, <<)
+already defines the subset order, so it is unstable on its own), and
+the reason is that no such argument exists: at the first-order level
+the finite-subset lattice defines its own relative complements by
+subset-extremality, so ^ is derivable from {&, constants} alone. The
+minimal first-order basis is therefore **{&, <<} + constants**. ^
+remains genuinely necessary at the *term* level (monotonicity), which
+is the level the corpus worked at. See 0013 for the three-level
+picture.
 
-## Status of the basis
+## Status of the basis  *(superseded by 0013)*
 
 - Generation: the wiring-closure of {^, &, <<} with constants is the
   entire canonical layer (0008, modulo Büchi–Bruyère).
 - Necessity of <<: proved (0008).
 - Necessity of &: proved (here).
-- Necessity of ^: open.
+- Necessity of ^: **disproved** — ^ is derivable from {&, constants}
+  at the first-order level (0013), so the minimal basis is
+  {&, <<} + constants.
