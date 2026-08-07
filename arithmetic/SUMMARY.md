@@ -101,6 +101,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0017_inference_cost_is_intrinsic.md` — compactness
   buys no cheaper inference; the decision problem is non-elementary;
   where the blow-up is paid in each framing.
+- `exploration/0018_clue_inference_complexity.md` — "what's in the
+  envelope" is coNP-complete; canonical K is an OBDD in card order;
+  the two framings differ only in amortisation.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -253,6 +256,25 @@ refutations and addition. Correction to 0015: its construction's
 *definitions* are polynomial (O(s) channels, O(s²) atoms); only
 *evaluating* them is exponential (projection determinises). Writing
 knowledge down stays small; deciding with it is what costs.
+
+**Clue inference itself is coNP-complete (0018).** Deciding "is this
+card in the envelope" from Clue-style knowledge is coNP-complete —
+membership by exhibiting a consistent deal, hardness by reduction from
+Hitting Set with *consistent* knowledge (the unseen refutation, "holds
+at least one of these three", is a hitting-set constraint in disguise;
+unit facts are easy). So exponential in the worst case *unless P = NP*
+— not unconditionally proven. **For a fixed deck, canonical K is
+exactly an OBDD in card order**, which gives: build-once/query-cheap
+(why the whole-grid survey is one sweep), order-sensitivity (measured:
+265–301 states for identical knowledge under shuffled card orders, all
+agreeing on 9106 deals; optimal ordering is NP-hard), and a
+self-contained worst-case argument — every update is polynomial in
+|K|, so K staying polynomial would put a coNP-hard problem in P.
+Both framings sit in the same class; they differ only in
+**amortisation** (sentence: a fresh decision per query; automaton:
+canonicalise per event, then all 84 grid cells from one sweep).
+Empirically Clue never reaches the blow-up: adversarial hitting-set
+knowledge (14 cards, 10 refutations) stayed under 95 states.
 
 **Compactness buys no cheaper inference (0017).** The exponential
 moves rather than vanishing: a formula with O(k) atoms (compose

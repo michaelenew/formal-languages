@@ -308,11 +308,83 @@ def show_canonicalisation_cost() -> None:
   containment check against an already-canonical K.""")
 
 
+def show_card_order_sensitivity() -> None:
+    """For a fixed deck, canonical K IS an ordered binary decision
+    diagram in card order -- so its size depends on that order."""
+    import random
+    from clue_solver import (GameSpecification, ClueSolver,
+                             holds_at_least_one_statement,
+                             holds_none_statement)
+    print()
+    print("=" * 68)
+    print("5  CANONICAL K IS AN OBDD IN CARD ORDER")
+    print("=" * 68)
+    print("""
+  For a fixed deck of n cards the canonical automaton reads exactly
+  one column per card, so it is the ordered binary decision diagram
+  of the "consistent deals" predicate, with the card order as the
+  variable order. OBDD size is famously order-dependent -- and so,
+  therefore, is K. Same knowledge, same deals, shuffled card order:
+""")
+    base_cards = {"suspect": ["s1", "s2", "s3", "s4"],
+                  "weapon": ["w1", "w2", "w3", "w4"],
+                  "room": ["r1", "r2", "r3", "r4"]}
+    hand_sizes = {"Alice": 3, "Bob": 3, "Carol": 3}
+
+    def build(order_seed: int | None) -> tuple[int, int]:
+        cards = {name: list(group)
+                 for name, group in base_cards.items()}
+        if order_seed is not None:
+            shuffler = random.Random(order_seed)
+            for group in cards.values():
+                shuffler.shuffle(group)
+            names = list(cards)
+            shuffler.shuffle(names)
+            cards = {name: cards[name] for name in names}
+        specification = GameSpecification(cards, hand_sizes)
+        solver = ClueSolver(specification)
+        mask = specification.mask_of_cards
+        solver.learn(holds_none_statement(
+            "Alice", mask(["s1", "w1", "r1"])))
+        solver.learn(holds_at_least_one_statement(
+            "Bob", mask(["s2", "w2", "r2"])))
+        solver.learn(holds_at_least_one_statement(
+            "Carol", mask(["s3", "w3", "r3"])))
+        solver.learn(holds_none_statement("Bob", mask(["s4", "w4"])))
+        _, deal_count = solver.deal_survey()
+        return solver.knowledge.state_count, deal_count
+
+    natural_size, deal_count = build(None)
+    observed: list[int] = []
+    for seed in range(8):
+        size, deals = build(seed)
+        assert deals == deal_count, "reordering changed the semantics"
+        observed.append(size)
+    print(f"      natural card order   {natural_size:4d} states")
+    print(f"      8 shuffled orders    {min(observed):4d} to "
+          f"{max(observed):4d} states")
+    print(f"      every ordering agrees on all {deal_count} consistent "
+          f"deals")
+    print("""
+  So card ordering is a real tuning knob, and choosing the best one is
+  the classical OBDD variable-ordering problem (NP-hard to optimise).
+
+  The identification also settles the worst case. Every K update is
+  polynomial in the current |K| at a fixed player count, so if K
+  stayed polynomial in the deck size throughout, the whole workflow --
+  updates and the final survey -- would be polynomial. But deciding
+  "is this card in the envelope" from Clue-style knowledge is
+  coNP-complete (reduction from Hitting Set; see 0018). Hence, unless
+  P = NP, K must sometimes grow superpolynomially. The exponential is
+  not an artefact of the encoding; it is the problem.""")
+
+
 def run_verification_suite() -> None:
     show_quantifier_asymmetry()
     show_size_measurements()
     show_construction_size()
     show_canonicalisation_cost()
+    show_card_order_sensitivity()
     print()
     print("all succinctness checks passed")
 
