@@ -112,8 +112,65 @@ of that algorithm, not of the problem.
   smaller as sentences than as automata? The w-family suggests
   "long-range pairings with local structure"; OBDD width theory is the
   obvious place to look.
-- The one-directional polynomial simulation (automaton → sentence but
-  not back) makes sentences the more compact universal representation.
-  Whether a *canonical* sentence form exists — unique per relation,
-  like the minimal automaton — is unknown, and would be the real prize:
-  it would give convexity and compactness together.
+- ~~Whether a *canonical* sentence form exists is unknown, and would
+  be the real prize.~~ **Resolved below — the prize is unavailable.**
+
+## (d) A canonical sentence form exists; a cheap one would give P = NP
+
+The algebra does support expand-and-cancel exactly as claimed, and
+this is verified: `<<` distributes over both `^` and `&`, and `&`
+distributes over `^`, so every hidden-symbol-free sentence reduces to
+a unique XOR of ANDs. ANF *is* a genuine canonical form. The question
+the prize turned on was never existence — it was cost.
+
+**3-SAT settles it, in two steps.**
+
+*Canonicalising explodes even when deciding is trivial.* Take 3-CNF
+over disjoint triples: each clause has a 7-term ANF, no variables are
+shared, so nothing can cancel and the product has exactly 7^m terms —
+verified 7, 49, 343, 2401, 16807 for m = 1…5 against 3m literals. And
+every one of these formulas is *trivially satisfiable*. So
+canonicalisation is not merely as hard as deciding; on this family it
+is strictly harder.
+
+*And it cannot be made cheap.* The ANF of a formula is the **zero
+polynomial exactly when the formula is unsatisfiable**, so merely
+checking whether the canonical form is 0 already decides UNSAT.
+Canonicalising a 3-CNF is coNP-hard. Generally: if any canonical
+sentence form C were polynomial-time computable, then comparing
+C(φ) with C(false) would decide unsatisfiability in polynomial time,
+so **P = NP**. Hence
+
+> **canonical + compact + polynomial is unavailable unless P = NP**
+
+and the three representations take their places:
+
+| representation | canonical | compact |
+|---|---|---|
+| ANF | ✓ | ✗ |
+| minimal automaton | ✓ | ✗ |
+| sentence with hidden symbols | ✗ | ✓ |
+
+**Where the intuition needs inverting.** The thought was that most of
+3-SAT's apparent complexity comes from many representations of one
+sentence, and that canonicalising cuts that away leaving the core
+problem. The second half is right and the first half is backwards:
+canonicalising does not *remove* the difficulty, it is *where the
+difficulty lives*. Once a canonical form is in hand every question is
+trivial — comparison of coordinate vectors. So the hardness of SAT is
+exactly the cost of the change of basis into monomial coordinates.
+
+Which is the eigenbasis analogy holding all the way to the end, and
+worth stating as the workstream's compact summary of this thread:
+
+> **The basis that diagonalises everything is also the basis that is
+> expensive to reach.** Semantic convexity buys a canonical form in
+> which all questions are trivial; it does not and cannot buy a cheap
+> route into it.
+
+## Still open
+
+- Is there a *characterisation* of which relations are exponentially
+  smaller as sentences than as automata? The w-family suggests
+  "long-range pairings with local structure"; OBDD width theory is the
+  obvious place to look.

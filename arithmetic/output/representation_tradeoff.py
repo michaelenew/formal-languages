@@ -203,11 +203,102 @@ def show_verdict() -> None:
   either form.""")
 
 
+def disjoint_triple_cnf_truth_table(clause_count: int) -> list[int]:
+    """Truth table of (x0|x1|x2) & (x3|x4|x5) & ... -- 3-CNF over
+    disjoint triples. Each clause has a 7-term ANF and the clauses
+    share no variables, so no monomial can cancel and the product has
+    exactly 7^clause_count terms. Trivially satisfiable, which is the
+    point: the canonical form explodes even when the DECISION is
+    obvious."""
+    variable_count = 3 * clause_count
+    table = []
+    for assignment in range(1 << variable_count):
+        satisfied = all(
+            (assignment >> (3 * index)) & 0b111 != 0
+            for index in range(clause_count))
+        table.append(1 if satisfied else 0)
+    return table
+
+
+def show_canonical_sentence_form() -> None:
+    """Canonical sentence forms exist. Cheap ones would collapse P and
+    NP -- shown on 3-SAT, where the canonical form is zero exactly
+    when the formula is unsatisfiable."""
+    print()
+    print("=" * 70)
+    print("4  A CANONICAL SENTENCE FORM EXISTS -- BUT NOT A CHEAP ONE")
+    print("=" * 70)
+    print("""
+  The algebra does support expand-and-cancel, exactly as claimed:
+  << is linear over both operators and & distributes over ^, so every
+  hidden-symbol-free sentence reduces to a unique XOR of ANDs.
+  Checked on all subsets of a 4-element universe:""")
+    universe = range(1 << 4)
+    for left in universe:
+        for right in universe:
+            assert (left ^ right) << 1 == (left << 1) ^ (right << 1)
+            assert (left & right) << 1 == (left << 1) & (right << 1)
+            for third in universe:
+                assert left & (right ^ third) == \
+                    (left & right) ^ (left & third)
+    print("""      << distributes over ^ and over &; & distributes
+      over ^.  So ANF is a genuine canonical form. The question is
+      what it COSTS to reach it.
+
+  Take 3-SAT, where the point is sharpest. A 3-CNF formula is a
+  CONJUNCTION of clauses, so its ANF is a PRODUCT of the clause
+  polynomials, and multiplying them out does not stay small. Take the
+  cleanest case, clauses over disjoint triples -- each clause has a
+  7-term ANF and no variables are shared, so nothing can cancel:
+""")
+    print(f"      {'clauses':>7}  {'vars':>5}  {'literals':>8}"
+          f"  {'ANF terms':>10}")
+    for clause_count in range(1, 6):
+        table = disjoint_triple_cnf_truth_table(clause_count)
+        terms = algebraic_normal_form_size(table, 3 * clause_count)
+        assert terms == 7 ** clause_count, "expected exactly 7^m terms"
+        print(f"      {clause_count:>7}  {3 * clause_count:>5}"
+              f"  {3 * clause_count:>8}  {terms:>10}")
+    print("""
+  Exactly 7^m terms from 3m literals -- and every one of these
+  formulas is trivially satisfiable. So the canonical form explodes
+  even where the DECISION is obvious: canonicalising is not merely as
+  hard as deciding, it can be strictly harder.
+
+  And the reason is not incidental. The ANF of a formula is the ZERO
+  polynomial exactly when the formula is unsatisfiable -- so merely
+  deciding whether the canonical form is 0 already decides UNSAT.
+  Canonicalising a 3-CNF is therefore coNP-hard.
+
+  In general: if some canonical sentence form C were computable in
+  polynomial time, then C(phi) == C(false) would decide unsatisfiability
+  in polynomial time, so P would equal NP. Hence
+
+      canonical + compact + polynomial   is unavailable unless P = NP
+
+  which settles the "real prize" of 0019 in the negative, and puts the
+  three representations in their places:
+
+      ANF                     canonical, NOT compact
+      minimal automaton       canonical, NOT compact
+      sentence with hidden
+        symbols               compact, NOT canonical
+
+  The positive reading: canonicalising is not what REMOVES the
+  difficulty of 3-SAT, it is where the difficulty LIVES. Once a
+  canonical form is in hand every question is trivial -- comparison of
+  coordinate vectors. So the hardness of SAT is exactly the cost of
+  the change of basis into the monomial coordinates. Which is the
+  eigenbasis analogy holding to the end: the basis that diagonalises
+  everything is also the basis that is expensive to reach.""")
+
+
 def run_verification_suite() -> None:
     show_algebra_is_not_convention()
     show_automaton_loses()
     show_expression_loses()
     show_verdict()
+    show_canonical_sentence_form()
     print()
     print("all representation-tradeoff checks passed")
 

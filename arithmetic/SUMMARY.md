@@ -284,6 +284,24 @@ beats expand-and-cancel" **fails** instance-wise (the refutation event
 is 2 states versus 2ⁿ−1 terms); it holds only at the level of
 worst-case complexity classes.
 
+**And a canonical sentence form exists but cannot be cheap (0019 d).**
+The algebra does canonicalise — `<<` distributes over `^` and `&`, and
+`&` over `^`, so ANF is a genuine canonical form (verified). Cost is
+the obstacle, and 3-SAT settles it twice over: 3-CNF over disjoint
+triples has exactly 7^m ANF terms from 3m literals (7, 49, 343, 2401,
+16807 verified) while being *trivially satisfiable*, so canonicalising
+can be strictly harder than deciding; and the ANF of a formula is zero
+exactly when it is unsatisfiable, so canonicalising is coNP-hard, and
+any polynomial-time canonical form would give **P = NP**. Hence
+**canonical + compact + polynomial is unavailable**: ANF and the
+minimal automaton are canonical but not compact, sentences with hidden
+symbols are compact but not canonical. The intuition to invert:
+canonicalising does not *remove* 3-SAT's difficulty, it is *where the
+difficulty lives* — the hardness of SAT is exactly the cost of the
+change of basis. The eigenbasis analogy holds to the end: **the basis
+that diagonalises everything is also the basis that is expensive to
+reach.**
+
 **Clue inference itself is coNP-complete (0018).** Deciding "is this
 card in the envelope" from Clue-style knowledge is coNP-complete —
 membership by exhibiting a consistent deal, hardness by reduction from
