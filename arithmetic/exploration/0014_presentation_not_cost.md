@@ -1,5 +1,14 @@
 # 0014 — The operator/logic split is presentation, not cost
 
+> **Scope narrowed by 0019.** What is bookkeeping is *where the line
+> falls between signature and logic* — that claim stands, and is
+> demonstrated below. It does **not** extend to the choice of algebra:
+> {^, &} is the ring structure a Boolean algebra already determines
+> (Stone), characteristic 2 — the *cancel* step — is forced by
+> idempotence, and convexity needs a ring at all (cancellation needs
+> additive inverses, which {AND, OR, NOT} lacks). The algebra is
+> selected, not chosen. See 0019 (a).
+
 Correction to how 0013 framed its own result. 0013 treated the wiring
 moves (share, hide, flip) as free and the base relations (&, <<) as
 the costly ingredients, and reported "the minimal basis is {&, <<}"

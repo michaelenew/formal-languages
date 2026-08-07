@@ -104,6 +104,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0018_clue_inference_complexity.md` — "what's in the
   envelope" is coNP-complete; canonical K is an OBDD in card order;
   the two framings differ only in amortisation.
+- `exploration/0019_naturalness_and_representation_power.md` — the
+  algebra is forced, not chosen (narrowing 0014); sentences
+  poly-simulate automata and are sometimes exponentially smaller.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -120,6 +123,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   (~4 min).
 - `output/succinctness.py` — the quantifier asymmetry, and the exact
   measured cost of forbidding hidden symbols. Run directly.
+- `output/representation_tradeoff.py` — why the algebra is forced, and
+  sentence-versus-automaton size measured both directions. Run
+  directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -256,6 +262,27 @@ refutations and addition. Correction to 0015: its construction's
 *definitions* are polynomial (O(s) channels, O(s²) atoms); only
 *evaluating* them is exponential (projection determinises). Writing
 knowledge down stays small; deciding with it is what costs.
+
+**The algebra is forced; the sentence form is never beaten on size
+(0019).** Narrowing 0014: what is bookkeeping is the *signature/logic
+line*, not the algebra. By Stone, {^, &} are the ring operations a
+Boolean algebra already carries; in any idempotent commutative ring
+2x = 0, so the **cancel** step is forced rather than chosen; and
+convexity needs a ring at all, since cancellation needs additive
+inverses that {AND, OR, NOT} lacks. The "eigenbasis" intuition is
+exactly right in the form: ANF monomials are a linear basis of the
+GF(2) function space and expand-and-cancel is coordinate computation
+in it. On representation power, measured both directions: "at least
+one of n" is 2ⁿ−1 expression terms but 2 automaton states, while
+parity(X & (Y<<w)) is w terms but 2^(w+1) states — so ANF and automata
+are **incomparable**. With hidden symbols the comparison becomes
+one-sided: automaton → sentence is always polynomial (0015) and
+sentence → automaton is sometimes exponential, so **the sentence form
+poly-simulates the automaton and is sometimes exponentially smaller;
+the automaton never wins on size**, only on amortisation. But "nothing
+beats expand-and-cancel" **fails** instance-wise (the refutation event
+is 2 states versus 2ⁿ−1 terms); it holds only at the level of
+worst-case complexity classes.
 
 **Clue inference itself is coNP-complete (0018).** Deciding "is this
 card in the envelope" from Clue-style knowledge is coNP-complete —
