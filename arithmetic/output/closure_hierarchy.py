@@ -97,8 +97,10 @@ respect to subset order is such a property.""")
     print(f"    << monotone: {shift_monotone}")
     print(f"    constants monotone: {constant_monotone}")
     print(f"    ^  monotone: {exclusive_or_monotone}"
-          f"   <-- witness: {{0}} subset of {{0,1}}, but "
-          f"{{0}}^{{0}} = 0 while {{0,1}}^{{0}} = {{1}}")
+          f"   <-- witness: grow the left input from the empty set to"
+          f" {{0}}, holding the right input at {{0}}: the output"
+          f" SHRINKS from {{0}} to the empty set")
+    assert (0 ^ 1) == 1 and (1 ^ 1) == 0     # growing shrank it
     assert (intersection_monotone and shift_monotone
             and constant_monotone and not exclusive_or_monotone)
     print("""

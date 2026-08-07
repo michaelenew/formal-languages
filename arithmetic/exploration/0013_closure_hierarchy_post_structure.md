@@ -1,5 +1,40 @@
 # 0013 — The Post-style structure: three closures, three bases
 
+## In plain terms, first
+
+"Can you build XOR out of AND and shift?" has no answer until you say
+what *build* means. There are exactly three answers, because there are
+three natural amounts of the wiring calculus (0008: share, hide, flip)
+you might allow:
+
+1. **Nesting only** — plug outputs into inputs, `f(g(x), h(y))`. This
+   is the level the corpus's expression language works at.
+2. **Share + hide** — also allow hidden helper channels: "there
+   exists some w such that these constraints all hold". This is where
+   addition lives (the hidden carry wire).
+3. **Share + hide + flip** — also allow negation. Now "there is no w
+   such that…" is sayable, and therefore "for every w…", and
+   therefore **superlatives**: *the largest set such that…*
+
+XOR needs superlatives, and that is the whole story. With AND alone
+you can say "z sits inside x" (z & x = z) and "z misses y"
+(z & y = 0) — but that describes many sets, including the empty one.
+Say instead *the largest* such z and you have pinned down exactly
+x minus y; do it twice and union them (also a superlative: the
+smallest common superset) and you have x ^ y. Superlatives need
+"every", "every" needs "there is no", and "there is no" needs flip.
+So XOR is unreachable at levels 1 and 2, and free at level 3.
+
+Which level is the real one? **Level 3** — the framework's own
+deduction test is `K & ~H is empty`, so flip was always in the
+language. That is why the basis collapses to {&, <<}.
+
+The rest of this file is the same content stated precisely, with the
+standard names for the invariants that make each level's answer a
+proof rather than an observation.
+
+---
+
 The open question of 0008/0012 — is ^ derivable from {&, <<,
 constants}? — is **answered, and the answer is level-dependent**. That
 turns out to be the interesting content: the basis question has three
