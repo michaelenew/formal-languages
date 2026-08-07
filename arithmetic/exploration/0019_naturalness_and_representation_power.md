@@ -73,15 +73,20 @@ canonical, it answers entailment by containment and yields the whole
 deduction grid in one sweep (0010). The sentence stays small precisely
 by deferring that work.
 
-## (c) But "no algorithm can do materially better" is false
+## (c) "No algorithm can do materially better" — see 0020
 
-The strong form — every step of any algorithm converts to a
-sentence-form step saving at most a polynomial chunk — is refuted by
-the "at least one of n" row above. Building the 2-state automaton and
-querying it costs O(n) where naive expand-and-cancel on the ANF costs
-2ⁿ − 1 terms. That is an exponential saving by a different
-representation, on a family that is not exotic: it is the Clue
-refutation event.
+> **This section's argument is withdrawn.** It refuted the claim by
+> exhibiting one family ("at least one of n") where an automaton beats
+> the ANF exponentially. That is a *subclass* argument and does not
+> touch a **worst-case** claim — the same move as a sort that is O(1)
+> on already-sorted input. The correct comparison is worst-case
+> against worst-case, and under it the question splits four ways with
+> four different statuses. See **0020**, which supersedes this
+> section.
+
+The original text, kept for the record: the strong form is refuted by
+the "at least one of n" row above, where a 2-state automaton beats a
+2ⁿ−1-term ANF.
 
 The suspicion is right in a weaker and still substantial form:
 
@@ -104,7 +109,7 @@ of that algorithm, not of the problem.
 | {^, &, 1} is natural, not convention | **holds** (Stone; characteristic 2 forced; convexity needs a ring) |
 | the canonical form is a genuine basis | **holds** (linear basis of the GF(2) function space) |
 | the sentence form is never beaten as a representation | **holds** with hidden symbols (poly-simulates the automaton, sometimes exponentially smaller) |
-| nothing beats expand-and-cancel materially | **fails** instance-wise; holds only at the level of worst-case complexity classes |
+| nothing beats expand-and-cancel materially | **see 0020** — splits four ways; the subclass refutation once given here is withdrawn |
 
 ## Open
 

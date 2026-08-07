@@ -106,7 +106,11 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the two framings differ only in amortisation.
 - `exploration/0019_naturalness_and_representation_power.md` — the
   algebra is forced, not chosen (narrowing 0014); sentences
-  poly-simulate automata and are sometimes exponentially smaller.
+  poly-simulate automata and are sometimes exponentially smaller;
+  canonical + compact + polynomial needs P = NP.
+- `exploration/0020_is_expand_and_cancel_optimal.md` — the four
+  readings of worst-case optimality and their four statuses;
+  expand-and-cancel as Polynomial Calculus.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -279,10 +283,30 @@ are **incomparable**. With hidden symbols the comparison becomes
 one-sided: automaton → sentence is always polynomial (0015) and
 sentence → automaton is sometimes exponential, so **the sentence form
 poly-simulates the automaton and is sometimes exponentially smaller;
-the automaton never wins on size**, only on amortisation. But "nothing
-beats expand-and-cancel" **fails** instance-wise (the refutation event
-is 2 states versus 2ⁿ−1 terms); it holds only at the level of
-worst-case complexity classes.
+the automaton never wins on size**, only on amortisation. The "nothing beats
+expand-and-cancel" claim is treated properly in 0020 (0019's
+subclass-based refutation of it is withdrawn).
+
+**Is expand-and-cancel worst-case optimal? Four readings (0020).**
+Compared worst-case against worst-case, with the baseline Θ̃(2ⁿ)
+(x₁∨…∨xₙ has 2ⁿ−1 ANF terms) and translation into the sentence form
+genuinely cheap: (1) **bounded width — false, unconditionally**: PPSZ
+decides 3-SAT in O(1.308ⁿ), a superpolynomial saving over 2ⁿ on
+worst-case inputs; (2) **unbounded width — exactly SETH**, open and
+believed; (3) **no polynomial algorithm — exactly P ≠ NP**, open and
+believed (finite entailment here is coNP-complete); (4) **as a proof
+system** expand-and-cancel is Polynomial Calculus over GF(2), where
+its exponential cost is *proven unconditionally* (random 3-CNF,
+pigeonhole) but its optimality is *disproven* (pigeonhole has
+polynomial-size Frege proofs; PC is incomparable to its neighbours) —
+though proof size is not algorithm time, so this does not settle (2)
+or (3). Net: the intuition is provably right about expand-and-cancel's
+*cost* and provably wrong about its *optimality as a certificate
+system*; the algorithmic version is P ≠ NP and SETH wearing this
+framework's clothes. Notable inversion: the one place an
+unconditional lower bound exists — the symbolic layer, non-elementary
+— is exactly where expand-and-cancel does not run at all, and where
+the automaton method is provably essentially optimal.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
