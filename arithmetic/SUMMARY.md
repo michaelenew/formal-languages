@@ -95,6 +95,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0015_flip_is_not_irreducible.md` — negation traded for
   ^ in full generality; the run-in-hidden-channels construction; what
   it means for the original framing.
+- `exploration/0016_hidden_channels_are_tseitin.md` — hidden channels
+  are free on the knowledge side (and why not on the hypothesis
+  side); the exact exponential cost of not naming the carry.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -109,6 +112,8 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/flip_elimination.py` — rebuilds any automatic relation with
   share and hide only, negation physically disabled. Run directly
   (~4 min).
+- `output/succinctness.py` — the quantifier asymmetry, and the exact
+  measured cost of forbidding hidden symbols. Run directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -230,6 +235,22 @@ DFA-equivalent; what the framing lacked was never negation but ∃
 (nonemptiness needs one hidden channel: ∃q, q an all-ones prefix
 missing x with the position above it in x).
 
+**Hidden channels are Tseitin variables (0016).** They need no new
+operator: inventing a symbol and constraining it *is* existential
+quantification on the knowledge side, because ∀C(K(C) → H) ≡
+(∃C K(C)) → H for H not mentioning C — verified. The interchange
+**fails on the hypothesis side** (K → ∃C H(C) is not ∀C(K → H(C))),
+so nonemptiness facts can be *learned* for free but nonemptiness
+*questions* need a real quantifier. Measured cost of forbidding
+hidden symbols, in the corpus's own XOR-of-ANDs normal form and exact:
+"at least one of n" = 2ⁿ−1 terms, "at least two of n" = 2ⁿ⁻¹−1, carry
+into bit i = 2ⁱ−1 — versus O(1) constraints and one channel each. The
+two exponential cases are exactly the corpus's two sticking points,
+refutations and addition. Correction to 0015: its construction's
+*definitions* are polynomial (O(s) channels, O(s²) atoms); only
+*evaluating* them is exponential (projection determinises). Writing
+knowledge down stays small; deciding with it is what costs.
+
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
 built by wiring (schoolbook rows via the union move ¬(¬A ∩ ¬B), now a
@@ -290,9 +311,11 @@ else. Threshold clue events added to the solver.
    analogue of Post's criterion, and stated obstruction-first it is
    presentation-independent. (The companion question from 0014 —
    whether flip is always tradeable — is now answered yes, 0015.)
-   Two follow-ons from 0015: is {&, ^, <<, 0, 1} a *minimal* positive
-   signature, and does a polynomial-size positive definition always
-   exist, or is the one-track-per-state blow-up necessary?
+   The size question is answered in 0016: definitions are polynomial,
+   evaluation is what costs. Follow-ons: is {&, ^, <<, 0, 1} a
+   *minimal* positive signature, and is the exponential
+   determinisation of run-encoded definitions intrinsic, given that
+   their hidden tracks are a one-hot partition?
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the

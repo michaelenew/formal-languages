@@ -112,8 +112,10 @@ exactly this reason.
   (0013). Whether ^ can be dropped in favour of some other single
   relation, or whether the constants 0 and 1 are both needed, is
   unchecked.
-- **Cost.** The construction is uniform but expensive: one hidden
-  track per state of the target automaton, and the projections are
-  exponential. Whether a polynomial-size positive definition always
-  exists is open, and is the practically interesting version of the
-  question.
+- ~~**Cost.** Whether a polynomial-size positive definition always
+  exists.~~ **Answered in 0016, and the question as posed here
+  conflated two things.** The *definition* this construction produces
+  is already polynomial — O(s) hidden channels and O(s²) atoms at
+  fixed arity. What is exponential is *evaluating* it (each hidden
+  channel is projected by a subset construction). Writing the
+  knowledge down stays small; deciding with it is what can cost.
