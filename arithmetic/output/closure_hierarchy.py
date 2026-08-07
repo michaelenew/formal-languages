@@ -148,10 +148,13 @@ lemma is elementary --
      existential: if (a,w1) and (b,w2) are in an F-closed R, then
      (F(a,b), F(w1,w2)) is too, so the projection is F-closed)
 
--- and Geiger / Bodnarchuk-Kaluznin-Kotov-Romov supply the converse,
-making polymorphisms a complete invariant for pp-definability. This
-is the general form of the corpus's own symmetry observation, "f
-satisfies t if and only if t satisfies f".
+-- and this lemma alone is what every negative result below uses; it
+holds over any domain. (The converse -- polymorphisms as a COMPLETE
+invariant, the Pol-Inv Galois correspondence of Geiger and
+Bodnarchuk-Kaluznin-Kotov-Romov -- is a FINITE-domain theorem. Our
+domain is infinite, so it is cited here only as the general form of
+the corpus's own symmetry observation "f satisfies t iff t satisfies
+f", not as support for any claim made here.)
 
 Taking F = intersection:""")
     checks = [
@@ -301,18 +304,107 @@ def show_necessity() -> None:
 """)
 
 
+def difference_as_base_relation(left_name: str, right_name: str,
+                                result_name: str) -> DFA:
+    """The relation result = left minus right, placed in the SIGNATURE.
+    How the automaton is obtained in Python is irrelevant; what
+    matters is what can be built from it without negation."""
+    left, right, result = (Variable(name) for name in
+                           (left_name, right_name, result_name))
+    return (left ^ (left & right)).equals(result)
+
+
+def union_positively(left_name: str, right_name: str,
+                     result_name: str, witness_name: str) -> DFA:
+    """result = left union right, using ONLY share and hide over
+    {&, difference}: left and right sit inside result, and whatever
+    result has beyond left is inside right."""
+    left, right, result = (Variable(name) for name in
+                           (left_name, right_name, result_name))
+    witness = Variable(witness_name)
+    return ((left & result).equals(left)
+            .intersected_with((right & result).equals(right))
+            .intersected_with(
+                difference_as_base_relation(
+                    result_name, left_name, witness_name)
+                .intersected_with((witness & right).equals(witness))
+                .exists(witness_name)))
+
+
+def exclusive_or_positively() -> DFA:
+    """z = x ^ y with NO negation anywhere -- share and hide only,
+    over the signature {&, difference}."""
+    return (difference_as_base_relation('x', 'y', 'LeftPart')
+            .intersected_with(
+                difference_as_base_relation('y', 'x', 'RightPart'))
+            .intersected_with(union_positively(
+                'LeftPart', 'RightPart', 'z', 'UnionWitness'))
+            .exists('LeftPart', 'RightPart'))
+
+
+def show_presentation_not_cost() -> None:
+    print("=" * 70)
+    print("THE SPLIT IS PRESENTATION, NOT COST")
+    print("=" * 70)
+    print("""
+The table above reads as if the wiring moves were free and the base
+operators costly. They are not: both are just generators, and where
+the line falls between "signature" and "logic" is a bookkeeping
+choice. Concretely -- move relative complement INTO the signature and
+flip stops being needed for XOR at all:
+
+    z = x union y   x, y inside z, and whatever z has beyond x is
+                    inside y            (share + hide over difference)
+    z = x ^ y       union of the two differences   (share + hide)
+
+no negation anywhere. Verified:""")
+    derived_union = union_positively('p', 'q', 'z', 'UnionWitness')
+    assert derived_union.describes_same_relation_as(
+        (Variable('p') | Variable('q')).equals(z))
+    derived_exclusive_or = exclusive_or_positively()
+    assert derived_exclusive_or.describes_same_relation_as(
+        (x ^ y).equals(z))
+    print(f"    union, no negation: verified "
+          f"({derived_union.state_count} states)")
+    print(f"    XOR,   no negation: verified "
+          f"({derived_exclusive_or.state_count} states)")
+    print("""
+    So flip's contribution here is exactly one relation's worth. The
+    same holds in the other direction: presented as WS1S, this layer
+    has signature {membership, successor-of-position} and NO set
+    operators at all -- intersection becomes the logic's own "and"
+    applied to membership, and the shift becomes the successor of the
+    underlying word structure. Same layer, a completely different
+    line between operator and logic.
+
+    What is presentation-independent is not the basis but the
+    OBSTRUCTIONS. Any presentation whatsoever must, somewhere among
+    its ingredients, break:
+
+        monotonicity           or it cannot even reach XOR
+        intersection-closure   or it cannot reach XOR or union
+        permutation invariance or it has no notion of bit position
+        stability              or it has no order and no arithmetic
+
+    The three-level table is then not free-versus-costly but a budget
+    split: the more the logic is given, the less the signature needs.
+    The obstructions have to be broken; who breaks them is convention.
+""")
+
+
 def show_summary_table() -> None:
     print("=" * 70)
     print("THE STRUCTURE")
     print("=" * 70)
     print("""
-    closure       invariant that governs it        ^ needed?
+    closure       obstruction it cannot break      ^ needed?
     ------------------------------------------------------------
     term          monotonicity (Post class M)      yes
-    pp            polymorphisms (Geiger, BKKR)     yes, and | too
-    first-order   invariance; stability            no
+    pp            intersection-closure             yes, and | too
+    first-order   -- (breaks both)                 no
 
-    minimal first-order basis of the canonical layer:
+    minimal first-order basis of the canonical layer, IN THIS
+    PRESENTATION (signature = relations, logic = share/hide/flip):
         {  &,  <<  }  + constants          both provably necessary
 
     What each generator contributes, isolated by its own invariant:
@@ -332,6 +424,7 @@ def run_hierarchy() -> None:
     show_pp_level()
     show_first_order_level()
     show_necessity()
+    show_presentation_not_cost()
     show_summary_table()
     print("all closure-hierarchy checks passed")
 

@@ -88,7 +88,10 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   proof that & is independent.
 - `exploration/0013_closure_hierarchy_post_structure.md` — the three
   closure levels, the Pol–Inv connection to the corpus's Post notes,
-  and the minimal basis {&, <<}.
+  and the minimal basis {&, <<} (framing corrected by 0014).
+- `exploration/0014_presentation_not_cost.md` — the operator/logic
+  split is bookkeeping; the presentation-independent content is the
+  obstruction table.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -180,13 +183,26 @@ the Pol–Inv Galois connection):
 
 Negation collapses the basis: the finite-subset lattice defines its
 own relative complements by subset-extremality, so ^ is derivable
-from {&, constants} alone. **The minimal first-order basis of the
-canonical layer is {&, <<} + constants, both generators provably
-necessary** — & is exactly the escape from stability (order,
-arithmetic, nonlinearity), << exactly the escape from permutation
-invariance (position structure, the register). Conjectured Post-style
-criterion, not yet proved: a relation set generates the layer iff it
-escapes both.
+from {&, constants} alone. In this presentation the minimal signature
+is {&, <<} + constants, both generators provably necessary — & is the
+escape from stability (order, arithmetic, nonlinearity), << the escape
+from permutation invariance (position structure, the register).
+
+**But the operator/logic split is presentation, not cost (0014).**
+Flip trades for exactly one relation: put relative complement in the
+signature and XOR follows with no negation at all (verified). In the
+WS1S presentation of the same layer, *both* generators live inside the
+logic (intersection becomes ∧ on membership, the shift becomes the
+successor). So "minimal basis" is presentation-relative. What is
+presentation-independent is the **obstruction table** — any
+presentation's ingredients must together break monotonicity (else no
+XOR), intersection-closure (else no XOR or ∪), permutation invariance
+(else no bit positions), and stability (else no order or arithmetic).
+Who breaks them is convention; that they must be broken is not. The
+three levels are a budget split, not a discount. *Also corrected in
+0014: the Pol–Inv converse (Geiger/BKKR) is a finite-domain theorem
+and is not claimed for this infinite domain; only the preservation
+lemma, valid everywhere, is used.*
 
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
@@ -240,12 +256,17 @@ else. Threshold clue events added to the solver.
    whole of the exponentiation prize. Alternative if it stalls:
    sound-partial × after proving the two conservativity lemmas of
    0005 §2.
-2. **Prove the Post-style completeness criterion** (0013): the two
-   known proper fragments — permutation-invariant {&, constants} and
-   stable {<<, constants} — are not yet proved *maximal*. Proving it
-   would give "a relation set generates the layer iff it escapes
-   stability and escapes permutation invariance", the exact analogue
-   of Post's five-maximal-class criterion.
+2. **Prove the Post-style completeness criterion** (0013/0014): the
+   two known proper fragments — permutation-invariant {&, constants}
+   and stable {<<, constants} — are not yet proved *maximal*. Proving
+   it would give "a set of ingredients generates the layer iff it
+   breaks stability and breaks permutation invariance", the exact
+   analogue of Post's criterion, and stated obstruction-first it is
+   presentation-independent. Companion question from 0014: is flip
+   *always* tradeable — is there a finite R with
+   pp-closure(base ∪ R) = all automatic relations? If yes the levels
+   are pure accounting; if no, something about negation is genuinely
+   irreducible.
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the

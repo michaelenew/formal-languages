@@ -1,5 +1,15 @@
 # 0013 — The Post-style structure: three closures, three bases
 
+> **Framing corrected by 0014.** This file treats the wiring moves as
+> free and the base relations as the costly ingredients. That split is
+> a bookkeeping choice, not a fact about the layer: flip can be traded
+> for a single relation (relative complement) and the same results
+> follow with no negation, and in the WS1S presentation *both* of the
+> generators below live inside the logic. Everything proved here is
+> correct but **presentation-relative**; the presentation-independent
+> content is the obstruction table in 0014. The citation of
+> Geiger/BKKR below is also corrected there.
+
 ## In plain terms, first
 
 "Can you build XOR out of AND and shift?" has no answer until you say
@@ -84,8 +94,9 @@ stay closed). Take F = ∩: the graphs of &, of <<, and of every
 constant are ∩-closed, while the graphs of ^ **and of ∪** are not.
 So neither is pp-definable. Strictly sharper than the term level —
 ∪ is monotone yet still unreachable, so pp closure sees more than
-composition does. Geiger/BKKR give the converse, making polymorphisms
-a complete invariant here.
+composition does. (Only this easy preservation direction is used, and
+it holds over any domain; the Pol–Inv converse of Geiger/BKKR is a
+finite-domain theorem and is *not* claimed here — see 0014.)
 
 **First-order level.** Add negation, and ∀ comes with it. The
 finite-subset lattice then defines its own relative complements by
