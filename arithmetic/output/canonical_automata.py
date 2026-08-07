@@ -347,6 +347,25 @@ class DFA:
         'reduces to 0' verdict of the symbolic layer."""
         return self.complemented().is_empty()
 
+    # Operator surface for the three wiring moves. These are exactly
+    # the first-order connectives: & is conjunction (share), | is
+    # disjunction, ~ is negation (flip), and exists() is existential
+    # quantification (hide). So the wiring-closure of a set of base
+    # relations is precisely its first-order definability closure.
+    def __and__(self, other: DFA) -> DFA:
+        return self.intersected_with(other)
+
+    def __or__(self, other: DFA) -> DFA:
+        return self.unioned_with(other)
+
+    def __invert__(self) -> DFA:
+        return self.complemented()
+
+    def exists(self, *variable_names: str) -> DFA:
+        """Hide channels: the existential quantifier."""
+        return self.existentially_projected(
+            set(variable_names)).minimized()
+
     def unioned_with(self, other: DFA) -> DFA:
         """Disjunction of relations: the tuples either automaton
         accepts. Derived from the existing moves -- share and flip --
@@ -548,11 +567,81 @@ class CompiledRelation:
 class Term:
     """A term of the language. Subclasses: Variable, Constant,
     ShiftFillZero, ShiftFillOne, TrailingOnes, ExclusiveOr,
-    Intersection, Addition."""
+    Intersection, Addition.
+
+    Operator surface (integers are lifted to constants automatically):
+
+        x ^ y     symmetric difference   -- basis operator
+        x & y     intersection           -- basis operator
+        x << 1    shift, filling zero    -- basis operator (2x)
+        x + y     addition               -- derived (0008)
+        x | y     union                  -- derived (x ^ y ^ xy)
+
+    Comparisons return statements (automata), not booleans, so they
+    are spelled as methods: x.equals(y), x.at_most(y), x.below(y).
+    Equality is deliberately NOT bound to ==, which would break the
+    ordinary Python contract for terms as values.
+    """
 
     def compiled(self,
                  fresh_source: FreshVariableSource) -> CompiledRelation:
         raise NotImplementedError
+
+    @staticmethod
+    def lifted(value: "Term | int") -> Term:
+        return value if isinstance(value, Term) else Constant(value)
+
+    def __xor__(self, other: "Term | int") -> Term:
+        return ExclusiveOr(self, Term.lifted(other))
+
+    def __rxor__(self, other: "Term | int") -> Term:
+        return ExclusiveOr(Term.lifted(other), self)
+
+    def __and__(self, other: "Term | int") -> Term:
+        return Intersection(self, Term.lifted(other))
+
+    def __rand__(self, other: "Term | int") -> Term:
+        return Intersection(Term.lifted(other), self)
+
+    def __or__(self, other: "Term | int") -> Term:
+        """Union, derived: a | b = a ^ b ^ ab."""
+        right: Term = Term.lifted(other)
+        return ExclusiveOr(ExclusiveOr(self, right),
+                           Intersection(self, right))
+
+    def __ror__(self, other: "Term | int") -> Term:
+        return Term.lifted(other).__or__(self)
+
+    def __lshift__(self, shift_count: int) -> Term:
+        shifted: Term = self
+        for _ in range(shift_count):
+            shifted = ShiftFillZero(shifted)
+        return shifted
+
+    def __add__(self, other: "Term | int") -> Term:
+        return Addition(self, Term.lifted(other))
+
+    def __radd__(self, other: "Term | int") -> Term:
+        return Addition(Term.lifted(other), self)
+
+    def equals(self, other: "Term | int") -> DFA:
+        """The statement that the two terms denote the same set."""
+        return statement_of_equality(self, Term.lifted(other))
+
+    def at_most(self, other: "Term | int") -> DFA:
+        """The statement self <= other (numeric order, unbounded)."""
+        return statement_of_less_or_equal(self, Term.lifted(other))
+
+    def below(self, other: "Term | int") -> DFA:
+        """The statement self < other."""
+        right: Term = Term.lifted(other)
+        return self.at_most(right) & ~self.equals(right)
+
+    def contained_in(self, other: "Term | int") -> DFA:
+        """The statement self is a subset of other (the corpus's
+        containment, ab ^ a reducing to 0)."""
+        right: Term = Term.lifted(other)
+        return (self & right).equals(self)
 
     def _compiled_through_base_relation(
             self,

@@ -117,14 +117,16 @@ unique-solution equation, and the hidden wire is its limit.)
   2^{N+2}) is in the graph and swapping two high positions takes it to
   (2^{N+2}, 2^{N+1}), which is not. So no wiring of {^, &, constants}
   yields a. ∎
-- **Mutual independence of ^ and & within the basis — open.** Expected
-  route for &: {^, a, constants} generate only GF(2)-affine structure,
-  and by Baur–Monk quantifier elimination for modules every definable
-  relation is a boolean combination of coset conditions, which the
-  AND-graph should fail; not yet made rigorous (the pp-definable
-  subgroup analysis needs care). The dual direction (^ from
-  {&, a, constants}) is also open. Flagged as the workstream's current
-  cleanest small theory problem.
+- **& is independent of {^, a, constants} — PROVED in 0012.** The
+  Baur–Monk route sketched here works, in the cleaner form of a
+  stability argument: (finite sets, ^, a, constants) is the module
+  GF(2)[t] over itself, hence stable; but & would define addition and
+  so the numeric order (0011), giving the strict order property.
+  See 0012 for the full proof.
+- **^ from {&, a, constants} — still open.** The stability argument
+  does not transfer: (finite sets, &, a) already defines the subset
+  order and is unstable on its own. A different invariant is needed;
+  this is now the single remaining gap in the basis result.
 
 ## Consequences
 

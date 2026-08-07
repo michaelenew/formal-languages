@@ -83,11 +83,17 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the solver, the one-sweep deduction extraction, full-size numbers.
 - `exploration/0011_thresholds_and_order.md` — at-least-k counting and
   unbounded order are inside the layer; the boundary located exactly.
+- `exploration/0012_basis_showcase_and_and_independence.md` — the
+  formula surface (wiring-closure = first-order definability) and the
+  proof that & is independent.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
   games; suite plays compact and full-size Clue to verified
   accusations. Run directly.
+- `output/basis_showcase.py` — **start here**: a four-part executable
+  tour of the basis, the derivations, the independence arguments, and
+  the catalog of canonical sizes. Run directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -151,8 +157,10 @@ Hence, modulo Büchi–Bruyère ((ℕ, +, V₂)-definable = 2-automatic), **the
 wiring-closure of {^, &, a} with constants is the entire canonical
 layer** — the corpus's original {^, &, 1} needed exactly one new
 generator. Independence of a from {^, &, constants} proved by
-bit-permutation invariance; mutual independence of ^ and & is open
-(Baur–Monk route sketched).
+bit-permutation invariance; **independence of & proved in 0012** (the
+module GF(2)[t] is stable, but & yields addition hence the numeric
+order, i.e. the strict order property); independence of ^ from
+{&, a, constants} is the single remaining gap.
 
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
@@ -206,10 +214,10 @@ else. Threshold clue events added to the solver.
    whole of the exponentiation prize. Alternative if it stalls:
    sound-partial × after proving the two conservativity lemmas of
    0005 §2.
-2. **Finish the basis independence proofs** (0008): mutual independence
-   of ^ and & within {^, &, a, constants} — the Baur–Monk module route
-   for &, and the dual question for ^. The cleanest small theory
-   problem currently open.
+2. **Close the last basis gap** (0012): is ^ derivable from
+   {&, a, constants}? The stability route is unavailable there
+   ((sets, &, a) defines the subset order, so it is already
+   unstable); a different invariant is needed.
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
