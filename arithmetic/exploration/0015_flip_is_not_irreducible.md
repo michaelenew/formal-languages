@@ -75,17 +75,27 @@ never negation — it was hidden channels.**
 ## Consequence for the original framing
 
 The corpus's statement framing is conjunctions of emptiness
-assertions over {^, &, 1}-expressions: no negation *and no
-existentials*. Those two absences are not equal in weight:
+assertions over expressions: no negation *and no existentials*.
 
-| framing | expressive power |
+**Correction (see 0017): the shift is required too, and the table
+below is stated over a signature containing it.** Over {^, &, 1}
+alone every expression is *bitwise* — each position judged
+independently — and bitwise relations are already closed under
+conjunction **and projection**, so hidden channels over that
+signature buy exactly nothing. Escaping bitwise needs either negation
+(which turns "at every position" into "at some position") or the
+shift (which lets a hidden channel be a *positional* object, as the
+all-ones prefix below is). Credit for nonemptiness is joint: ∃ *and*
+the shift.
+
+| framing (signature includes the shift) | expressive power |
 |---|---|
 | emptiness assertions, no ∃ | strictly weaker (cannot state nonemptiness) |
 | + hidden channels (∃) | **exactly the automatic relations = DFA** |
 | + negation instead | also exactly the automatic relations |
 
-So the original framing, extended with hidden channels and nothing
-else, *is* exactly DFA-equivalent. The K-workflow's deduction test
+So the original framing, extended with the shift *and* hidden
+channels, is exactly DFA-equivalent. The K-workflow's deduction test
 still wants complement (K ∩ ¬H), but that is a use of negation at the
 *meta* level — deciding entailment — not a requirement on the
 statement language itself. Statements can stay positive.

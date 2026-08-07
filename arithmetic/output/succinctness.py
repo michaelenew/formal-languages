@@ -55,7 +55,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from canonical_automata import (
     DFA, Variable, relation_intersection, relation_exclusive_or,
-    relation_shift_fill_zero, relation_constant, relation_equality)
+    relation_shift_fill_zero, relation_constant, relation_equality,
+    statement_of_equality)
 
 
 # ---------------------------------------------------------------------
@@ -243,10 +244,75 @@ def show_construction_size() -> None:
   it is deciding with it that can be expensive.""")
 
 
+def renamed_channels(automaton: DFA,
+                     mapping: dict[str, str]) -> DFA:
+    """The same relation with channels renamed."""
+    transitions = [
+        (state, {mapping.get(name, name): bit
+                 for name, bit in column.items()}, target)
+        for state, column, target in automaton.transitions()]
+    names = tuple(mapping.get(name, name)
+                  for name in automaton.variable_names)
+    return DFA(names, automaton.state_count, automaton.initial_state,
+               transitions, automaton.accepting_states)
+
+
+def show_canonicalisation_cost() -> None:
+    """A formula of LINEAR size whose canonical automaton is
+    EXPONENTIAL: composing 'triple it' k times."""
+    print()
+    print("=" * 68)
+    print("4  CANONICALISATION IS EXPONENTIAL TOO")
+    print("=" * 68)
+    print("""
+  Compactness of the automaton does not make deciding cheap. Compose
+  b = 3a with itself k times -- a formula with O(k) atoms once the
+  intermediate channels are named:
+
+      T_1(a,b) = (b = a + (a << 1))
+      T_(k+1)(a,b) = exists m. T_k(a,m) and T_1(m,b)
+""")
+    base: DFA = statement_of_equality(
+        Variable('a') + (Variable('a') << 1), Variable('b'))
+    current: DFA = base
+    print(f"      k = 1   atoms ~  3   canonical states "
+          f"{current.state_count:5d}")
+    for step in range(2, 7):
+        middle = f"_middle{step}"
+        current = renamed_channels(current, {'b': middle})\
+            .intersected_with(renamed_channels(base, {'a': middle}))\
+            .exists(middle)
+        multiplier = 3 ** step
+        assert current.accepts_assignment({'a': 5, 'b': 5 * multiplier})
+        assert not current.accepts_assignment(
+            {'a': 5, 'b': 5 * multiplier + 1})
+        assert current.state_count == multiplier + 1
+        print(f"      k = {step}   atoms ~ {3 * step:2d}   canonical "
+              f"states {current.state_count:5d}   (b = {multiplier}a)")
+    print("""
+  Exactly 3^k + 1 states from O(k) atoms. So the exponential does not
+  disappear when the representation gets compact -- it moves from the
+  expression to the canonicalisation. And that is the optimistic case:
+  with quantifier ALTERNATION the growth is a tower, not a single
+  exponential. Deciding sentences of this layer is non-elementary
+  (Meyer, Stockmeyer, for WS1S), and even its purely additive
+  fragment needs doubly exponential time (Fischer-Rabin for
+  Presburger). No representation escapes that; the automaton
+  procedure is essentially optimal.
+
+  Where the cost sits is the practical point:
+      formula  ->  canonical automaton     non-elementary in general
+      automaton, automaton -> verdict      polynomial in the states
+  which is why the K-workflow is fast: it pays canonicalisation once
+  per event, on small formulas, and every later question is a cheap
+  containment check against an already-canonical K.""")
+
+
 def run_verification_suite() -> None:
     show_quantifier_asymmetry()
     show_size_measurements()
     show_construction_size()
+    show_canonicalisation_cost()
     print()
     print("all succinctness checks passed")
 

@@ -98,6 +98,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0016_hidden_channels_are_tseitin.md` — hidden channels
   are free on the knowledge side (and why not on the hypothesis
   side); the exact exponential cost of not naming the carry.
+- `exploration/0017_inference_cost_is_intrinsic.md` — compactness
+  buys no cheaper inference; the decision problem is non-elementary;
+  where the blow-up is paid in each framing.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -250,6 +253,23 @@ refutations and addition. Correction to 0015: its construction's
 *definitions* are polynomial (O(s) channels, O(s²) atoms); only
 *evaluating* them is exponential (projection determinises). Writing
 knowledge down stays small; deciding with it is what costs.
+
+**Compactness buys no cheaper inference (0017).** The exponential
+moves rather than vanishing: a formula with O(k) atoms (compose
+"triple it" k times) canonicalises to exactly 3ᵏ+1 states — measured.
+And that is the optimistic case: deciding sentences of this layer *is*
+the WS1S decision problem, which is **non-elementary** (Meyer,
+Stockmeyer); even its additive fragment needs doubly exponential time
+(Fischer–Rabin). So the automaton procedure is essentially optimal,
+not wasteful. The cost splits as: formula → canonical automaton,
+non-elementary; automaton ⊗ automaton → verdict, polynomial — which is
+exactly why the K-workflow is fast (canonicalise once per event on a
+small alternation-free formula, then answer every question by cheap
+containment). **Correction to 0015 recorded there:** over {^, &, 1}
+alone every expression is *bitwise*, and bitwise relations are already
+closed under conjunction *and* projection, so hidden channels buy
+nothing without the shift; credit for nonemptiness is joint (∃ *and*
+the shift).
 
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
