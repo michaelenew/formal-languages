@@ -173,4 +173,7 @@ coNP-hardness lives.
 - Open: the matrix's one open cell (Walsh → OBDD tightness); the ℤ
   row of the grid (*BMD, WHDD cells unmeasured); the non-product
   refutation surface of the finiteness conjecture; FDD-side
-  conjunction cost measured rather than cited.
+  conjunction cost measured rather than cited. **(The open cell and
+  the cross-polarity cells are closed in 0029 — the up-zeta law
+  completes the trio, and the binary-address multiplexer settles
+  Walsh → OBDD per-frame at rate 2^Θ(√σ).)**

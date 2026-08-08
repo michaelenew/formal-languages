@@ -154,7 +154,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   with witnesses, the one-coordinate enumeration. Run directly.
 - `output/frame_grid_figure.py` / `output/frame_flow_grid.png` — the
   full 7×7 eigen-frame flow grid rendered (verdict + law + witness
-  per cell; symmetry-derived and unmeasured cells marked).
+  per cell; symmetry-derived cells starred; no unmeasured cells left
+  after 0029).
+- `exploration/0029_matrix_completed.md` — the up-zeta law, the
+  shared-frame triad, the cross-polarity cells, and the Walsh→OBDD
+  cell resolved per-frame at subexponential rate.
+- `output/matrix_completion.py` — the negFDD frame, the trio law
+  verified exact, the triad measured, the binary-address multiplexer
+  measurements. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -599,6 +606,35 @@ parity-knowledge expensive to receive; FDD: ring frame received
 linearly, conjunction worst-case exponential). Clue-shaped K is
 OBDD-side polynomial, Tseitin-shaped K is FDD-side polynomial, and a
 K needing both has no home frame — where 0018's coNP-hardness lives.
+
+**The matrix completed (0029).** The five remaining cells all fell to
+the same machinery. **Up-zeta law, exact**: negative Davio's moves
+(substitute-at-1 keeps every monomial; derivative keeps only monomials
+containing the variable) make the negFDD's cut widths the distinct
+entries of ζ↑v — the up-set sums of the same fiber vector — so **the
+three shared frames read one vector three ways** (FDD: v, OBDD: ζ↓v,
+negFDD: ζ↑v; both zetas involutions; address complement reverses the
+lattice and exchanges them). Corollary, the **anti-fiber ceiling**
+negFDD ≤ 2^t per cut, mirror of 2^straddle. The **triad** {windowed
+parity, one-hot mux, co-one-hot mux} = {v-on-singletons, its ζ↓
+image, its ζ↑ image} gives each shared frame exactly one killer,
+measured at k = 8: (1021, 95, 103), (95, 774, 103), (95, 102, 1021)
+— pairwise incomparability of all three shared frames in both
+directions. Cross-polarity cells: ANF → negFDD E (co-singleton
+selector: 8 terms force width 256 = 2^t, anti-fiber ceiling reached);
+dualANF → FDD E (its complement, measured); FDD ↔ negFDD E both ways
+(co-mux / mux). The **Walsh → OBDD cell resolved per-frame**: the
+binary-address multiplexer has order-free Walsh support 4^k + 1 =
+Θ(n²) and full dimension d = n, is linear in address-first order but
+≥ 2^(n−k) in data-first order (σ = 257 vs OBDD 131,349 at n = 20) —
+so the cell is E within a fixed frame, and the escape is *exactly
+subexponential*: span law + the cited dimension bound d = O(√σ log σ)
+(Sanyal) cap it at 2^O(√σ log σ), which the multiplexer meets at
+2^Θ(√σ). The only non-full-exponential escape in the matrix. **No
+unmeasured cells remain**; the residual opens are refinements: the
+best-frame Walsh → OBDD variant (the witness is order-curable), the
+ℤ-lift shared kinds (presumably a moment analogue of the zetas), and
+the non-product refutation surface of the finiteness conjecture.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and

@@ -45,7 +45,11 @@ THE FOUR FLAT->SHARED LAWS form a 2x2 with exact mirror symmetry:
 
 THE FLOW MATRIX over {ANF, minterm, Walsh, OBDD, FDD} (dual ANF folds
 onto ANF by the complement symmetry of 0026) and the finiteness
-conjecture for the frame family close the file.
+conjecture for the frame family close the file. (The matrix's open
+cell and the cross-polarity cells are closed in matrix_completion.py
+/ 0029: the negFDD reads the same fiber vector through the UP-set
+zeta, and the binary-address multiplexer settles Walsh -> OBDD
+per-frame at subexponential rate.)
 
 Run this file directly.
 """

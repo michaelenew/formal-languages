@@ -12,9 +12,9 @@ Verdict classes:
   QP    quasipolynomial law
   E     witnessed exponential escape
   CONJ  conjugate axis (Donoho-Stark: never both small past 2^n)
-  B     bounded by a law, tightness OPEN
+  Esub  subexponential escape 2^Theta(sqrt(sigma)) -- measured;
+        the best-frame variant stays open (0029)
   deriv suffix ' *' -- cell derived by the complement symmetry
-  open  unmeasured (the cross-polarity shared cells)
 
 Run this file directly; writes frame_flow_grid.png beside it.
 """
@@ -49,10 +49,10 @@ FLAT_FRAME_COUNT: int = 4
 
 VERDICT_COLORS: dict[str, str] = {
     "P": "#b7e4c7", "QP": "#a8dadc", "E": "#f4b6ad",
-    "CONJ": "#d9c7ee", "B": "#ffe08a", "open": "#e0e0e0"}
+    "CONJ": "#d9c7ee", "Esub": "#ffe08a"}
 VERDICT_EDGE_COLORS: dict[str, str] = {
     "P": "#1b6e3c", "QP": "#146b74", "E": "#a12f22",
-    "CONJ": "#6b3fa0", "B": "#9a7200", "open": "#8a8a8a"}
+    "CONJ": "#6b3fa0", "Esub": "#9a7200"}
 
 
 def build_grid() -> dict[tuple[str, str], GridCell]:
@@ -87,8 +87,8 @@ def build_grid() -> dict[tuple[str, str], GridCell]:
         "windowed parity:\n10 terms, 1021 states")
     put("ANF", "FDD", "P", "fiber law\n≤ (n+1)(t+1)",
         "exact: distinct\nleft fibers")
-    put("ANF", "negFDD", "open", "unmeasured",
-        "cross-polarity\ncell")
+    put("ANF", "negFDD", "E", "anti-fiber law\nceiling 2^t (0029)",
+        "co-singleton selector:\n8 terms → width 256")
 
     # ---- row: dual ANF -----------------------------------------------
     put("dual ANF", "minterm", "E", "free pair",
@@ -99,8 +99,8 @@ def build_grid() -> dict[tuple[str, str], GridCell]:
         "", derived=True)
     put("dual ANF", "OBDD", "E", "crossing law\n2^straddle",
         "", derived=True)
-    put("dual ANF", "FDD", "open", "unmeasured",
-        "cross-polarity\ncell")
+    put("dual ANF", "FDD", "E", "anti-fiber law\nceiling 2^t (0029)",
+        "8 dual terms →\nFDD width 256")
     put("dual ANF", "negFDD", "P", "fiber law",
         "", derived=True)
 
@@ -111,8 +111,8 @@ def build_grid() -> dict[tuple[str, str], GridCell]:
         "AND of parities:\nσ=4, (n/2)² terms")
     put("Walsh", "dual ANF", "QP", "degree law",
         "", derived=True)
-    put("Walsh", "OBDD", "B", "span law ≤ 2^d\ntightness OPEN",
-        "d can reach about √σ,\nno witness either way")
+    put("Walsh", "OBDD", "Esub", "span law: rate\n2^Θ(√σ), subexp",
+        "binary mux, data-first:\nσ=257, OBDD 131349 (n=20)")
     put("Walsh", "FDD", "QP", "degree ∘ fiber\nlaws composed",
         "AND of parities:\nFDD 34")
     put("Walsh", "negFDD", "QP", "degree ∘ fiber",
@@ -129,8 +129,8 @@ def build_grid() -> dict[tuple[str, str], GridCell]:
         "at-least-one:\nσ = 4096")
     put("OBDD", "FDD", "E", "ζ-transported\nwitness (0028)",
         "one-hot mux:\n95 states, FDD 774")
-    put("OBDD", "negFDD", "E", "ζ-transported",
-        "", derived=True)
+    put("OBDD", "negFDD", "E", "triad (0029)",
+        "co-one-hot mux:\n95 states, negFDD 1021")
 
     # ---- row: FDD ----------------------------------------------------
     put("FDD", "minterm", "E", "no law",
@@ -143,18 +143,20 @@ def build_grid() -> dict[tuple[str, str], GridCell]:
         "at-least-one:\nσ = 4096")
     put("FDD", "OBDD", "E", "shared frames\nincomparable (0027)",
         "windowed parity:\nFDD 95, 1021 states")
-    put("FDD", "negFDD", "open", "unmeasured",
-        "cross-polarity\ncell")
+    put("FDD", "negFDD", "E", "triad (0029)",
+        "co-one-hot mux:\nFDD 102, negFDD 1021")
 
     # ---- row: negFDD -------------------------------------------------
     for column, mirrored in (("minterm", "minterm"), ("ANF",
                              "dual ANF"), ("dual ANF", "ANF"),
-                            ("Walsh", "Walsh"), ("OBDD", "OBDD")):
+                            ("Walsh", "Walsh")):
         source = grid[("FDD", mirrored)]
         put("negFDD", column, source.verdict, source.rule, "",
             derived=True)
-    put("negFDD", "FDD", "open", "unmeasured",
-        "cross-polarity\ncell")
+    put("negFDD", "OBDD", "E", "triad (0029)",
+        "windowed parity:\nnegFDD 103, OBDD 1021")
+    put("negFDD", "FDD", "E", "triad (0029)",
+        "one-hot mux:\nnegFDD 103, FDD 774")
     return grid
 
 
@@ -191,11 +193,10 @@ def render(output_path: str) -> None:
             cell = grid[(row_name, column_name)]
             face = VERDICT_COLORS[cell.verdict]
             edge = VERDICT_EDGE_COLORS[cell.verdict]
-            hatch = "///" if cell.verdict == "open" else None
             axes.add_patch(Rectangle((x, y), cell_width, cell_height,
                                      facecolor=face,
-                                     edgecolor="white", linewidth=1.2,
-                                     hatch=hatch))
+                                     edgecolor="white",
+                                     linewidth=1.2))
             verdict_label = cell.verdict + \
                 (" *" if cell.derived_by_symmetry else "")
             axes.text(x + 0.09, y + cell_height - 0.13, verdict_label,
@@ -270,26 +271,29 @@ def render(output_path: str) -> None:
         ("E", "witnessed exponential escape (P → E possible)"),
         ("CONJ", "conjugate axis — never both small past "
                  "Donoho–Stark"),
-        ("B", "bounded by span law 2^d; tightness OPEN — the one "
-              "open law cell"),
-        ("open", "unmeasured (the four cross-polarity shared cells)")]
+        ("Esub", "subexponential escape 2^Θ(√σ), measured — the one "
+                 "remaining open refinement is its best-frame "
+                 "variant (0029)")]
     legend_top = -0.92
     for line_index, (verdict, meaning) in enumerate(legend_lines):
         y = legend_top - 0.34 * line_index
         axes.add_patch(Rectangle((0.0, y - 0.115), 0.42, 0.26,
                                  facecolor=VERDICT_COLORS[verdict],
-                                 edgecolor="#888888", linewidth=0.7,
-                                 hatch="///" if verdict == "open"
-                                 else None))
+                                 edgecolor="#888888",
+                                 linewidth=0.7))
         axes.text(0.58, y, meaning, ha="left", va="center",
                   fontsize=8.2, color="#222222")
     axes.text(0.0, legend_top - 0.34 * len(legend_lines) - 0.10,
               "*  derived by the complement symmetry (0026): full "
               "complement swaps ANF↔dualANF and FDD↔negFDD, fixes "
               "minterm/Walsh/OBDD sizes.\n"
-              "Witness numbers at n = 12 (windowed parity and "
-              "multiplexer at k = 8, n = 16). μ = models, t = ANF "
-              "terms, σ = Walsh support, d = dim span(support).\n"
+              "Witness numbers at n = 12 (triad statements at "
+              "k = 8, n = 16; binary mux at n = 20). μ = models, "
+              "t = ANF terms, σ = Walsh support.\n"
+              "The three shared frames read one fiber vector three "
+              "ways — FDD: v, OBDD: ζ↓v, negFDD: ζ↑v (0029) — and "
+              "the triad {wp, mux, co-mux} gives each shared frame "
+              "exactly one killer.\n"
               "The ℤ-lift shared kinds of the finite-frame "
               "conjecture (MTBDD, *BMD, WHDD) are unmeasured; Walsh "
               "is the one measured ℤ-lift frame (0028 §5).",
