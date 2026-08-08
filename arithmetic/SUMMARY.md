@@ -185,6 +185,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/rank_floor.py` — the floor verified against every measured
   frame, the looseness table, the affine rank measurements across
   orders. Run directly.
+- `exploration/0033_field_inverse_witness.md` — both live edges
+  landed on the field-inverse witness; the parity conjecture reduced
+  to a one-way street; the completed picture and final ledger.
+- `output/live_edges.py` — the squeeze theorem, the self-validating
+  GF(2^n) construction, the full-rank-under-GL measurements, the
+  matrix-tree cross-checks, the determinant's two faces. Run
+  directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -767,6 +774,41 @@ territory, open. Final ledger of the founding suspicion: counting
 task/fixed bases — TRUE unconditionally; counting task/full
 portfolio — open at the rigidity wall, empirically supported;
 decision task — FALSE (0031).
+
+**The field-inverse witness: both live edges, one function (0033).**
+The rigidity hunt and the parity conjecture's positive test landed
+on the same witness. **Squeeze theorem**: cut rank ≤ ANF sparsity in
+every basis (monomials are rank-1 across every cut; spot-checked
+under GL probes) — so GL-robust witnesses must be everywhere-dense,
+necessary but not sufficient (the IS family is everywhere-dense yet
+rank 23). Two candidates failed by measurement first: the GF(2)
+determinant statement turned out **ring-homed** (ANF exactly k!
+Leibniz monomials, 6 and 24 asserted, zero cancellation; FDD 99 at
+n = 16 — subexponential), and toy expander spanning trees are
+order-curable (2836 → 318 under the frontier-sorted order). **The
+field inverse delivers**: low bit of x^(−1) in GF(2^n) (AES S-box
+core; self-validating exp/log field construction) has mid-cut rank
+essentially FULL — 62–64 of 64 at n = 12, 127–128 of 128 at n = 14 —
+in the natural basis and under every random GL(n,2) probe, doubling
+per two variables. By the rank floor, every frame of the taxonomy in
+every probed basis is ≈ 2^(n/2) on this succinct poly-time family:
+the maximal possible empirical witness for the full-portfolio bound,
+with all-of-GL certification pinned at the rigidity wall. **And the
+same witness refutes the parity converse by measurement**: the
+inverse is a bijection, so its statement's model count is
+closed-form (2^(n−1), verified) — polynomial counting by pure
+algebraic structure, no frame home. Parity is a one-way street:
+frame-homed ⊊ counting-tractable. Matrix-tree implemented (Bareiss)
+and cross-checked against brute force as the general counting-side
+escape engine; the determinant's two faces noted (tame as a
+statement, untameable as an algorithm — representations capture what
+it says, not what it can do). **Completed picture**: frame homes =
+width-style dynamic programming on both tasks; every known escape is
+linear algebra over the value structure (Gauss/closure on decision;
+bijectivity/matrix-tree/FKT on counting); the eigenframe theory is
+the complete complexity theory of representations for this logic,
+with its outside mapped and named, and the remaining mathematics
+beyond it is the rigidity wall itself.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
