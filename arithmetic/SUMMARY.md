@@ -130,6 +130,11 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   enumeration, unipotence of translations, polarity reconstruction and
   the cure of the refutation event, the tight uncertainty inequality.
   Run directly.
+- `exploration/0025_anf_automaton_one_way_street.md` — no uncertainty
+  inequality exists for the ANF × automaton pair; the crossing law and
+  the one-way simulation that replace it.
+- `output/anf_automaton_tradeoff.py` — the four cells, the crossing
+  law verified tight, frame sensitivity explained. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -426,10 +431,37 @@ stays ~n terms at every polarity; and by counting, almost every
 statement is exponential in every frame simultaneously. First exact
 uncertainty theorem in hand: Donoho–Stark for the minterm × Walsh
 pair, support(f)·support(Walsh f) ≥ 2ⁿ, verified and tight exactly on
-subspace indicators (the coherent states). Open next: the ANF ×
-automaton analogue (extremal families already measured), explicit
+subspace indicators (the coherent states). Open next: explicit
 everywhere-spread statements, and whether the affine (GL(n,2)) orbit
 adds genuinely new concentration classes.
+
+**ANF × automaton: a one-way street, not an uncertainty pair (0025).**
+No Donoho–Stark analogue exists, with a structural diagnosis: the
+bases are not mutually unbiased — an ANF basis vector (single
+monomial) has an O(n) automaton, so tiny-in-both is possible (parity:
+A·B = 300 against 2¹² = 4096) and every product bound dies. All four
+joint cells are inhabited, the (BIG, BIG) cell by an explicit
+direct-sum witness measured at two sizes. What replaces uncertainty is
+the **crossing law**: for XOR-of-monomial statements and any order,
+distinct subfunctions at a cut ≤ 2^(straddle+1) (straddle = monomials
+with variables on both sides), proved in three lines, verified on 300
+random instances at every cut, and **tight** (ratio 1.00 achieved).
+Corollary: log₂(automaton) ≤ A + log₂(n+1) + 1 — **ANF-concentration
+forces automaton-concentration; the converse fails exponentially**
+(at-least-one). The crossing law also explains frame sensitivity
+quantitatively (same statement: straddle 6 vs 2 across frames,
+automaton 259 vs 70 tracking 2^straddle) — frame optimisation IS
+crossing minimisation. Geometry of the frame space: it contains both
+**conjugate pairs** (minterm × Walsh, exact product uncertainty, tight
+coherent states) and **ordered pairs** (ANF → automaton, one-way
+simulation at a combinatorial rate) — QM's homogeneous picture does
+not carry over; the frame space is directed in places. Practical
+corollary: the K-workflow's automaton frame is safe against
+ring-sparse knowledge (upstream law) while the reverse choice would
+not have been safe against counting-shaped knowledge — which is
+exactly Clue's diet. Open: when the 2^straddle ceiling collapses;
+all-frames crossing hardness for a natural Clue statement; the
+taxonomy's full conjugate/ordered relation graph.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
