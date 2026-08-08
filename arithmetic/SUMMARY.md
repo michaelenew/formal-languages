@@ -140,6 +140,12 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/taxonomy_relation_graph.py` — the three new ordered laws
   (path, span, degree), the free pairs, the sink property. Run
   directly.
+- `exploration/0027_sink_refuted_and_exact_ceilings.md` — the sink
+  conjecture refuted (sharing is the sink-maker) and all three
+  ordered-edge ceilings made exact.
+- `output/sink_uniqueness_and_ceilings.py` — the FDD frame, the
+  flat→shared flow, the killing separation, and the three exact laws
+  with isolated collapse modes. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -496,8 +502,48 @@ the unique frame with no exponential blind spot against any neighbour,
 which is why the K-workflow was robust against every statement family
 this thread produced. Residual geometry: a directed flow with one
 conjugate axis across it and a free triangle among
-{ANF, dualANF, minterm}. Conjectured: within the Kronecker taxonomy
-and its affine extension, the automaton is the unique sink.
+{ANF, dualANF, minterm}. ~~Conjectured: the automaton is the unique
+sink of the full taxonomy~~ — **refuted and improved in 0027**.
+
+**The sink conjecture refuted; sink-ness belongs to the sharing move
+(0027 A).** The taxonomy contains ANF's own shared form — the FDD
+(positive Davio with sharing) — and measurement settles it: the flat
+frames' extremal witnesses flow to the FDD just as to the automaton
+(all linear: 25, 13, 25, 35), and the two shared frames separate in
+the killing direction — windowed parity separated: FDD 68→85→104
+(linear) vs automaton 259→515→1027 (doubling per pair). So a taxonomy
+member does not flow to the automaton: conjecture false. The reverse
+hunt (automaton-small, FDD-big) came up empty on every counting family
+tried — a prediction that majority's Davio closure would explode was
+wrong by measurement (FDD tracks the automaton, 71 vs 71 at n=14);
+both-direction exponential BDD/FDD separations are cited to the
+decision-diagram literature as the one unreproduced gap. Improved
+statement: **flat frames flow to shared frames; shared frames are
+mutually incomparable; the sink property belongs to the sharing move
+(the quotient / Myhill–Nerode / node-merging), not to the Shannon
+choice or any fixed frame** — 0026's automaton was unique only because
+its frame set contained a single shared frame. Above the shared
+frontier, sink-ness survives only as a parameter portfolio, and
+best-parameter search is NP-hard.
+
+**The ceilings made exact (0027 B).** All three ordered-edge laws
+upgraded from inequalities to equalities — each per-cut state count is
+exactly an image size of the upstream description under the cut:
+crossing law exact (subfunctions = distinct selected-right-part
+symmetric differences ⊕ completed parity; equality at every cut of 200
+random statements; ceiling 2^s achieved under shattering + independent
+rights, and each dependence — a right-part collision, a shared left
+variable — collapses it by exactly a factor of two); path law exact
+(states = distinct model **suffix-sets** + zero-subfunction; the
+first distinct-prefixes attempt was corrected by the machine; collapse
+= suffix-set coincidence or clustering, 21 vs 91 states for clustered
+vs spread models); span law collapse = the inner function's
+translation stabiliser (generic g reaches 2^d = 8, parity-g pins every
+cut at 2). Unified closure: **concentration flows flat → shared at a
+rate set exactly by the upstream description's algebraic independence
+across each cut**; the collapse mechanisms are completely enumerated.
+Open: the Davio-side analogues of the four laws, and the unreproduced
+reverse BDD/FDD witness.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
