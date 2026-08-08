@@ -81,11 +81,136 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the layer; the measured cost curves; the unbounded-case fork.
 - `exploration/0010_finite_clue_solved.md` — the finite game solved:
   the solver, the one-sweep deduction extraction, full-size numbers.
+- `exploration/0011_thresholds_and_order.md` — at-least-k counting and
+  unbounded order are inside the layer; the boundary located exactly.
+- `exploration/0012_basis_showcase_and_and_independence.md` — the
+  formula surface (wiring-closure = first-order definability) and the
+  proof that & is independent.
+- `exploration/0013_closure_hierarchy_post_structure.md` — the three
+  closure levels, the Pol–Inv connection to the corpus's Post notes,
+  and the minimal basis {&, <<} (framing corrected by 0014).
+- `exploration/0014_presentation_not_cost.md` — the operator/logic
+  split is bookkeeping; the presentation-independent content is the
+  obstruction table.
+- `exploration/0015_flip_is_not_irreducible.md` — negation traded for
+  ^ in full generality; the run-in-hidden-channels construction; what
+  it means for the original framing.
+- `exploration/0016_hidden_channels_are_tseitin.md` — hidden channels
+  are free on the knowledge side (and why not on the hypothesis
+  side); the exact exponential cost of not naming the carry.
+- `exploration/0017_inference_cost_is_intrinsic.md` — compactness
+  buys no cheaper inference; the decision problem is non-elementary;
+  where the blow-up is paid in each framing.
+- `exploration/0018_clue_inference_complexity.md` — "what's in the
+  envelope" is coNP-complete; canonical K is an OBDD in card order;
+  the two framings differ only in amortisation.
+- `exploration/0019_naturalness_and_representation_power.md` — the
+  algebra is forced, not chosen (narrowing 0014); sentences
+  poly-simulate automata and are sometimes exponentially smaller;
+  canonical + compact + polynomial needs P = NP.
+- `exploration/0020_is_expand_and_cancel_optimal.md` — the four
+  readings of worst-case optimality and their four statuses;
+  expand-and-cancel as Polynomial Calculus.
+- `exploration/0021_where_the_shape_lives.md` — the optimality shape
+  is an algebraic-complexity question (IPS → VP ≠ VNP; degree lower
+  bounds as the tractable form), and where Clue itself sits.
+- `exploration/0022_stress_test_the_optimality_suspicion.md` — the
+  suspicion steelmanned and broken: true of the canonicalisation
+  task, false of inference; no eigenbasis, an uncertainty principle.
+- `exploration/0023_eigenbases_of_the_problem.md` — the QM upgrade
+  made literal: bases as operator eigenbases (verified), the
+  worst-case width split, and what forces the DFA.
+- `output/eigenbasis_structure.py` — restrictions diagonal in ANF,
+  translations diagonal in Walsh, noncommutation witness, the
+  concentration table, the worst-case table. Run directly.
+- `exploration/0024_eigenbasis_classification.md` — the classification
+  closes: three measurements per coordinate, the decision-diagram
+  taxonomy, polarity frames, the Donoho–Stark theorem.
+- `output/eigenbasis_classification.py` — the one-coordinate
+  enumeration, unipotence of translations, polarity reconstruction and
+  the cure of the refutation event, the tight uncertainty inequality.
+  Run directly.
+- `exploration/0025_anf_automaton_one_way_street.md` — no uncertainty
+  inequality exists for the ANF × automaton pair; the crossing law and
+  the one-way simulation that replace it.
+- `output/anf_automaton_tradeoff.py` — the four cells, the crossing
+  law verified tight, frame sensitivity explained. Run directly.
+- `exploration/0026_taxonomy_relation_graph.md` — all ten frame pairs
+  classified; the automaton is the universal sink.
+- `output/taxonomy_relation_graph.py` — the three new ordered laws
+  (path, span, degree), the free pairs, the sink property. Run
+  directly.
+- `exploration/0027_sink_refuted_and_exact_ceilings.md` — the sink
+  conjecture refuted (sharing is the sink-maker) and all three
+  ordered-edge ceilings made exact.
+- `output/sink_uniqueness_and_ceilings.py` — the FDD frame, the
+  flat→shared flow, the killing separation, and the three exact laws
+  with isolated collapse modes. Run directly.
+- `exploration/0028_zeta_conjugacy_and_the_flow_map.md` — the Davio
+  laws, the zeta conjugacy of the shared frames, the transported
+  literature witness, the flow matrix, the finite frame conjecture.
+- `output/frame_flow_map.py` — fiber/survivor laws exact, ζ verified
+  an involution, the one-hot multiplexer measured, the flow matrix
+  with witnesses, the one-coordinate enumeration. Run directly.
+- `output/frame_grid_figure.py` / `output/frame_flow_grid.png` — the
+  full 7×7 eigen-frame flow grid rendered (verdict + law + witness
+  per cell; symmetry-derived cells starred; no unmeasured cells left
+  after 0029).
+- `exploration/0029_matrix_completed.md` — the up-zeta law, the
+  shared-frame triad, the cross-polarity cells, and the Walsh→OBDD
+  cell resolved per-frame at subexponential rate.
+- `output/matrix_completion.py` — the negFDD frame, the trio law
+  verified exact, the triad measured, the binary-address multiplexer
+  measurements. Run directly.
+- `exploration/0030_subclass_escapes_and_frame_completeness.md` — the
+  subclass escape map, the one-coordinate completeness theorem (with
+  the machine-caught hybrid correction), the cure exhibits, the
+  proof-sketch audit.
+- `output/subclass_escapes.py` — the operator-monoid enumeration,
+  the affine and multiplication cures (*BMD implemented), the
+  subclass × frame measurements. Run directly.
+- `output/subclass_map_figure.py` / `output/subclass_escape_map.png`
+  — the subclass × frame map rendered (homes, escapes, canonical
+  algorithms; falsifier rows added after 0031).
+- `exploration/0031_decision_counting_split.md` — the impossibility:
+  portfolio optimality refuted for decision (median-closed and Horn
+  witnesses); the program re-scoped to deduction-with-counting.
+- `output/polymorphism_frames.py` — the two tractable-class families,
+  their polynomial deciders cross-checked, every frame measured at
+  three sizes, the verdict. Run directly.
+- `exploration/0032_rank_floor_unconditional_bound.md` — the rank
+  floor theorem (one number floors the whole taxonomy), its honest
+  looseness on parity families, and the unconditional exponential
+  worst case for the fixed-basis portfolio (affine witness).
+- `output/rank_floor.py` — the floor verified against every measured
+  frame, the looseness table, the affine rank measurements across
+  orders. Run directly.
+- `exploration/0033_field_inverse_witness.md` — both live edges
+  landed on the field-inverse witness; the parity conjecture reduced
+  to a one-way street; the completed picture and final ledger.
+- `output/live_edges.py` — the squeeze theorem, the self-validating
+  GF(2^n) construction, the full-rank-under-GL measurements, the
+  matrix-tree cross-checks, the determinant's two faces. Run
+  directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
   games; suite plays compact and full-size Clue to verified
   accusations. Run directly.
+- `output/basis_showcase.py` — **start here**: a four-part executable
+  tour of the basis, the derivations, the independence arguments, and
+  the catalog of canonical sizes. Run directly.
+- `output/closure_hierarchy.py` — the three closure levels with every
+  checkable claim checked; the minimal basis and its necessity
+  arguments. Run directly.
+- `output/flip_elimination.py` — rebuilds any automatic relation with
+  share and hide only, negation physically disabled. Run directly
+  (~4 min).
+- `output/succinctness.py` — the quantifier asymmetry, and the exact
+  measured cost of forbidding hidden symbols. Run directly.
+- `output/representation_tradeoff.py` — why the algebra is forced, and
+  sentence-versus-automaton size measured both directions. Run
+  directly.
 - `output/canonical_automata.py` — the symbolic canonical-form engine
   (compile / minimize / universality / entailment). Run directly for the
   suite.
@@ -147,10 +272,597 @@ governs only the latter); **addition is derivable with exactly one
 hidden, uniquely-determined carry wire**; V₂ (lowest set bit) likewise.
 Hence, modulo Büchi–Bruyère ((ℕ, +, V₂)-definable = 2-automatic), **the
 wiring-closure of {^, &, a} with constants is the entire canonical
-layer** — the corpus's original {^, &, 1} needed exactly one new
-generator. Independence of a from {^, &, constants} proved by
-bit-permutation invariance; mutual independence of ^ and & is open
-(Baur–Monk route sketched).
+layer**. Independence of a from {^, &, constants} proved by
+bit-permutation invariance; **independence of & proved in 0012** (the
+module GF(2)[t] is stable, but & yields addition hence the numeric
+order, i.e. the strict order property).
+
+**The Post-style structure, and the minimal basis (0013).** The basis
+question turned out to be *level-dependent*, and all three levels are
+now settled — the corpus's own Post notes supplied the engine (their
+"f satisfies t iff t satisfies f" is the commutation relation behind
+the Pol–Inv Galois connection):
+
+| closure | invariant | is ^ needed? |
+|---|---|---|
+| term (composition) | monotonicity, Post's M | yes |
+| pp (∧, ∃, =) | polymorphisms (Geiger/BKKR) | yes — and ∪ too |
+| first-order (+ ¬) | invariance; stability | **no** |
+
+Negation collapses the basis: the finite-subset lattice defines its
+own relative complements by subset-extremality, so ^ is derivable
+from {&, constants} alone. In this presentation the minimal signature
+is {&, <<} + constants, both generators provably necessary — & is the
+escape from stability (order, arithmetic, nonlinearity), << the escape
+from permutation invariance (position structure, the register).
+
+**But the operator/logic split is presentation, not cost (0014).**
+Flip trades for exactly one relation: put relative complement in the
+signature and XOR follows with no negation at all (verified). In the
+WS1S presentation of the same layer, *both* generators live inside the
+logic (intersection becomes ∧ on membership, the shift becomes the
+successor). So "minimal basis" is presentation-relative. What is
+presentation-independent is the **obstruction table** — any
+presentation's ingredients must together break monotonicity (else no
+XOR), intersection-closure (else no XOR or ∪), permutation invariance
+(else no bit positions), and stability (else no order or arithmetic).
+Who breaks them is convention; that they must be broken is not. The
+three levels are a budget split, not a discount. *Also corrected in
+0014: the Pol–Inv converse (Geiger/BKKR) is a finite-domain theorem
+and is not claimed for this infinite domain; only the preservation
+lemma, valid everywhere, is used.*
+
+**Flip is not irreducible — negation is worth exactly one relation
+(0015).** Every automatic relation is rebuilt using conjunction and
+existential projection ALONE — no negation, enforced by disabling
+`DFA.complemented` during the construction — over the fixed signature
+{&, ^, <<, 0, 1}, by carrying the target automaton's run in hidden
+state tracks bounded by a hidden finite horizon (the horizon is what
+keeps every track a finite set; relative complement inside it,
+`HL ^ (HL & v)`, is where ^ earns its keep). Verified on targets
+obtained by complementation (x ≠ 0, x odd, x not a power of two,
+x > y). So: pp-closure{&, <<, constants} ⊊ everything, but
+pp-closure{&, ^, <<, 0, 1} = everything = FO-closure{&, <<,
+constants}. **^ in the signature and flip in the logic are
+interchangeable**, which reverses 0013's reading symmetrically — the
+corpus carrying ^ as an operator was paying for negation up front,
+not being redundant. Consequence for the original framing:
+emptiness-assertions **plus hidden channels** are exactly
+DFA-equivalent; what the framing lacked was never negation but ∃
+(nonemptiness needs one hidden channel: ∃q, q an all-ones prefix
+missing x with the position above it in x).
+
+**Hidden channels are Tseitin variables (0016).** They need no new
+operator: inventing a symbol and constraining it *is* existential
+quantification on the knowledge side, because ∀C(K(C) → H) ≡
+(∃C K(C)) → H for H not mentioning C — verified. The interchange
+**fails on the hypothesis side** (K → ∃C H(C) is not ∀C(K → H(C))),
+so nonemptiness facts can be *learned* for free but nonemptiness
+*questions* need a real quantifier. Measured cost of forbidding
+hidden symbols, in the corpus's own XOR-of-ANDs normal form and exact:
+"at least one of n" = 2ⁿ−1 terms, "at least two of n" = 2ⁿ⁻¹−1, carry
+into bit i = 2ⁱ−1 — versus O(1) constraints and one channel each. The
+two exponential cases are exactly the corpus's two sticking points,
+refutations and addition. Correction to 0015: its construction's
+*definitions* are polynomial (O(s) channels, O(s²) atoms); only
+*evaluating* them is exponential (projection determinises). Writing
+knowledge down stays small; deciding with it is what costs.
+
+**The algebra is forced; the sentence form is never beaten on size
+(0019).** Narrowing 0014: what is bookkeeping is the *signature/logic
+line*, not the algebra. By Stone, {^, &} are the ring operations a
+Boolean algebra already carries; in any idempotent commutative ring
+2x = 0, so the **cancel** step is forced rather than chosen; and
+convexity needs a ring at all, since cancellation needs additive
+inverses that {AND, OR, NOT} lacks. The "eigenbasis" intuition is
+exactly right in the form: ANF monomials are a linear basis of the
+GF(2) function space and expand-and-cancel is coordinate computation
+in it. On representation power, measured both directions: "at least
+one of n" is 2ⁿ−1 expression terms but 2 automaton states, while
+parity(X & (Y<<w)) is w terms but 2^(w+1) states — so ANF and automata
+are **incomparable**. With hidden symbols the comparison becomes
+one-sided: automaton → sentence is always polynomial (0015) and
+sentence → automaton is sometimes exponential, so **the sentence form
+poly-simulates the automaton and is sometimes exponentially smaller;
+the automaton never wins on size**, only on amortisation. The "nothing beats
+expand-and-cancel" claim is treated properly in 0020 (0019's
+subclass-based refutation of it is withdrawn).
+
+**Is expand-and-cancel worst-case optimal? Four readings (0020).**
+Compared worst-case against worst-case, with the baseline Θ̃(2ⁿ)
+(x₁∨…∨xₙ has 2ⁿ−1 ANF terms) and translation into the sentence form
+genuinely cheap: (1) **bounded width — false, unconditionally**: PPSZ
+decides 3-SAT in O(1.308ⁿ), a superpolynomial saving over 2ⁿ on
+worst-case inputs; (2) **unbounded width — exactly SETH**, open and
+believed; (3) **no polynomial algorithm — exactly P ≠ NP**, open and
+believed (finite entailment here is coNP-complete); (4) **as a proof
+system** expand-and-cancel is Polynomial Calculus over GF(2), where
+its exponential cost is *proven unconditionally* (random 3-CNF,
+pigeonhole) but its optimality is *disproven* (pigeonhole has
+polynomial-size Frege proofs; PC is incomparable to its neighbours) —
+though proof size is not algorithm time, so this does not settle (2)
+or (3). Net: the intuition is provably right about expand-and-cancel's
+*cost* and provably wrong about its *optimality as a certificate
+system*; the algorithmic version is P ≠ NP and SETH wearing this
+framework's clothes. Notable inversion: the one place an
+unconditional lower bound exists — the symbolic layer, non-elementary
+— is exactly where expand-and-cancel does not run at all, and where
+the automaton method is provably essentially optimal.
+
+**The optimality *shape* is an algebraic-complexity question (0021).**
+This framework is natively a polynomial ring, so "the ring's procedure
+is optimal" belongs to algebraic proof complexity, not Boolean: as
+Polynomial Calculus its lower bounds are proved *through degree*
+(size ≥ 2^Ω((d−d₀)²/n), Impagliazzo–Pudlák–Sgall) — a working method,
+not a conjecture; as the Ideal Proof System, superpolynomial lower
+bounds would imply **VP ≠ VNP** (Grochow–Pitassi), so the shape
+terminates at Valiant rather than Cook–Levin, with different barriers
+and real partial progress on restricted classes. Measured locator:
+mini-Clue's *a priori* knowledge (24 consistent deals, before any
+event) is **27,648 ANF terms at degree 15 of 18 variables** against
+**17 automaton states** — no refutation of any worst-case claim, but
+it places the toy problem in the ring form's worst regime, and for a
+predicted reason: hand sizes are threshold functions, which are
+near-maximal degree, and degree is exactly what PC bounds go through.
+Tractable next step if the shape is pursued: a **degree lower bound
+for Clue-shaped constraint systems**.
+
+**The suspicion, stress-tested to a verdict (0022).** Steelman: for
+the *canonicalisation task* the tie between representation length and
+cost is a theorem — ANF size is semantic, so every ring-form-producing
+algorithm pays it, unconditionally; within the ring proof system the
+expansion is provably unavoidable (PC lower bounds); and the basis is
+forced (Stone). The irreparable breaks: (B1) sound-and-complete
+inference need not visit the ring form — at n = 48, where the ring
+form of "at least one of n" has ~2.8×10¹⁴ terms by the semantic bound,
+the automaton decided both entailment directions in 25 ms with 22 and
+50 states; (B2) the basis-swap repair dies symmetrically (windowed
+parity: w ring terms vs provably minimal 2^(w+1) states); (B3) no
+basis can ever be crowned — every canonical form system has
+exponential statements (counting), and different systems have
+different hard families; (B4) canonicalisation *overshoots* inference
+by a class gap — the top ANF coefficient equals the parity of the
+model count (verified), so producing the ring form solves
+Parity-P-complete parity-SAT while inference is only coNP
+(Valiant–Vazirani, Toda); (B5) what survives is basis-free (P ≠ NP /
+SETH) and thus not about the ring. Clue-native witness: divisibility
+by 3 is 3 automaton states at every width versus (2^(n+1)+1)/3 ring
+terms at degree n−1, measured to width 14. Replacement intuition:
+**no eigenbasis — an uncertainty principle** between the Reed–Muller
+(Möbius) transform and the sequential/positional factorisation;
+hardness is concentration-relative, instance difficulty is
+concentration in the best basis, and basis-free difficulty is the
+complexity conjectures. The pursuable descendant: PC degree lower
+bounds for Clue-shaped systems, and characterising which statements
+are concentrated in which basis.
+
+**The eigenbasis picture, corrected and made literal (0023).** The
+uncertainty observation strengthens the eigenbasis analogy rather than
+defeating it: as in QM, there are multiple eigenbases, one per
+operator family, and their noncommutation is the uncertainty. Verified:
+the ring/ANF basis is the common eigenbasis of the RESTRICTION
+operators f(x) ↦ f(x&m) (eigenvalues 0/1); the Walsh/character basis
+— living over the counting layer's ℤ lift — is the common eigenbasis
+of the TRANSLATIONS f(x) ↦ f(x^a) (eigenvalues ±1, phases); the
+automaton is definitionally the canonical quotient of the SHIFT action
+(states = Brzozowski derivatives); restriction and translation do not
+commute (witnessed), so no common eigenbasis exists and concentration
+trades (measured table: every statement small somewhere, no basis
+small everywhere). **What forces the DFA**: the same theorem that
+forced << — the two forced decompositions sit exactly over the two
+proven-necessary generators ({&,^} ring → ANF via Stone; << → minimal
+automaton via Myhill–Nerode, a machine-free quotient definition), with
+initial-algebra/final-coalgebra duality as the structural seat and
+reading order as the automaton family's frame freedom (like coordinate
+choice for the position basis). Worst-case re-arm of 0022's critique:
+for 3-CNF, deciding (O(1.308ⁿ), PPSZ) provably beats canonicalising
+(≥ 7^(n/3) ≈ 1.913ⁿ, exact family) — worst case against worst case,
+both unconditional — while for unbounded width the "may as well
+canonicalise" claim is plausible under SETH: the truth is
+width-split. Eigen-frame criterion: canonical = eigen; CNF/3SAT/Sudoku
+lack uniqueness, hence are non-eigen frames of the same problem.
+Open: classify maximal commuting observable families over the
+generators (= classify eigenbases); which are convexity-compatible;
+quantitative uncertainty inequalities between basis concentrations.
+
+**The classification closes, and it already has a name (0024).** One
+coordinate is exhaustively enumerable: GF(2)² has exactly three bases
+— {1,x} (eigenbasis of substitute-to-0; positive Davio), {1,1^x}
+(substitute-to-1; negative Davio), {x,1^x} (multiply; Shannon) — and
+no fourth; translations are unipotent over GF(2) ((T_a+I)² = 0,
+verified), so the Walsh basis exists only over the counting layer's ℤ
+lift — the lift is forced, like complex numbers for spin. Products
+over coordinates + the sharing (quotient) move + order + lift generate
+exactly the **Kronecker decision-diagram taxonomy** of logic synthesis
+(PPRM/FPRM/OBDD/FDD/KFDD/*BMD): the automaton is Shannon-plus-sharing,
+ANF is Davio-flat, and the measured ANF-vs-automaton incomparability
+is an instance of the known OBDD/FDD exponential separations. All
+frames are canonical with terminating transforms, so **every frame is
+convex — convexity is a property of the taxonomy, not of a member**;
+best-frame search is itself NP-hard (known, both for order and
+polarity). Frames move blind spots without removing them: polarity is
+the translation orbit of ANF (FPRM(p) = ANF of f(x^p), verified), and
+it cures the refutation event exactly — 2ⁿ−1 terms at polarity 0,
+2^(n−|p|)+1 in between, **2 terms** at full complement — while parity
+stays ~n terms at every polarity; and by counting, almost every
+statement is exponential in every frame simultaneously. First exact
+uncertainty theorem in hand: Donoho–Stark for the minterm × Walsh
+pair, support(f)·support(Walsh f) ≥ 2ⁿ, verified and tight exactly on
+subspace indicators (the coherent states). Open next: explicit
+everywhere-spread statements, and whether the affine (GL(n,2)) orbit
+adds genuinely new concentration classes.
+
+**ANF × automaton: a one-way street, not an uncertainty pair (0025).**
+No Donoho–Stark analogue exists, with a structural diagnosis: the
+bases are not mutually unbiased — an ANF basis vector (single
+monomial) has an O(n) automaton, so tiny-in-both is possible (parity:
+A·B = 300 against 2¹² = 4096) and every product bound dies. All four
+joint cells are inhabited, the (BIG, BIG) cell by an explicit
+direct-sum witness measured at two sizes. What replaces uncertainty is
+the **crossing law**: for XOR-of-monomial statements and any order,
+distinct subfunctions at a cut ≤ 2^(straddle+1) (straddle = monomials
+with variables on both sides), proved in three lines, verified on 300
+random instances at every cut, and **tight** (ratio 1.00 achieved).
+Corollary: log₂(automaton) ≤ A + log₂(n+1) + 1 — **ANF-concentration
+forces automaton-concentration; the converse fails exponentially**
+(at-least-one). The crossing law also explains frame sensitivity
+quantitatively (same statement: straddle 6 vs 2 across frames,
+automaton 259 vs 70 tracking 2^straddle) — frame optimisation IS
+crossing minimisation. Geometry of the frame space: it contains both
+**conjugate pairs** (minterm × Walsh, exact product uncertainty, tight
+coherent states) and **ordered pairs** (ANF → automaton, one-way
+simulation at a combinatorial rate) — QM's homogeneous picture does
+not carry over; the frame space is directed in places. Practical
+corollary: the K-workflow's automaton frame is safe against
+ring-sparse knowledge (upstream law) while the reverse choice would
+not have been safe against counting-shaped knowledge — which is
+exactly Clue's diet. Open: when the 2^straddle ceiling collapses;
+all-frames crossing hardness for a natural Clue statement.
+
+**The relation graph, completed — the automaton is the universal sink
+(0026).** All ten pairs among {ANF, dualANF, minterm, Walsh, automaton}
+classified. One conjugate pair (minterm × Walsh, the Donoho–Stark
+axis). Six ordered edges, all pointing at the automaton or at the ring
+frames from Walsh: ANF → automaton and dualANF → automaton (2^crossing,
+0025 + complement symmetry — model count, Walsh support and automaton
+size are verified invariant under full complement, transferring every
+ANF edge to dualANF); **minterm → automaton at LINEAR rate**
+((n+1)(μ+1): one subfunction per model prefix per cut plus the zero
+subfunction — the cheapest edge in the graph); **Walsh → automaton at
+rate 2^d** where d = dim⟨Walsh support⟩ (the statement factors through
+a d-dimensional linear map; the automaton carries d running parities);
+**Walsh → ANF/dualANF at quasipolynomial rate n^{log σ}** via
+deg₂(f) ≤ log₂ σ — verified exhaustively over all 65,536 functions of
+4 variables (0/1-transform convention; the law lives on the zero
+coefficient where signed and plain spectra differ), with the
+n-dependence genuine (AND of two (n/2)-parities: σ = 4 fixed, ANF
+(n/2)² growing). Three free pairs: ANF × dualANF, ANF × minterm,
+dualANF × minterm — four cells measured, no law either way. Headline:
+**concentration in every frame flows to the automaton — linearly from
+the semantic frame, 2^crossing from the ring frames, 2^span from the
+spectral frame — and the automaton forces nothing back** (at-least-one
+at 25 states defeats ANF, minterm and Walsh simultaneously; the full
+monomial defeats dualANF and Walsh). The DFA's seat gets its final
+answer: not a peer across from sentences but downstream of everything —
+the unique frame with no exponential blind spot against any neighbour,
+which is why the K-workflow was robust against every statement family
+this thread produced. Residual geometry: a directed flow with one
+conjugate axis across it and a free triangle among
+{ANF, dualANF, minterm}. ~~Conjectured: the automaton is the unique
+sink of the full taxonomy~~ — **refuted and improved in 0027**.
+
+**The sink conjecture refuted; sink-ness belongs to the sharing move
+(0027 A).** The taxonomy contains ANF's own shared form — the FDD
+(positive Davio with sharing) — and measurement settles it: the flat
+frames' extremal witnesses flow to the FDD just as to the automaton
+(all linear: 25, 13, 25, 35), and the two shared frames separate in
+the killing direction — windowed parity separated: FDD 68→85→104
+(linear) vs automaton 259→515→1027 (doubling per pair). So a taxonomy
+member does not flow to the automaton: conjecture false. The reverse
+hunt (automaton-small, FDD-big) came up empty on every counting family
+tried — a prediction that majority's Davio closure would explode was
+wrong by measurement (FDD tracks the automaton, 71 vs 71 at n=14);
+both-direction exponential BDD/FDD separations are cited to the
+decision-diagram literature as the one unreproduced gap. Improved
+statement: **flat frames flow to shared frames; shared frames are
+mutually incomparable; the sink property belongs to the sharing move
+(the quotient / Myhill–Nerode / node-merging), not to the Shannon
+choice or any fixed frame** — 0026's automaton was unique only because
+its frame set contained a single shared frame. Above the shared
+frontier, sink-ness survives only as a parameter portfolio, and
+best-parameter search is NP-hard.
+
+**The ceilings made exact (0027 B).** All three ordered-edge laws
+upgraded from inequalities to equalities — each per-cut state count is
+exactly an image size of the upstream description under the cut:
+crossing law exact (subfunctions = distinct selected-right-part
+symmetric differences ⊕ completed parity; equality at every cut of 200
+random statements; ceiling 2^s achieved under shattering + independent
+rights, and each dependence — a right-part collision, a shared left
+variable — collapses it by exactly a factor of two); path law exact
+(states = distinct model **suffix-sets** + zero-subfunction; the
+first distinct-prefixes attempt was corrected by the machine; collapse
+= suffix-set coincidence or clustering, 21 vs 91 states for clustered
+vs spread models); span law collapse = the inner function's
+translation stabiliser (generic g reaches 2^d = 8, parity-g pins every
+cut at 2). Unified closure: **concentration flows flat → shared at a
+rate set exactly by the upstream description's algebraic independence
+across each cut**; the collapse mechanisms are completely enumerated.
+Open (both closed in 0028): the Davio-side analogues of the four
+laws, and the unreproduced reverse BDD/FDD witness.
+
+**The zeta conjugacy, the transported witness, and the flow map
+(0028).** The Davio-side analogues, done first as directed, closed
+everything at once. **Fiber law, exact**: FDD width at a cut =
+distinct entries of the ANF's left-fiber vector (fiber(D) = XOR of
+right parts of monomials with left part exactly D) — equality at
+every cut of 200 random statements. Corollaries: **ANF → FDD is
+LINEAR** ((n+1)(terms+1)) and **minterm → FDD is exponential with
+exact ceiling 2^μ** (the survivor law; one-hot-prefix models reach
+it: 8 models force FDD width 256 while the OBDD sits at 71). The
+flat→shared square is a perfect mirror: each flat frame flows
+linearly into its own shared form, exponentially into the other's.
+Deeper: 0027's exact crossing law is the same fiber vector aggregated
+over down-sets — i.e. **OBDD width = distinct entries of ζv, FDD
+width = distinct entries of v, and over GF(2) ζ is an involution**
+(verified entrywise): the two shared frames are **ζ-conjugate cut by
+cut**, so every separation witness maps to a witness in the opposite
+direction. That turned the literature verification into a
+computation: ζ(windowed parity's fiber vector) = the fiber vector of
+the **one-hot multiplexer**, and measurement confirms OBDD linear /
+FDD ≥ 2^k (59/196, 76/389, 95/774 at k = 6,7,8, mirror of wp's
+253/59, 509/76, 1021/95 — with OBDD(mux) = FDD(wp) exactly, the
+involution visible in raw sizes). **Both directions of the cited
+BDD/FDD separation are now machine facts**; 0027's hunt failed
+because the ζ-image of a parity-accumulator is a selector, not a
+counter. The **flow matrix** over {ANF, minterm, Walsh, OBDD, FDD}
+(dual folded by complement symmetry) is complete except one open
+cell (Walsh → OBDD tightness): shared frames are pure sinks and
+mutually incomparable, flat frames drain linearly into their own
+sharing, Walsh is quasipolynomial upstream of the Davio side
+(degree law ∘ fiber law), minterm × Walsh stays the conjugate axis.
+**Finite frame conjecture**: eigen-frames = diagonalisers of
+commuting families generated by the finitely many logic primitives
+(^ → translations, & → restrictions, << → shift/sharing, flip →
+complement); one coordinate is exhaustively 3 bases over GF(2) plus
+finitely many over the ℤ lift, so — conjecturally — at most fourteen
+kinds up to the classified parameters (order/polarity/GL(n,2)), six
+of them this thread's frames. Complexity-flow reading: C_minterm ⊆
+C_OBDD and C_ANF ⊆ C_FDD (P preserved along own-sharing edges),
+C_Walsh ⊆ quasipoly C_FDD, shared classes incomparable, all other
+moves have witnessed P → E escapes — and the two shared frames split
+the sentence basis {^, &} between them (OBDD: all connectives cheap,
+parity-knowledge expensive to receive; FDD: ring frame received
+linearly, conjunction worst-case exponential). Clue-shaped K is
+OBDD-side polynomial, Tseitin-shaped K is FDD-side polynomial, and a
+K needing both has no home frame — where 0018's coNP-hardness lives.
+
+**The matrix completed (0029).** The five remaining cells all fell to
+the same machinery. **Up-zeta law, exact**: negative Davio's moves
+(substitute-at-1 keeps every monomial; derivative keeps only monomials
+containing the variable) make the negFDD's cut widths the distinct
+entries of ζ↑v — the up-set sums of the same fiber vector — so **the
+three shared frames read one vector three ways** (FDD: v, OBDD: ζ↓v,
+negFDD: ζ↑v; both zetas involutions; address complement reverses the
+lattice and exchanges them). Corollary, the **anti-fiber ceiling**
+negFDD ≤ 2^t per cut, mirror of 2^straddle. The **triad** {windowed
+parity, one-hot mux, co-one-hot mux} = {v-on-singletons, its ζ↓
+image, its ζ↑ image} gives each shared frame exactly one killer,
+measured at k = 8: (1021, 95, 103), (95, 774, 103), (95, 102, 1021)
+— pairwise incomparability of all three shared frames in both
+directions. Cross-polarity cells: ANF → negFDD E (co-singleton
+selector: 8 terms force width 256 = 2^t, anti-fiber ceiling reached);
+dualANF → FDD E (its complement, measured); FDD ↔ negFDD E both ways
+(co-mux / mux). The **Walsh → OBDD cell resolved per-frame**: the
+binary-address multiplexer has order-free Walsh support 4^k + 1 =
+Θ(n²) and full dimension d = n, is linear in address-first order but
+≥ 2^(n−k) in data-first order (σ = 257 vs OBDD 131,349 at n = 20) —
+so the cell is E within a fixed frame, and the escape is *exactly
+subexponential*: span law + the cited dimension bound d = O(√σ log σ)
+(Sanyal) cap it at 2^O(√σ log σ), which the multiplexer meets at
+2^Θ(√σ). The only non-full-exponential escape in the matrix. **No
+unmeasured cells remain**; the residual opens are refinements: the
+best-frame Walsh → OBDD variant (the witness is order-curable), the
+ℤ-lift shared kinds (presumably a moment analogue of the zetas), and
+the non-product refutation surface of the finiteness conjecture.
+
+**The subclass escape map, and frame completeness (0030).** The
+matrix refined to the object the program actually needs — which
+*subclasses* escape which frame moves — plus the completeness
+evidence. **Completeness at one coordinate is now a machine theorem
+with a machine-caught correction**: over GF(2) all 16 operators
+enumerate to the three known eigenbases; over the counting lift the
+projective closure of the primitive-generated monoid has 11 elements
+and my "only four eigenbases" claim was false (cross-layer composites
+force hybrids like {x, 1−2x}); the repaired, stronger statement —
+**the eigenvector pool is finite and closed** ({1, x, 1−x, 1−2x}) —
+holds, giving ≤ 6 lift kinds (4 pure + 2 hybrids = the literature's
+HDD rows), with three isolated relative-completeness assumptions
+(product structure, primitive inventory, sharing-as-quotient) as the
+refutation surface. **The cure exhibits make the extended parameters
+mandatory**: a random affine system (d = n/2 parities) escapes all
+seven frames at 2^(n/2) simultaneously yet is poly-decidable — cured
+to 33 states by the GL(n,2) parameter (Gaussian elimination = that
+parameter's canonical algorithm); multiplication's middle bit grows
+exponentially in every bit-level frame measured while the word-level
+*BMD (implemented) is linear 28→34→40 (word arithmetic = the moment
+lift's canonical algorithm). Had the list been closed at seven,
+"escapes all frames ⇒ hard" would be refuted by these families; each
+lands in a conjectured kind instead. **The subclass × frame map**
+(measured, rendered): counting/symmetric → home = all three shared
+frames (sharing cures counting); sparse-model → minterm + OBDD;
+parity-spread → the ring side; selector → OBDD + negFDD + dual ANF
+(24 terms, the co-singleton structure); affine → GL-OBDD only; word
+arithmetic → *BMD only; generic → no home by counting but not
+succinct, hence not an instance. Every classical poly algorithm
+family met so far (DP, enumeration, cancellation, branching, Gauss,
+word arithmetic) IS some frame's canonicalisation — no known
+frameless poly algorithm for this class. **The proof-sketch audit**:
+Step 1 (finitely many frames) machine-supported relative to the
+three assumptions; Step 2 (portfolio optimality) is the load-bearing
+open step = the optimal-proof-system question (Krajíček–Pudlák);
+Step 3 (strict union) is a theorem at representation level but its
+witnesses are non-succinct — for succinct inputs it *is* the
+conclusion; Step 4 follows from 2 + succinct-3. The proven CSP
+dichotomy (Bulatov/Zhuk) is the exact shape of the target, proved
+through polymorphisms (0013's Pol–Inv), pointing at the
+polymorphism ↔ frame correspondence as Step 2's bridge.
+
+**The decision/counting split — where the program stops, and what
+survives (0031).** The polymorphism test was run and it settled the
+load-bearing step. Two succinct families — independent sets of a
+cycle-plus-matching graph (median-closed, machine-checked; full
+deduction grid by implication closure, cross-checked against brute
+force) and a bipartite implication system (definite Horn,
+min-closed; grid by unit propagation) — have **no frame home**:
+every frame of the taxonomy grows by more than 2× per size step on
+both (measured at n = 12/16/20, asserted; e.g. independent sets at
+n = 20: minterm 5620, ANF 133508, Walsh 1000171, OBDD 384, FDD 3162,
+negFDD 869), parameter probes fail (best random order 101, best
+random GL map 304, moment 152, vs natural 66 at n = 12), every-order
+OBDD hardness is the expander cutwidth theorem (cited), and DNNF-
+and-below hardness is cited to the compilation-map literature — the
+escape is not curable by any known canonical class, linear or not.
+Yet both families' full deduction grids are polynomial via
+formula-side closure that compiles nothing. **Portfolio optimality
+is therefore FALSE for the decision task** — 0020's B1 break
+upgraded to a structural fact witnessed by two-thirds of the
+tractable Boolean CSP world; the P ≠ NP route through decision
+complexity is blocked, and this is the impossibility the pace was
+set to find. **What survives is exact**: the boundary is the
+counting line. Counting independent sets of cubic graphs is
+#P-complete (Greenhill), and any frame compilation yields model
+counts for free — so no frame could be small there without
+collapsing #P; the all-frames blow-up sits precisely on a real
+hardness boundary. The frame theory stands as a theory of
+DEDUCTION-WITH-COUNTING (the Clue solver's actual task since 0010:
+verdicts plus exact deal counts), with the surviving conjecture
+sharply posed: **a subclass has a polynomial frame home iff its
+model-counting problem is polynomial.** Immediate tests: spanning
+trees (matrix-tree: counting poly — does a frame home exist?),
+planar perfect matchings (FKT), and the refutation direction (a
+frame-homed family with hard counting would kill it instantly).
+
+**The rank floor, and the unconditional worst case for the
+fixed-basis portfolio (0032).** The requested theorem — no
+worst-case subexponential eigen-representation algorithm on the
+parity (counting) side — delivered in its achievable form. **Rank
+floor theorem**: at any cut, every frame of the taxonomy has size ≥
+rank_GF(2) of the communication matrix (flat kinds: Kronecker basis
+elements are rank-1 across every cut; shared kinds: level families
+span the row space by the fiber laws' invertible transforms; lift
+kinds: rank_ℚ ≥ rank_GF(2)) — one number floors every kind,
+polarity, order, sharing and lift; verified at every cut of 100
+random statements against seven frames plus the moment diagram; pure
+linear algebra, no complexity assumptions. **Honest looseness**
+(first plan failed by measurement, recorded): GF(2) cut rank is the
+parity-communication measure — windowed parity rank 8 vs width 256,
+IS family rank 23 vs widths 384–3162 — so 0031's families stay
+certified per-frame, not by rank. **The floor bites on the affine
+family**: disjoint-coset rows make rank = distinct-row count ≈
+2^(n/2−c) at balanced cuts in every order probed (minima 8→16→128
+at n = 12/16/20), giving the **unconditional theorem: every
+fixed-basis frame — any kind, polarity, order, sharing, lift — is
+2^Ω(n) on the random affine family; the fixed-basis portfolio has no
+subexponential worst case for counting.** Sharpened: the family's
+count is easy (2^(n−d)) and only its GL member is small (33 states)
+— the parameter groups are load-bearing, exactly as the parity
+conjecture requires. **The remaining wall, named**: the
+full-portfolio (GL-inclusive) unconditional bound needs cut rank
+exponential under every linear change of variables — matrix-rigidity
+territory, open. Final ledger of the founding suspicion: counting
+task/fixed bases — TRUE unconditionally; counting task/full
+portfolio — open at the rigidity wall, empirically supported;
+decision task — FALSE (0031).
+
+**The field-inverse witness: both live edges, one function (0033).**
+The rigidity hunt and the parity conjecture's positive test landed
+on the same witness. **Squeeze theorem**: cut rank ≤ ANF sparsity in
+every basis (monomials are rank-1 across every cut; spot-checked
+under GL probes) — so GL-robust witnesses must be everywhere-dense,
+necessary but not sufficient (the IS family is everywhere-dense yet
+rank 23). Two candidates failed by measurement first: the GF(2)
+determinant statement turned out **ring-homed** (ANF exactly k!
+Leibniz monomials, 6 and 24 asserted, zero cancellation; FDD 99 at
+n = 16 — subexponential), and toy expander spanning trees are
+order-curable (2836 → 318 under the frontier-sorted order). **The
+field inverse delivers**: low bit of x^(−1) in GF(2^n) (AES S-box
+core; self-validating exp/log field construction) has mid-cut rank
+essentially FULL — 62–64 of 64 at n = 12, 127–128 of 128 at n = 14 —
+in the natural basis and under every random GL(n,2) probe, doubling
+per two variables. By the rank floor, every frame of the taxonomy in
+every probed basis is ≈ 2^(n/2) on this succinct poly-time family:
+the maximal possible empirical witness for the full-portfolio bound,
+with all-of-GL certification pinned at the rigidity wall. **And the
+same witness refutes the parity converse by measurement**: the
+inverse is a bijection, so its statement's model count is
+closed-form (2^(n−1), verified) — polynomial counting by pure
+algebraic structure, no frame home. Parity is a one-way street:
+frame-homed ⊊ counting-tractable. Matrix-tree implemented (Bareiss)
+and cross-checked against brute force as the general counting-side
+escape engine; the determinant's two faces noted (tame as a
+statement, untameable as an algorithm — representations capture what
+it says, not what it can do). **Completed picture**: frame homes =
+width-style dynamic programming on both tasks; every known escape is
+linear algebra over the value structure (Gauss/closure on decision;
+bijectivity/matrix-tree/FKT on counting); the eigenframe theory is
+the complete complexity theory of representations for this logic,
+with its outside mapped and named, and the remaining mathematics
+beyond it is the rigidity wall itself.
+
+**And a canonical sentence form exists but cannot be cheap (0019 d).**
+The algebra does canonicalise — `<<` distributes over `^` and `&`, and
+`&` over `^`, so ANF is a genuine canonical form (verified). Cost is
+the obstacle, and 3-SAT settles it twice over: 3-CNF over disjoint
+triples has exactly 7^m ANF terms from 3m literals (7, 49, 343, 2401,
+16807 verified) while being *trivially satisfiable*, so canonicalising
+can be strictly harder than deciding; and the ANF of a formula is zero
+exactly when it is unsatisfiable, so canonicalising is coNP-hard, and
+any polynomial-time canonical form would give **P = NP**. Hence
+**canonical + compact + polynomial is unavailable**: ANF and the
+minimal automaton are canonical but not compact, sentences with hidden
+symbols are compact but not canonical. The intuition to invert:
+canonicalising does not *remove* 3-SAT's difficulty, it is *where the
+difficulty lives* — the hardness of SAT is exactly the cost of the
+change of basis. The eigenbasis analogy holds to the end: **the basis
+that diagonalises everything is also the basis that is expensive to
+reach.**
+
+**Clue inference itself is coNP-complete (0018).** Deciding "is this
+card in the envelope" from Clue-style knowledge is coNP-complete —
+membership by exhibiting a consistent deal, hardness by reduction from
+Hitting Set with *consistent* knowledge (the unseen refutation, "holds
+at least one of these three", is a hitting-set constraint in disguise;
+unit facts are easy). So exponential in the worst case *unless P = NP*
+— not unconditionally proven. **For a fixed deck, canonical K is
+exactly an OBDD in card order**, which gives: build-once/query-cheap
+(why the whole-grid survey is one sweep), order-sensitivity (measured:
+265–301 states for identical knowledge under shuffled card orders, all
+agreeing on 9106 deals; optimal ordering is NP-hard), and a
+self-contained worst-case argument — every update is polynomial in
+|K|, so K staying polynomial would put a coNP-hard problem in P.
+Both framings sit in the same class; they differ only in
+**amortisation** (sentence: a fresh decision per query; automaton:
+canonicalise per event, then all 84 grid cells from one sweep).
+Empirically Clue never reaches the blow-up: adversarial hitting-set
+knowledge (14 cards, 10 refutations) stayed under 95 states.
+
+**Compactness buys no cheaper inference (0017).** The exponential
+moves rather than vanishing: a formula with O(k) atoms (compose
+"triple it" k times) canonicalises to exactly 3ᵏ+1 states — measured.
+And that is the optimistic case: deciding sentences of this layer *is*
+the WS1S decision problem, which is **non-elementary** (Meyer,
+Stockmeyer); even its additive fragment needs doubly exponential time
+(Fischer–Rabin). So the automaton procedure is essentially optimal,
+not wasteful. The cost splits as: formula → canonical automaton,
+non-elementary; automaton ⊗ automaton → verdict, polynomial — which is
+exactly why the K-workflow is fast (canonicalise once per event on a
+small alternation-free formula, then answer every question by cheap
+containment). **Correction to 0015 recorded there:** over {^, &, 1}
+alone every expression is *bitwise*, and bitwise relations are already
+closed under conjunction *and* projection, so hidden channels buy
+nothing without the shift; credit for nonemptiness is joint (∃ *and*
+the shift).
 
 **Guarded multiplication, measured (0009):** the width-guarded family
 mult_k = {z = x·y ∧ y < 2^k} lives entirely inside the canonical layer —
@@ -183,6 +895,17 @@ refuter's card-choice policy is treated as uninformative. The original
 problem statement is met for the bounded case; this is the scaffold for
 extensions.
 
+**Thresholds and order (0011):** two conjectured limits refuted by
+construction. Fixed-threshold counting is regular via clamped counters
+(|h| ≥ k costs k+1 states with *no bound on the set*; nonemptiness is
+the k = 1 case; machine-checked equal to the flip of the union of
+below-threshold counts). Order x ≤ y is automatic with 2 canonical
+states and no bounds, and its wiring derivation (∃ gap: x + gap = y)
+collapses to the identical canonical form. The true boundary: coupling
+an unbounded set channel to its own cardinality channel, and comparing
+two unbounded cardinalities — unbounded (unclampable) counting, nothing
+else. Threshold clue events added to the solver.
+
 ## Next steps, in order of leverage
 
 1. **The level-crossing extension** (0009's path 1): a two-level system
@@ -193,10 +916,19 @@ extensions.
    whole of the exponentiation prize. Alternative if it stalls:
    sound-partial × after proving the two conservativity lemmas of
    0005 §2.
-2. **Finish the basis independence proofs** (0008): mutual independence
-   of ^ and & within {^, &, a, constants} — the Baur–Monk module route
-   for &, and the dual question for ^. The cleanest small theory
-   problem currently open.
+2. **Prove the Post-style completeness criterion** (0013/0014): the
+   two known proper fragments — permutation-invariant {&, constants}
+   and stable {<<, constants} — are not yet proved *maximal*. Proving
+   it would give "a set of ingredients generates the layer iff it
+   breaks stability and breaks permutation invariance", the exact
+   analogue of Post's criterion, and stated obstruction-first it is
+   presentation-independent. (The companion question from 0014 —
+   whether flip is always tradeable — is now answered yes, 0015.)
+   The size question is answered in 0016: definitions are polynomial,
+   evaluation is what costs. Follow-ons: is {&, ^, <<, 0, 1} a
+   *minimal* positive signature, and is the exponential
+   determinisation of run-encoded definitions intrinsic, given that
+   their hidden tracks are a one-hot partition?
 3. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
