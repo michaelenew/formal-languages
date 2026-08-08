@@ -152,6 +152,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/frame_flow_map.py` — fiber/survivor laws exact, ζ verified
   an involution, the one-hot multiplexer measured, the flow matrix
   with witnesses, the one-coordinate enumeration. Run directly.
+- `output/frame_grid_figure.py` / `output/frame_flow_grid.png` — the
+  full 7×7 eigen-frame flow grid rendered (verdict + law + witness
+  per cell; symmetry-derived and unmeasured cells marked).
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
