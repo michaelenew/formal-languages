@@ -27,8 +27,13 @@ Results verified below:
   ANF      x minterm     FREE
   dualANF  x minterm     FREE               (by complement symmetry)
 
-Headline: THE AUTOMATON IS THE UNIVERSAL SINK -- concentration in
-every other frame flows to it, and it forces nothing back.
+Headline: THE AUTOMATON IS THE UNIVERSAL SINK OF THESE FIVE FRAMES --
+concentration in every other frame flows to it, and it forces nothing
+back. (Scope note added after 0027: this uniqueness is relative to
+the flat frames listed above; admitting the taxonomy's other shared
+frame, the FDD, refutes uniqueness for the full taxonomy -- see
+sink_uniqueness_and_ceilings.py. Sink-ness belongs to the sharing
+move.)
 
 Run this file directly.
 """

@@ -10,14 +10,18 @@ PART A: IS THE AUTOMATON THE UNIQUE SINK?
 
   In the EXTENDED taxonomy admitting the shared Davio frame (the FDD:
   positive-Davio decomposition with sharing -- ANF's own shared
-  form): NO. Sharing is what makes sinks, and shared frames are
-  mutually incomparable, measured here in both directions:
-      windowed parity (separated order)  FDD small,  automaton big
-      majority                           automaton small, FDD big
-  (consistent with the known exponential BDD/FDD separations in the
-  decision-diagram literature). Sink-ness at the shared level exists
-  only for parameter PORTFOLIOS (a KFDD choice vector emulates either)
-  -- and best-parameter search is NP-hard, so no fixed frame is a sink.
+  form): NO. The flat frames' extremal witnesses flow to the FDD just
+  as to the automaton, and the shared frames separate in the killing
+  direction, measured here:
+      windowed parity (separated order)  FDD small,  automaton BIG
+  The reverse direction (automaton small, FDD big) did NOT materialise
+  on any counting family tried -- majority tracks the automaton -- and
+  is cited to the decision-diagram literature (exponential BDD/FDD
+  separations in both directions), recorded as the one unreproduced
+  gap. Sink-ness belongs to the SHARING MOVE, not to any fixed frame;
+  at the shared level it survives only for parameter PORTFOLIOS (a
+  KFDD choice vector emulates either side), and best-parameter search
+  is NP-hard.
 
 PART B: EXACT CEILINGS -- the collapse question, closed.
 
@@ -37,8 +41,9 @@ PART B: EXACT CEILINGS -- the collapse question, closed.
   left variable -- each cost exactly a factor of 2, verified.
 
   path law (minterm -> automaton), EXACT FORM: states at a cut =
-  distinct model prefixes (+1 for the zero subfunction when present).
-  Verified as an equality; clustering models collapses the rate from
+  distinct model SUFFIX-SETS (+1 for the zero subfunction when some
+  prefix is model-free). Verified as an equality; prefixes sharing a
+  suffix-set merge, and clustering models collapses the rate from
   ~n*models to ~n+models, verified.
 
   span law (Walsh -> automaton): the 2^d ceiling collapses exactly by
