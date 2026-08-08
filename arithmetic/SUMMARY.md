@@ -178,6 +178,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/polymorphism_frames.py` — the two tractable-class families,
   their polynomial deciders cross-checked, every frame measured at
   three sizes, the verdict. Run directly.
+- `exploration/0032_rank_floor_unconditional_bound.md` — the rank
+  floor theorem (one number floors the whole taxonomy), its honest
+  looseness on parity families, and the unconditional exponential
+  worst case for the fixed-basis portfolio (affine witness).
+- `output/rank_floor.py` — the floor verified against every measured
+  frame, the looseness table, the affine rank measurements across
+  orders. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -728,6 +735,38 @@ model-counting problem is polynomial.** Immediate tests: spanning
 trees (matrix-tree: counting poly — does a frame home exist?),
 planar perfect matchings (FKT), and the refutation direction (a
 frame-homed family with hard counting would kill it instantly).
+
+**The rank floor, and the unconditional worst case for the
+fixed-basis portfolio (0032).** The requested theorem — no
+worst-case subexponential eigen-representation algorithm on the
+parity (counting) side — delivered in its achievable form. **Rank
+floor theorem**: at any cut, every frame of the taxonomy has size ≥
+rank_GF(2) of the communication matrix (flat kinds: Kronecker basis
+elements are rank-1 across every cut; shared kinds: level families
+span the row space by the fiber laws' invertible transforms; lift
+kinds: rank_ℚ ≥ rank_GF(2)) — one number floors every kind,
+polarity, order, sharing and lift; verified at every cut of 100
+random statements against seven frames plus the moment diagram; pure
+linear algebra, no complexity assumptions. **Honest looseness**
+(first plan failed by measurement, recorded): GF(2) cut rank is the
+parity-communication measure — windowed parity rank 8 vs width 256,
+IS family rank 23 vs widths 384–3162 — so 0031's families stay
+certified per-frame, not by rank. **The floor bites on the affine
+family**: disjoint-coset rows make rank = distinct-row count ≈
+2^(n/2−c) at balanced cuts in every order probed (minima 8→16→128
+at n = 12/16/20), giving the **unconditional theorem: every
+fixed-basis frame — any kind, polarity, order, sharing, lift — is
+2^Ω(n) on the random affine family; the fixed-basis portfolio has no
+subexponential worst case for counting.** Sharpened: the family's
+count is easy (2^(n−d)) and only its GL member is small (33 states)
+— the parameter groups are load-bearing, exactly as the parity
+conjecture requires. **The remaining wall, named**: the
+full-portfolio (GL-inclusive) unconditional bound needs cut rank
+exponential under every linear change of variables — matrix-rigidity
+territory, open. Final ledger of the founding suspicion: counting
+task/fixed bases — TRUE unconditionally; counting task/full
+portfolio — open at the rigidity wall, empirically supported;
+decision task — FALSE (0031).
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
