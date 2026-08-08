@@ -162,6 +162,16 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/matrix_completion.py` — the negFDD frame, the trio law
   verified exact, the triad measured, the binary-address multiplexer
   measurements. Run directly.
+- `exploration/0030_subclass_escapes_and_frame_completeness.md` — the
+  subclass escape map, the one-coordinate completeness theorem (with
+  the machine-caught hybrid correction), the cure exhibits, the
+  proof-sketch audit.
+- `output/subclass_escapes.py` — the operator-monoid enumeration,
+  the affine and multiplication cures (*BMD implemented), the
+  subclass × frame measurements. Run directly.
+- `output/subclass_map_figure.py` / `output/subclass_escape_map.png`
+  — the subclass × frame map rendered (homes, escapes, canonical
+  algorithms).
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -635,6 +645,48 @@ unmeasured cells remain**; the residual opens are refinements: the
 best-frame Walsh → OBDD variant (the witness is order-curable), the
 ℤ-lift shared kinds (presumably a moment analogue of the zetas), and
 the non-product refutation surface of the finiteness conjecture.
+
+**The subclass escape map, and frame completeness (0030).** The
+matrix refined to the object the program actually needs — which
+*subclasses* escape which frame moves — plus the completeness
+evidence. **Completeness at one coordinate is now a machine theorem
+with a machine-caught correction**: over GF(2) all 16 operators
+enumerate to the three known eigenbases; over the counting lift the
+projective closure of the primitive-generated monoid has 11 elements
+and my "only four eigenbases" claim was false (cross-layer composites
+force hybrids like {x, 1−2x}); the repaired, stronger statement —
+**the eigenvector pool is finite and closed** ({1, x, 1−x, 1−2x}) —
+holds, giving ≤ 6 lift kinds (4 pure + 2 hybrids = the literature's
+HDD rows), with three isolated relative-completeness assumptions
+(product structure, primitive inventory, sharing-as-quotient) as the
+refutation surface. **The cure exhibits make the extended parameters
+mandatory**: a random affine system (d = n/2 parities) escapes all
+seven frames at 2^(n/2) simultaneously yet is poly-decidable — cured
+to 33 states by the GL(n,2) parameter (Gaussian elimination = that
+parameter's canonical algorithm); multiplication's middle bit grows
+exponentially in every bit-level frame measured while the word-level
+*BMD (implemented) is linear 28→34→40 (word arithmetic = the moment
+lift's canonical algorithm). Had the list been closed at seven,
+"escapes all frames ⇒ hard" would be refuted by these families; each
+lands in a conjectured kind instead. **The subclass × frame map**
+(measured, rendered): counting/symmetric → home = all three shared
+frames (sharing cures counting); sparse-model → minterm + OBDD;
+parity-spread → the ring side; selector → OBDD + negFDD + dual ANF
+(24 terms, the co-singleton structure); affine → GL-OBDD only; word
+arithmetic → *BMD only; generic → no home by counting but not
+succinct, hence not an instance. Every classical poly algorithm
+family met so far (DP, enumeration, cancellation, branching, Gauss,
+word arithmetic) IS some frame's canonicalisation — no known
+frameless poly algorithm for this class. **The proof-sketch audit**:
+Step 1 (finitely many frames) machine-supported relative to the
+three assumptions; Step 2 (portfolio optimality) is the load-bearing
+open step = the optimal-proof-system question (Krajíček–Pudlák);
+Step 3 (strict union) is a theorem at representation level but its
+witnesses are non-succinct — for succinct inputs it *is* the
+conclusion; Step 4 follows from 2 + succinct-3. The proven CSP
+dichotomy (Bulatov/Zhuk) is the exact shape of the target, proved
+through polymorphisms (0013's Pol–Inv), pointing at the
+polymorphism ↔ frame correspondence as Step 2's bridge.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
