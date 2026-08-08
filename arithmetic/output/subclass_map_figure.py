@@ -91,6 +91,21 @@ def build_rows() -> list[SubclassRow]:
              "negFDD": (ESCAPE, "488"), "GL-OBDD": dot,
              "*BMD": (HOME, "40")}),
         SubclassRow(
+            "median-closed (2-SAT)", "expander indep. sets, n = 16",
+            "implication closure — poly, NO home",
+            {"minterm": (ESCAPE, "1156"), "ANF": (ESCAPE, "10936"),
+             "dual ANF": (ESCAPE, "439"), "Walsh": (ESCAPE, "60103"),
+             "OBDD": (ESCAPE, "176"), "FDD": (ESCAPE, "589"),
+             "negFDD": (ESCAPE, "265"), "GL-OBDD": (ESCAPE, "probes ✗"),
+             "*BMD": (ESCAPE, "152↑")}),
+        SubclassRow(
+            "Horn (implications)", "bipartite implications, n = 16",
+            "unit propagation — poly, NO home",
+            {"minterm": (ESCAPE, "1230"), "ANF": (ESCAPE, "3357"),
+             "dual ANF": (ESCAPE, "2773"), "Walsh": (ESCAPE, "58017"),
+             "OBDD": (ESCAPE, "302"), "FDD": (ESCAPE, "1146"),
+             "negFDD": (ESCAPE, "381"), "GL-OBDD": dot, "*BMD": dot}),
+        SubclassRow(
             "generic", "random statement",
             "none — and not succinct",
             {name: (ESCAPE, "2^Ω(n)") for name in FRAME_COLUMNS})]
@@ -170,13 +185,21 @@ def render(output_path: str) -> None:
         axes.text(0.55, y, meaning, ha="left", va="center",
                   fontsize=8.2)
     axes.text(0.0, legend_top - 0.32 * 3 - 0.12,
-              "Numbers from subclass_escapes.py (0030) at the stated "
-              "n; red cells are families with measured exponential "
-              "growth or counting-bound scale.\n"
+              "Numbers from subclass_escapes.py (0030) and "
+              "polymorphism_frames.py (0031) at the stated n; red "
+              "cells are families with measured exponential growth "
+              "or counting-bound scale.\n"
               "The affine and word-arithmetic rows escape every "
               "fixed frame and land exactly in the two conjectured "
               "extension kinds — the reason the extended parameters "
               "are mandatory.\n"
+              "The median-closed and Horn rows are the DECISION-TASK "
+              "FALSIFIERS (0031): polynomial-time deducible by "
+              "formula-side closure, yet no frame home anywhere — "
+              "portfolio optimality is false for decision, and the "
+              "frame program re-scopes to deduction-with-counting "
+              "(their counting task IS #P-complete, matching the "
+              "blow-up).\n"
               "The generic row escapes everything by the counting "
               "bound but is not succinct: it cannot be posed as an "
               "input, so it witnesses nothing about hardness.",

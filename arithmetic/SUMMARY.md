@@ -171,7 +171,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   subclass × frame measurements. Run directly.
 - `output/subclass_map_figure.py` / `output/subclass_escape_map.png`
   — the subclass × frame map rendered (homes, escapes, canonical
-  algorithms).
+  algorithms; falsifier rows added after 0031).
+- `exploration/0031_decision_counting_split.md` — the impossibility:
+  portfolio optimality refuted for decision (median-closed and Horn
+  witnesses); the program re-scoped to deduction-with-counting.
+- `output/polymorphism_frames.py` — the two tractable-class families,
+  their polynomial deciders cross-checked, every frame measured at
+  three sizes, the verdict. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -687,6 +693,41 @@ conclusion; Step 4 follows from 2 + succinct-3. The proven CSP
 dichotomy (Bulatov/Zhuk) is the exact shape of the target, proved
 through polymorphisms (0013's Pol–Inv), pointing at the
 polymorphism ↔ frame correspondence as Step 2's bridge.
+
+**The decision/counting split — where the program stops, and what
+survives (0031).** The polymorphism test was run and it settled the
+load-bearing step. Two succinct families — independent sets of a
+cycle-plus-matching graph (median-closed, machine-checked; full
+deduction grid by implication closure, cross-checked against brute
+force) and a bipartite implication system (definite Horn,
+min-closed; grid by unit propagation) — have **no frame home**:
+every frame of the taxonomy grows by more than 2× per size step on
+both (measured at n = 12/16/20, asserted; e.g. independent sets at
+n = 20: minterm 5620, ANF 133508, Walsh 1000171, OBDD 384, FDD 3162,
+negFDD 869), parameter probes fail (best random order 101, best
+random GL map 304, moment 152, vs natural 66 at n = 12), every-order
+OBDD hardness is the expander cutwidth theorem (cited), and DNNF-
+and-below hardness is cited to the compilation-map literature — the
+escape is not curable by any known canonical class, linear or not.
+Yet both families' full deduction grids are polynomial via
+formula-side closure that compiles nothing. **Portfolio optimality
+is therefore FALSE for the decision task** — 0020's B1 break
+upgraded to a structural fact witnessed by two-thirds of the
+tractable Boolean CSP world; the P ≠ NP route through decision
+complexity is blocked, and this is the impossibility the pace was
+set to find. **What survives is exact**: the boundary is the
+counting line. Counting independent sets of cubic graphs is
+#P-complete (Greenhill), and any frame compilation yields model
+counts for free — so no frame could be small there without
+collapsing #P; the all-frames blow-up sits precisely on a real
+hardness boundary. The frame theory stands as a theory of
+DEDUCTION-WITH-COUNTING (the Clue solver's actual task since 0010:
+verdicts plus exact deal counts), with the surviving conjecture
+sharply posed: **a subclass has a polynomial frame home iff its
+model-counting problem is polynomial.** Immediate tests: spanning
+trees (matrix-tree: counting poly — does a frame home exist?),
+planar perfect matchings (FKT), and the refutation direction (a
+frame-homed family with hard counting would kill it instantly).
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
