@@ -99,7 +99,10 @@ loose any more; the argument the user asked to close is closed.
 
 - Flat → shared flow: proved (four exact laws; FDD side measured).
 - Shared-level incomparability: one direction measured, reverse
-  cited — the single remaining gap in this storyline.
+  cited — the single remaining gap in this storyline. **Closed in
+  0028**: the reverse witness (the one-hot multiplexer) is the zeta
+  image of windowed parity, derived and measured in
+  `output/frame_flow_map.py`.
 - Sink-ness relocated from a frame to an operation (sharing), with
   portfolio-only sink-ness above it, matching both the NP-hardness of
   frame search and the 0022 practice note (solvers are portfolios).

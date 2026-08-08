@@ -18,7 +18,9 @@ PART A: IS THE AUTOMATON THE UNIQUE SINK?
   on any counting family tried -- majority tracks the automaton -- and
   is cited to the decision-diagram literature (exponential BDD/FDD
   separations in both directions), recorded as the one unreproduced
-  gap. Sink-ness belongs to the SHARING MOVE, not to any fixed frame;
+  gap. (Gap closed in frame_flow_map.py: the reverse witness -- the
+  one-hot multiplexer -- is the zeta image of windowed parity,
+  derived by the involution and measured.) Sink-ness belongs to the SHARING MOVE, not to any fixed frame;
   at the shared level it survives only for parameter PORTFOLIOS (a
   KFDD choice vector emulates either side), and best-parameter search
   is NP-hard.
