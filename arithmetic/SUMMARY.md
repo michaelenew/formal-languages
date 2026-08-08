@@ -117,6 +117,12 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0022_stress_test_the_optimality_suspicion.md` — the
   suspicion steelmanned and broken: true of the canonicalisation
   task, false of inference; no eigenbasis, an uncertainty principle.
+- `exploration/0023_eigenbases_of_the_problem.md` — the QM upgrade
+  made literal: bases as operator eigenbases (verified), the
+  worst-case width split, and what forces the DFA.
+- `output/eigenbasis_structure.py` — restrictions diagonal in ANF,
+  translations diagonal in Walsh, noncommutation witness, the
+  concentration table, the worst-case table. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -360,6 +366,35 @@ concentration in the best basis, and basis-free difficulty is the
 complexity conjectures. The pursuable descendant: PC degree lower
 bounds for Clue-shaped systems, and characterising which statements
 are concentrated in which basis.
+
+**The eigenbasis picture, corrected and made literal (0023).** The
+uncertainty observation strengthens the eigenbasis analogy rather than
+defeating it: as in QM, there are multiple eigenbases, one per
+operator family, and their noncommutation is the uncertainty. Verified:
+the ring/ANF basis is the common eigenbasis of the RESTRICTION
+operators f(x) ↦ f(x&m) (eigenvalues 0/1); the Walsh/character basis
+— living over the counting layer's ℤ lift — is the common eigenbasis
+of the TRANSLATIONS f(x) ↦ f(x^a) (eigenvalues ±1, phases); the
+automaton is definitionally the canonical quotient of the SHIFT action
+(states = Brzozowski derivatives); restriction and translation do not
+commute (witnessed), so no common eigenbasis exists and concentration
+trades (measured table: every statement small somewhere, no basis
+small everywhere). **What forces the DFA**: the same theorem that
+forced << — the two forced decompositions sit exactly over the two
+proven-necessary generators ({&,^} ring → ANF via Stone; << → minimal
+automaton via Myhill–Nerode, a machine-free quotient definition), with
+initial-algebra/final-coalgebra duality as the structural seat and
+reading order as the automaton family's frame freedom (like coordinate
+choice for the position basis). Worst-case re-arm of 0022's critique:
+for 3-CNF, deciding (O(1.308ⁿ), PPSZ) provably beats canonicalising
+(≥ 7^(n/3) ≈ 1.913ⁿ, exact family) — worst case against worst case,
+both unconditional — while for unbounded width the "may as well
+canonicalise" claim is plausible under SETH: the truth is
+width-split. Eigen-frame criterion: canonical = eigen; CNF/3SAT/Sudoku
+lack uniqueness, hence are non-eigen frames of the same problem.
+Open: classify maximal commuting observable families over the
+generators (= classify eigenbases); which are convexity-compatible;
+quantitative uncertainty inequalities between basis concentrations.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
