@@ -293,8 +293,75 @@ def show_canonical_sentence_form() -> None:
   everything is also the basis that is expensive to reach.""")
 
 
+def show_where_clue_sits() -> None:
+    """Not a refutation of any worst-case claim -- a locator. Clue's
+    own constraints land in the ring form's worst regime."""
+    print()
+    print("=" * 70)
+    print("5  WHERE CLUE ITSELF SITS IN THE RING FORM")
+    print("=" * 70)
+    print("""
+  Mini-Clue, 6 cards, hands of 2 / 1 / 3, one envelope card per
+  category -- the a priori setup, BEFORE any event. 18 Boolean
+  variables (card i in hand h). Its canonical ring form:
+""")
+    card_count, hand_count = 6, 3
+    hand_sizes = [2, 1, 3]
+    categories = [(0, 1), (2, 3), (4, 5)]
+    variable_count = card_count * hand_count
+
+    def variable_index(card: int, hand: int) -> int:
+        return card * hand_count + hand
+
+    def is_consistent(assignment: int) -> bool:
+        holder: list[int] = []
+        for card in range(card_count):
+            held = [hand for hand in range(hand_count)
+                    if assignment >> variable_index(card, hand) & 1]
+            if len(held) != 1:
+                return False
+            holder.append(held[0])
+        for hand in range(hand_count):
+            if holder.count(hand) != hand_sizes[hand]:
+                return False
+        for low, high in categories:
+            if (holder[low] == 2) + (holder[high] == 2) != 1:
+                return False
+        return True
+
+    table = [1 if is_consistent(assignment) else 0
+             for assignment in range(1 << variable_count)]
+    deal_count = sum(table)
+    for bit_position in range(variable_count):
+        step = 1 << bit_position
+        for mask in range(1 << variable_count):
+            if mask & step:
+                table[mask] ^= table[mask ^ step]
+    monomials = [mask for mask, coefficient in enumerate(table)
+                 if coefficient]
+    degree = max(bin(mask).count('1') for mask in monomials)
+    assert deal_count == 24
+    print(f"      consistent deals          {deal_count:8d}")
+    print(f"      ANF terms                 {len(monomials):8d}")
+    print(f"      ANF degree                {degree:8d}   "
+          f"of {variable_count} variables")
+    print(f"      canonical automaton       {17:8d}   states "
+          f"(0007)")
+    print("""
+  So 24 deals cost 27,648 ring terms and 17 automaton states. This
+  refutes nothing -- one family says nothing about a worst case -- but
+  it locates the toy problem precisely: Clue's constraints are hand
+  SIZES, which are threshold functions, which are near-maximal degree
+  in the ring. And degree is exactly the quantity Polynomial Calculus
+  lower bounds are proved through (size >= 2^Omega((d-d0)^2/n),
+  Impagliazzo-Pudlak-Sgall). The theory predicts the measurement: the
+  ring form is at its worst on precisely the constraints this problem
+  is made of.""")
+
+
 def run_verification_suite() -> None:
     show_algebra_is_not_convention()
+    show_where_clue_sits()
     show_automaton_loses()
     show_expression_loses()
     show_verdict()

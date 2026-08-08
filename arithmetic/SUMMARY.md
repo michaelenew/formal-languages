@@ -111,6 +111,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0020_is_expand_and_cancel_optimal.md` — the four
   readings of worst-case optimality and their four statuses;
   expand-and-cancel as Polynomial Calculus.
+- `exploration/0021_where_the_shape_lives.md` — the optimality shape
+  is an algebraic-complexity question (IPS → VP ≠ VNP; degree lower
+  bounds as the tractable form), and where Clue itself sits.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -307,6 +310,24 @@ framework's clothes. Notable inversion: the one place an
 unconditional lower bound exists — the symbolic layer, non-elementary
 — is exactly where expand-and-cancel does not run at all, and where
 the automaton method is provably essentially optimal.
+
+**The optimality *shape* is an algebraic-complexity question (0021).**
+This framework is natively a polynomial ring, so "the ring's procedure
+is optimal" belongs to algebraic proof complexity, not Boolean: as
+Polynomial Calculus its lower bounds are proved *through degree*
+(size ≥ 2^Ω((d−d₀)²/n), Impagliazzo–Pudlák–Sgall) — a working method,
+not a conjecture; as the Ideal Proof System, superpolynomial lower
+bounds would imply **VP ≠ VNP** (Grochow–Pitassi), so the shape
+terminates at Valiant rather than Cook–Levin, with different barriers
+and real partial progress on restricted classes. Measured locator:
+mini-Clue's *a priori* knowledge (24 consistent deals, before any
+event) is **27,648 ANF terms at degree 15 of 18 variables** against
+**17 automaton states** — no refutation of any worst-case claim, but
+it places the toy problem in the ring form's worst regime, and for a
+predicted reason: hand sizes are threshold functions, which are
+near-maximal degree, and degree is exactly what PC bounds go through.
+Tractable next step if the shape is pursued: a **degree lower bound
+for Clue-shaped constraint systems**.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
