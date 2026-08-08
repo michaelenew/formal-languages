@@ -123,6 +123,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/eigenbasis_structure.py` — restrictions diagonal in ANF,
   translations diagonal in Walsh, noncommutation witness, the
   concentration table, the worst-case table. Run directly.
+- `exploration/0024_eigenbasis_classification.md` — the classification
+  closes: three measurements per coordinate, the decision-diagram
+  taxonomy, polarity frames, the Donoho–Stark theorem.
+- `output/eigenbasis_classification.py` — the one-coordinate
+  enumeration, unipotence of translations, polarity reconstruction and
+  the cure of the refutation event, the tight uncertainty inequality.
+  Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -395,6 +402,34 @@ lack uniqueness, hence are non-eigen frames of the same problem.
 Open: classify maximal commuting observable families over the
 generators (= classify eigenbases); which are convexity-compatible;
 quantitative uncertainty inequalities between basis concentrations.
+
+**The classification closes, and it already has a name (0024).** One
+coordinate is exhaustively enumerable: GF(2)² has exactly three bases
+— {1,x} (eigenbasis of substitute-to-0; positive Davio), {1,1^x}
+(substitute-to-1; negative Davio), {x,1^x} (multiply; Shannon) — and
+no fourth; translations are unipotent over GF(2) ((T_a+I)² = 0,
+verified), so the Walsh basis exists only over the counting layer's ℤ
+lift — the lift is forced, like complex numbers for spin. Products
+over coordinates + the sharing (quotient) move + order + lift generate
+exactly the **Kronecker decision-diagram taxonomy** of logic synthesis
+(PPRM/FPRM/OBDD/FDD/KFDD/*BMD): the automaton is Shannon-plus-sharing,
+ANF is Davio-flat, and the measured ANF-vs-automaton incomparability
+is an instance of the known OBDD/FDD exponential separations. All
+frames are canonical with terminating transforms, so **every frame is
+convex — convexity is a property of the taxonomy, not of a member**;
+best-frame search is itself NP-hard (known, both for order and
+polarity). Frames move blind spots without removing them: polarity is
+the translation orbit of ANF (FPRM(p) = ANF of f(x^p), verified), and
+it cures the refutation event exactly — 2ⁿ−1 terms at polarity 0,
+2^(n−|p|)+1 in between, **2 terms** at full complement — while parity
+stays ~n terms at every polarity; and by counting, almost every
+statement is exponential in every frame simultaneously. First exact
+uncertainty theorem in hand: Donoho–Stark for the minterm × Walsh
+pair, support(f)·support(Walsh f) ≥ 2ⁿ, verified and tight exactly on
+subspace indicators (the coherent states). Open next: the ANF ×
+automaton analogue (extremal families already measured), explicit
+everywhere-spread statements, and whether the affine (GL(n,2)) orbit
+adds genuinely new concentration classes.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
