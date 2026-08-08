@@ -114,6 +114,9 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0021_where_the_shape_lives.md` — the optimality shape
   is an algebraic-complexity question (IPS → VP ≠ VNP; degree lower
   bounds as the tractable form), and where Clue itself sits.
+- `exploration/0022_stress_test_the_optimality_suspicion.md` — the
+  suspicion steelmanned and broken: true of the canonicalisation
+  task, false of inference; no eigenbasis, an uncertainty principle.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -328,6 +331,35 @@ predicted reason: hand sizes are threshold functions, which are
 near-maximal degree, and degree is exactly what PC bounds go through.
 Tractable next step if the shape is pursued: a **degree lower bound
 for Clue-shaped constraint systems**.
+
+**The suspicion, stress-tested to a verdict (0022).** Steelman: for
+the *canonicalisation task* the tie between representation length and
+cost is a theorem — ANF size is semantic, so every ring-form-producing
+algorithm pays it, unconditionally; within the ring proof system the
+expansion is provably unavoidable (PC lower bounds); and the basis is
+forced (Stone). The irreparable breaks: (B1) sound-and-complete
+inference need not visit the ring form — at n = 48, where the ring
+form of "at least one of n" has ~2.8×10¹⁴ terms by the semantic bound,
+the automaton decided both entailment directions in 25 ms with 22 and
+50 states; (B2) the basis-swap repair dies symmetrically (windowed
+parity: w ring terms vs provably minimal 2^(w+1) states); (B3) no
+basis can ever be crowned — every canonical form system has
+exponential statements (counting), and different systems have
+different hard families; (B4) canonicalisation *overshoots* inference
+by a class gap — the top ANF coefficient equals the parity of the
+model count (verified), so producing the ring form solves
+Parity-P-complete parity-SAT while inference is only coNP
+(Valiant–Vazirani, Toda); (B5) what survives is basis-free (P ≠ NP /
+SETH) and thus not about the ring. Clue-native witness: divisibility
+by 3 is 3 automaton states at every width versus (2^(n+1)+1)/3 ring
+terms at degree n−1, measured to width 14. Replacement intuition:
+**no eigenbasis — an uncertainty principle** between the Reed–Muller
+(Möbius) transform and the sequential/positional factorisation;
+hardness is concentration-relative, instance difficulty is
+concentration in the best basis, and basis-free difficulty is the
+complexity conjectures. The pursuable descendant: PC degree lower
+bounds for Clue-shaped systems, and characterising which statements
+are concentrated in which basis.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
