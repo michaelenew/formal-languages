@@ -135,6 +135,11 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the one-way simulation that replace it.
 - `output/anf_automaton_tradeoff.py` — the four cells, the crossing
   law verified tight, frame sensitivity explained. Run directly.
+- `exploration/0026_taxonomy_relation_graph.md` — all ten frame pairs
+  classified; the automaton is the universal sink.
+- `output/taxonomy_relation_graph.py` — the three new ordered laws
+  (path, span, degree), the free pairs, the sink property. Run
+  directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -460,8 +465,39 @@ corollary: the K-workflow's automaton frame is safe against
 ring-sparse knowledge (upstream law) while the reverse choice would
 not have been safe against counting-shaped knowledge — which is
 exactly Clue's diet. Open: when the 2^straddle ceiling collapses;
-all-frames crossing hardness for a natural Clue statement; the
-taxonomy's full conjugate/ordered relation graph.
+all-frames crossing hardness for a natural Clue statement.
+
+**The relation graph, completed — the automaton is the universal sink
+(0026).** All ten pairs among {ANF, dualANF, minterm, Walsh, automaton}
+classified. One conjugate pair (minterm × Walsh, the Donoho–Stark
+axis). Six ordered edges, all pointing at the automaton or at the ring
+frames from Walsh: ANF → automaton and dualANF → automaton (2^crossing,
+0025 + complement symmetry — model count, Walsh support and automaton
+size are verified invariant under full complement, transferring every
+ANF edge to dualANF); **minterm → automaton at LINEAR rate**
+((n+1)(μ+1): one subfunction per model prefix per cut plus the zero
+subfunction — the cheapest edge in the graph); **Walsh → automaton at
+rate 2^d** where d = dim⟨Walsh support⟩ (the statement factors through
+a d-dimensional linear map; the automaton carries d running parities);
+**Walsh → ANF/dualANF at quasipolynomial rate n^{log σ}** via
+deg₂(f) ≤ log₂ σ — verified exhaustively over all 65,536 functions of
+4 variables (0/1-transform convention; the law lives on the zero
+coefficient where signed and plain spectra differ), with the
+n-dependence genuine (AND of two (n/2)-parities: σ = 4 fixed, ANF
+(n/2)² growing). Three free pairs: ANF × dualANF, ANF × minterm,
+dualANF × minterm — four cells measured, no law either way. Headline:
+**concentration in every frame flows to the automaton — linearly from
+the semantic frame, 2^crossing from the ring frames, 2^span from the
+spectral frame — and the automaton forces nothing back** (at-least-one
+at 25 states defeats ANF, minterm and Walsh simultaneously; the full
+monomial defeats dualANF and Walsh). The DFA's seat gets its final
+answer: not a peer across from sentences but downstream of everything —
+the unique frame with no exponential blind spot against any neighbour,
+which is why the K-workflow was robust against every statement family
+this thread produced. Residual geometry: a directed flow with one
+conjugate axis across it and a free triangle among
+{ANF, dualANF, minterm}. Conjectured: within the Kronecker taxonomy
+and its affine extension, the automaton is the unique sink.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
