@@ -159,7 +159,7 @@ iteration keeps the residual count flat, and `x << 3` costs a flat 9
 because it buffers exactly three bits. `x << |b|` has to buffer an
 unbounded number.
 
-and for the third, an exact lower bound rather than an extrapolation.
+For the last row, an exact lower bound rather than an extrapolation.
 Take the `2^k` prefixes carrying `b = 0`, `z = 0` and every pattern on
 `x`. Each has exactly one completion — put `k` ones on `b` next, which
 fixes the shift at `k`, and then `z` must replay that prefix's `x` bits.
@@ -251,7 +251,7 @@ the bridge can be used freely without ever producing a mixed term.
   the frame to reason in.
 - Nothing measured in 0034 changes.
 
-## 7. Open, unchanged from 0034 §8
+## 7. Open — refined by 0036
 
 Canonicity off the window. In sentence terms the question is now
 sharper: the set sort has a canonical form (ANF / minimal automaton) and

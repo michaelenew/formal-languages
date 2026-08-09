@@ -198,6 +198,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0035_counted_tier_in_sentence_form.md` — the same tier
   in the corpus's own sentence form; supersedes 0034 §5's presentation
   of the boundary.
+- `exploration/0036_canonicity_under_the_measure.md` — three senses of
+  canonical form; no canonical form unguarded; the intended Pareto
+  impossibility for the tier fails; canonical up to GL(d, ℤ).
+- `output/canonicity_under_the_measure.py` — the bit-length measure
+  table, the failed Pareto construction with the language's Nerode
+  index, and the unimodular register basis change with its singular
+  counterexample. Run directly.
 - `output/counted_sentence_form.py` — the three measure laws, the
   section from the count sort, the worked pair as sentences with the
   sort error raised where it is written, and the orthogonal growth of
@@ -948,10 +955,38 @@ inverts the layer's economics — in the layer hiding was cheap and
 negation was traded; at the counted tier negation is free and hiding is
 the dangerous move. Infinite Clue lands inside the guard because a Clue
 player counts the hands, and the hands are the named channels.
-Load-bearing open step: canonicity off the window (the Nerode
-congruence on configurations should be Presburger-definable via the
-product automaton's semilinear Parikh-indexed reachability — argued,
-not verified).
+**Canonicity, settled in three senses (0036).** *Some computable
+canonical form*: fails unguarded (a canonical form reached by
+terminating reduction IS a decision procedure, and the unguarded theory
+is undecidable — so none exists, unconditionally), holds for the tier
+(decidable equivalence plus an r.e. class gives "least equivalent
+representation", which the layer also has and which therefore
+distinguishes nothing). The rewrite-side diagnosis, separate and weaker:
+layer operators move bit-length by at most one, `{.}` moves it from L to
+2^L, so no measure certifying the layer's termination certifies its own.
+*Determined by the semantics*: the intended impossibility for the tier —
+a Pareto frontier between control states and registers — **does not
+exist**. `popcount ≡ 0 mod m` has presentations at (m states, 0
+registers) and (1 state, 1 register) with neither dominating, but the
+language is regular with Nerode index exactly m, so the second is simply
+not minimal; every buildable trade concerns a regular sub-part that the
+minimal automaton absorbs, and on the non-regular part the resources do
+not trade. What is true instead: **the register content is free exactly
+up to GL(d, ℤ)** — the two presentations of balance have register
+vectors related by [[1,0],[1,1]], det 1 (verified), while a singular
+matrix collapses a balanced and an unbalanced pair onto one vector. The
+register map is the abelian part of the transition monoid, so a change
+of register basis is an invertible integer matrix; **GL(d, ℤ) is the
+count sort's GL(n,2)**, and 0030 already showed that parameter
+mandatory. Structural reading: the layer's canonical form is
+coordinate-free because a finite residual set has no coordinates; the
+measure makes the residual set infinite, and an infinite state space
+must be coordinatised to be written down. **The measure costs
+coordinate-freedom, not canonicity.** Remaining open, now sharper:
+prove the GL(d, ℤ) statement in general (only the instance is checked);
+finite presentability of the Nerode quotient off the window; and whether
+the canonical form is reachable by rewriting rather than by
+construction-then-minimisation.
 
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and

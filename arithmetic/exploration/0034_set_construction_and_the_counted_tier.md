@@ -491,7 +491,8 @@ Classical, cited not reproduced:
 - The layer is exactly the automatic relations (Büchi–Bruyère), which is
   what upgrades "no DFA" to "not expressible".
 
-Argued but not verified — the load-bearing open step:
+Argued but not verified — the load-bearing open step (status refined
+in 0036, which settles the existence question and leaves this one):
 
 - **Canonicity off the window.** The Nerode congruence on configurations
   should be Presburger-definable and decidable: `(q,v) ~ (q',v')` iff
