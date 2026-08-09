@@ -192,6 +192,17 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   GF(2^n) construction, the full-rank-under-GL measurements, the
   matrix-tree cross-checks, the determinant's two faces. Run
   directly.
+- `exploration/0034_set_construction_and_the_counted_tier.md` — the
+  set-construction operator located: the game that forces it, the
+  unconditional wall, and the counted tier that carries it.
+- `output/level_crossing.py` — the interdefinability of `{.}` and
+  `|.|`, the corpus level-map correction, the unbounded Myhill-Nerode
+  index of the balance rule, and `CountedAutomaton` (deterministic
+  Parikh automaton) with Boolean closure, entailment, canonical form
+  and the machine-enforced hiding guard. Run directly.
+- `output/infinite_clue.py` — Infinite Clue defined and solved on the
+  counted tier, the clamp diagonal, and cross-validation against brute
+  force. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -810,6 +821,56 @@ the complete complexity theory of representations for this logic,
 with its outside mapped and named, and the remaining mathematics
 beyond it is the rigidity wall itself.
 
+**Set construction located, and the counted tier that carries it
+(0034).** The corpus's expected `{x} = 2^x` operator is the size
+operator: `y = 2^x iff |y| = 1 and |y-1| = x` (verified both
+directions). **Why the finite game never needed it**: boundedness is a
+complete escape — a known deck makes every hand size a constant, and a
+constant size is 0011's clamped counter. **The game that forces it**:
+*Infinite Clue* — categories by `i mod 3`, one envelope card per
+category, two balanced hands, the dealt cards an initial segment `[0,N)`
+whose length is not announced, and a spectator who learns only passes
+and refutations. Every axiom is automatic (2, 3, 9 states; `card+3` per
+move) except `|H1| = |H2|`, whose Myhill-Nerode index is the running
+count difference and grows without bound (measured `1,3,5,7,9,11,13`),
+so by Büchi-Bruyère it is not expressible in the layer in any
+presentation. **No clamp substitutes**: the best regular
+over-approximation at clamp `k` decides the game at scale `k` and loses
+it at scale `k+1` (measured diagonal), because the game's deduction is a
+bootstrap between the balance rule and the initial-segment rule that
+advances a counter each round. Measured payoff: five grid cells decided
+only with balance, cross-validated against brute force at three deck
+bounds, zero disagreements. **The wall, unconditional**: `{p} & X != 0`
+is Ackermann's BIT, and `(N, BIT)` is `(V_omega, in)`, bi-interpretable
+with `(N,+,x)` — so layer + `{.}` is undecidable and no convex syntax
+can carry it, strictly below 0001's ceiling (one binary relation, no
+arithmetic operator). **The guard is a scale rule**: a counter is
+bounded by the word length, a value is exponential in it, and the two
+scales are separated by exactly `E(x) = 2^x` — so counter-against-counter
+is free and counter-against-value *is* the level crossing. That single
+comparison is the whole difference, and it restates 0011's boundary
+("coupling an unbounded set channel to its own cardinality channel") in
+its own terms. **The tier**: `CountedAutomaton`, a deterministic Parikh
+automaton over the layer's bit columns; counters are monoid
+homomorphisms of the word hence padding-invariant; closed under `and`,
+`or` and **complement** (free because deterministic — the
+nondeterministic Parikh class has undecidable universality); entailment
+decidable; canonical form = the Nerode quotient of the configuration
+space, presentation-independent on the 0006 test (two unrelated
+presentations of balance, identical signatures). **The exclusion**: you
+may not count what you freely hide, enforced by measurement with a
+witness word, and *allowed* when the hidden channel is functionally
+determined (0008's uniquely-determined wire, now carrying a counter).
+The exclusion mirrors 0016's knowledge/hypothesis asymmetry exactly and
+inverts the layer's economics — in the layer hiding was cheap and
+negation was traded; at the counted tier negation is free and hiding is
+the dangerous move. Infinite Clue lands inside the guard because a Clue
+player counts the hands, and the hands are the named channels.
+Load-bearing open step: canonicity off the window (the Nerode
+congruence on configurations should be Presburger-definable via the
+product automaton's semilinear Parikh-indexed reachability — argued,
+not verified).
+
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
 `&` over `^`, so ANF is a genuine canonical form (verified). Cost is
@@ -908,15 +969,23 @@ else. Threshold clue events added to the solver.
 
 ## Next steps, in order of leverage
 
-1. **The level-crossing extension** (0009's path 1): a two-level system
-   — value-level automata and exponent-level automata joined only by
-   the {x} = 2^x map — to make unbounded pow2-multiplication and
-   genuine exponentiation statements convex per level. This is the
-   remaining half of the × prize (bounded factors are done) and the
-   whole of the exponentiation prize. Alternative if it stalls:
-   sound-partial × after proving the two conservativity lemmas of
-   0005 §2.
-2. **Prove the Post-style completeness criterion** (0013/0014): the
+1. **Close the counted tier's canonicity** (0034 §8): show the Nerode
+   congruence on configurations is Presburger-definable and decidable
+   via the product automaton's semilinear Parikh-indexed reachability.
+   That converts the tier from *decidable* to *convex* in this
+   workstream's sense, and it is the last step between 0034 and the
+   framework's own standard.
+2. **The level-crossing extension, upward** (0009's path 1): 0034 uses
+   the {x} = 2^x map only downward (sets counted into numbers), where
+   counters are the abelian shadow of the coarse level. Genuine
+   exponentiation statements need the coarse level to be a second
+   *automaton* rather than a counter vector — a pair of automata joined
+   by the level map, with 0034 §5's scale rule as the interface
+   discipline. This is the remaining half of the × prize (bounded
+   factors are done) and the whole of the exponentiation prize.
+   Alternative if it stalls: sound-partial × after proving the two
+   conservativity lemmas of 0005 §2.
+3. **Prove the Post-style completeness criterion** (0013/0014): the
    two known proper fragments — permutation-invariant {&, constants}
    and stable {<<, constants} — are not yet proved *maximal*. Proving
    it would give "a set of ingredients generates the layer iff it
@@ -929,15 +998,24 @@ else. Threshold clue events added to the solver.
    *minimal* positive signature, and is the exponential
    determinisation of run-encoded definitions intrinsic, given that
    their hidden tracks are a one-hot partition?
-3. **The closure principle** (0002): convexity preserved under bounded
+4. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
    automatic fragment (0006's "automata are the closed forms"), and
    0008's addition-as-one-hidden-wire as the worked exemplar.
-4. **ω-extension** for the infinite game: S1S/Büchi territory; the
+5. **ω-extension** for the infinite game: S1S/Büchi territory; the
    canonical object needs a design decision (minimal Büchi automata not
-   unique).
-5. **Variable-size counting**: 0007's sizes are constant-k (one witness
-   per card). "Hands of equal unknown size" needs Presburger-style
-   counting over the automatic layer; also investigate the observed
-   monotone shrinkage of K's canonical size under knowledge updates.
+   unique). After 0034 this is the only remaining piece of "infinite
+   Clue" untouched — unbounded decks are handled, genuinely infinite
+   plays are not.
+6. **Variable-size counting**: closed for equal-unknown-size hands by
+   0034's counted tier (Presburger on counters over the automatic
+   layer, which is what "hands of equal unknown size" needed). Still
+   open from 0007: the observed monotone shrinkage of K's canonical
+   size under knowledge updates.
+7. **Where the counted tier sits in the frame taxonomy** (0026–0033):
+   its state space is infinite and semilinear rather than a product
+   over coordinates, so it is the first natural object outside the
+   product structure over which 0028's finite-frame conjecture was
+   stated. Whether it refutes or merely extends that conjecture is
+   open.
