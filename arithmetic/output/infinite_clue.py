@@ -412,6 +412,42 @@ def clamp_study(scales: range, clamps: range, window: int) -> None:
           "no clamp.")
 
 
+def minimal_adequate_clamp(knowledge: DFA, cards: range, window: int,
+                           search_limit: int = 8) -> int | None:
+    """The smallest clamp whose verdicts match the counted tier's. The
+    clamp is a sound over-approximation, so it can only lose verdicts,
+    never invent them -- which is why 'unknown' and 'clamp too small'
+    are indistinguishable from inside."""
+    target = deduction_grid(knowledge, cards, True, window)
+    for clamp in range(search_limit + 1):
+        approximate = knowledge.intersected_with(
+            clamped_balance(clamp)).minimized()
+        if deduction_grid(approximate, cards, False, window) == target:
+            return clamp
+    return None
+
+
+def clamp_moves_with_every_event(window: int) -> None:
+    """The clamp is a property of the accumulated conjunction, not of the
+    balance axiom -- so it cannot be attached to the axiom, and the
+    K-workflow cannot maintain it incrementally. Same game, clues
+    arriving one at a time."""
+    script = scaled_script(4)
+    cards = range(0, 11)
+    print("    clues  control states  cells known  minimal clamp")
+    for prefix_length in range(2, len(script) + 1):
+        knowledge = layer_knowledge(script[:prefix_length])
+        target = deduction_grid(knowledge, cards, True, window)
+        known = sum(1 for cell in target.values() if cell != "unknown")
+        clamp = minimal_adequate_clamp(knowledge, cards, window)
+        print(f"    {prefix_length:>5d}  {knowledge.state_count:>14d}  "
+              f"{known:>11d}  {clamp:>13d}")
+    print("    the balance axiom is the same object in every row; the "
+          "clamp it needs is not.")
+    print("    the counted tier carries the same two counters "
+          "throughout, unchanged.")
+
+
 def cross_validate(deck_limit: int, cards: range, window: int) -> None:
     knowledge = layer_knowledge(SCRIPT, deck_limit=deck_limit)
     for balanced in (True, False):
@@ -482,6 +518,8 @@ def run_verification_suite() -> None:
     print("3. Why no clamped counter substitutes")
     print("=" * 70)
     clamp_study(range(1, 5), range(1, 5), window=windows[-1])
+    print()
+    clamp_moves_with_every_event(window=11)
 
     print()
     print("=" * 70)

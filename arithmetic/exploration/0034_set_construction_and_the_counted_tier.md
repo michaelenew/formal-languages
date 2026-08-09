@@ -82,6 +82,47 @@ initial-segment rule — cards `3..3+m` land in `H2`, so `|H2| ≥ m`, so
 `H1`. Each round of that loop advances a counter by one, so any fixed
 clamp is defeated by making the game one card bigger.
 
+**Nor does a moving or per-instance clamp.** Three readings of the
+repair, and each closes:
+
+- *A clamp that re-centres* — track the difference `|H1| − |H2|` and
+  clamp that instead. Already foreclosed: the residual measurement above
+  is precisely a measurement of the difference (its `2k+1` growth is the
+  count of reachable differences at depth `k`). Remembering a bounded
+  amount about the difference is exactly what fails.
+- *A clamp that grows with the input* — then it is not a DFA, it is a
+  counter, and that is not a rival proposal; it is this one.
+- *A clamp recomputed large enough per instance* — possible, and it
+  loses three things the framework requires. Measured on one game, with
+  clues arriving one at a time:
+
+```
+clues  control states  cells known  minimal adequate clamp
+    2               6           17                       0
+    3              10           21                       0
+    4              10           25                       1
+    5              14           33                       4
+```
+
+  (1) **The bound is not compositional and moves on every event.** The
+  balance axiom is literally the same object in all four rows; the clamp
+  it needs is a property of the accumulated conjunction, so it cannot be
+  attached to the axiom, and the K-workflow must recompute and rebuild
+  at each event rather than intersecting. The counted tier carries the
+  same two counters unchanged throughout.
+  (2) **`unknown` becomes indistinguishable from `clamp too small`.** A
+  clamp is a sound over-approximation — it can only lose verdicts, never
+  invent them — so clamping turns the system into a semi-decision
+  procedure for *known* with no stopping rule for *not known*. That is
+  the founding requirement of the framework, not a convenience: the
+  corpus asks for "I know this is true" or "I don't know that this is
+  true" as *reached* verdicts.
+  (3) **No canonical form.** The clamp depends on how the axiom is
+  written — the union presentation of §6 reaches twice the counter value
+  of the direct one on the same deals, so a clamp adequate for one is
+  inadequate for the other. The tier's configuration quotient gives the
+  two presentations identical signatures.
+
 **What it buys, on a worked script.** Public events: `H1` passes
 `{0,1,2}`, `H2` passes `{0,1,2}`, `H1` passes `{3,4,5}`, `H2` refutes
 `{3,4,5}`, `H2` passes `{6,7,8}`.
@@ -224,6 +265,18 @@ one. Every verdict asserted by either module is reported at two windows.
 The general procedure is Presburger satisfiability over the Parikh image
 of the underlying DFA (Verma–Seidl–Schwentick; Klaedtke–Rueß); it is
 cited, not implemented.
+
+**A window is not a clamp**, and the distinction is worth stating
+because the implementation uses one. A clamp changes the *object*:
+`clamped_balance(k)` is a different relation from balance — it admits
+unbalanced deals — so it is baked into whatever gets canonicalised. A
+window changes only the *search* for a witness, over an object that
+stays exact at every size. The failure directions are therefore
+opposite: a clamp loses verdicts (sound, incomplete), a window can
+invent them (complete, unsound if a witness lies past it). And they have
+different repairs — the window's is the canonicity step of §8, which
+computes the semilinear threshold and removes it; the clamp has none,
+because no clamp is the relation.
 
 ## 7. The exclusion: you may not count what you freely hide
 
