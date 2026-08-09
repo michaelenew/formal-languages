@@ -72,8 +72,9 @@ from itertools import product as cartesian_product
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from canonical_automata import (
-    DFA, relation_addition, relation_exclusive_or, relation_intersection,
-    relation_shift_fill_zero, relation_trailing_ones)
+    DFA, Variable, relation_addition, relation_exclusive_or,
+    relation_intersection, relation_shift_fill_zero,
+    relation_trailing_ones)
 
 
 ColumnKey = tuple[int, ...]
@@ -973,6 +974,72 @@ def verify_presentation_independence(window: int = 4) -> None:
           "see the presentation")
 
 
+def exponential_of_a_count() -> CountedAutomaton:
+    """y = 2^|x|, written entirely in primitives, with w = y - 1 kept
+    visible as an auxiliary channel:
+
+        w + 1 = y     set atom     (the 2-state carry automaton)
+        |y|   = 1     count atom   (counter against a constant)
+        |w|   = |x|   count atom   (counter against counter)
+
+    Every line is legal, so the whole thing is a deterministic Parikh
+    automaton. Its undecidable sibling replaces the last line's `|x|`
+    with `x`, and nothing else.
+    """
+    successor: DFA = (Variable("w") + 1).equals(Variable("y"))
+    return (CountedAutomaton.from_dfa(successor, channels=("x", "y", "w"))
+            & size_constraint("y", "=", 1, ("x", "w"))
+            & balance_statement("w", "x"))
+
+
+def verify_the_worked_pair(bound: int = 24, length: int = 7) -> None:
+    """The legal statement really denotes y = 2^|x|, and its one-token
+    variant really denotes y = 2^x, which is BIT."""
+    automaton = exponential_of_a_count()
+    disagreements = []
+    for value in range(bound):
+        for power in range(bound):
+            for lowered in range(bound):
+                expected = (lowered + 1 == power
+                            and popcount(power) == 1
+                            and popcount(lowered) == popcount(value))
+                observed = automaton.accepts(
+                    {"x": value, "y": power, "w": lowered}, length)
+                if expected != observed:
+                    disagreements.append((value, power, lowered))
+    assert not disagreements, disagreements[:5]
+    print(f"  legal:  w+1 = y, |y| = 1, |w| = |x|   ->  y = 2^|x|")
+    print(f"    {automaton.state_count} control states, counters "
+          f"{automaton.counted_channels}; exhaustively checked against "
+          f"the relation")
+    print(f"    for x, y, w < {bound}: no disagreements")
+
+    # the models really are the exponential of the count
+    models = {(value, power) for value in range(bound)
+              for power in range(1, bound)
+              if automaton.accepts({"x": value, "y": power,
+                                    "w": power - 1}, length)}
+    assert models == {(value, 1 << popcount(value))
+                      for value in range(bound)
+                      if (1 << popcount(value)) < bound}, sorted(models)[:6]
+    print(f"    model set is exactly {{(x, 2^|x|)}}")
+
+    # the one-token variant, which the class has no constructor for
+    illegal = {(value, 1 << value) for value in range(bound)
+               if (1 << value) < bound}
+    assert all(popcount(power) == 1 and popcount(power - 1) == value
+               for value, power in illegal)
+    print(f"  illegal: w+1 = y, |y| = 1, |w| =  x    ->  y = 2^x")
+    print(f"    same three atoms; `|x|` became `x`. Model set "
+          f"{sorted(illegal)[:4]}...,")
+    print("    which is the level map, hence BIT, hence full arithmetic "
+          "(part 1).")
+    print("    CountPredicate has no slot for a channel value, so the "
+          "class cannot")
+    print("    express it -- and by decidability of the class, no "
+          "combination can.")
+
+
 def verify_guard_is_enforced(window: int = 6) -> None:
     """Counting a channel and then hiding it is the move that leaves the
     tier, and the implementation refuses it by measurement, not decree."""
@@ -1040,6 +1107,8 @@ def run_verification_suite() -> None:
         verify_boolean_closure(window)
     print()
     verify_presentation_independence()
+    print()
+    verify_the_worked_pair()
     print()
     verify_guard_is_enforced()
 

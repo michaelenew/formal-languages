@@ -273,6 +273,46 @@ decidable class, not a heuristic that has to be re-checked against each
 new trick. If some combination of them expressed BIT, the class would be
 undecidable, contradicting the cited theorem.
 
+### 5b-bis. The pair, in primitives, one token apart
+
+Both statements use `|.|`. Both are three atoms over the channels
+`x, y, w`. They differ in one pair of bars.
+
+**Decidable** — `y = 2^|x|`:
+
+```
+w + 1 = y        set atom     the 2-state carry automaton
+|y|   = 1        count atom   counter against a constant
+|w|   = |x|      count atom   counter against counter
+```
+
+Built and run: 3 control states, three counters, checked exhaustively
+against the relation for `x, y, w < 24` with no disagreements, and its
+model set is exactly `{(x, 2^|x|)}`.
+
+**Undecidable** — `y = 2^x`:
+
+```
+w + 1 = y        set atom     unchanged
+|y|   = 1        count atom   unchanged
+|w|   =  x       ← count against a *value*
+```
+
+Model set `(0,1), (1,2), (2,4), (3,8), …` — the level map, hence BIT,
+hence full arithmetic by §4.
+
+The whole distance is `|x|` versus `x`, and the scale reading says why.
+A count is at most the word length `L`, so `2^count` fits in `L+1`
+positions and stays inside the word. A value runs up to `2^L`, so
+`2^value` needs `2^L` positions and leaves the word entirely. **The
+exponential of a count is free; the exponential of a value is Gödel.**
+
+Note also what is *not* the dividing line: `|y| = 1` compares a counter
+to a constant and is perfectly legal — so it is not "counts must never
+meet numbers", it is specifically that the number must not be a channel.
+And `w` is existentially hideable in both statements, because `w = y-1`
+pins it (§7); the projection guard is not what separates them either.
+
 ### 5c. Why those two clauses, in eigen-frame terms
 
 The complexity workstream already assigns each primitive an operator
