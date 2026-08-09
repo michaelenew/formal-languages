@@ -869,10 +869,25 @@ decidable, `2^x` (a set from a value) is BIT. Not forbidden, contrary to
 the obvious guesses: a *section* (`T(A) ^ A` vanishes on `2^k − 1`, the
 corpus's own canonical set of size k, so "the set of size c" is
 writable for c a count), constants (`|y| − 1` is legal — naming points
-is not naming the map), or hiding. Anything passing the sort check
-compiles to a deterministic Parikh automaton, which is decidable, so the
-check is a syntactic characterisation of a decidable class rather than a
-fence. **Why combining levels does not collapse**: union multiplies the
+is not naming the map), or hiding. **The boundary is on statements, not operators**, and `<<` is
+where that shows: `<<` is a layer generator (0008) and `{x} = 1 << x`,
+so the deciding feature is the *sort of the shift amount* — `x ^ (y<<3)`
+(constant) is in the layer, `y ^ (1 << |x|)` (count) is in the tier at 3
+control states and 3 registers, `y ^ (1 << x)` (value) is BIT, and
+`z ^ (x << |b|)` (count, but shifting a *set term*) is **outside both**.
+Same operator in all four; only the statements differ. Membership test,
+model-robust: a deterministic Parikh automaton with |Q| states and d
+registers moving by ≤1 per column has ≤ |Q|(k+1)^d configurations after
+k columns, so superpolynomial residual growth rules out every such
+automaton whatever registers it picks. Measured residuals `1,3,5,7,9` /
+`1,4,6,8,10` / `1,6,18,50`, and for the third an exact `2^k` lower bound
+by pairwise separation — shifting an arbitrary set by a count needs the
+shifted bits *buffered*, and a register counts, it does not buffer.
+`1 << |x|` escapes only because the shifted thing is the constant 1, so
+the sentence pins `y` by shape and offset and never replays bits.
+Anything passing the sort check is a *candidate*; being in the tier also
+requires that what must be remembered across a cut is a count and not a
+set. **Why combining levels does not collapse**: union multiplies the
 control automata and concatenates the registers, and the two grow
 orthogonally — measured, a set sentence moves the control column and
 never the register column, a count form over existing measures moves

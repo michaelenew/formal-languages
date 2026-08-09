@@ -112,6 +112,65 @@ deterministic Parikh automaton, and that class is decidable. The check
 is a syntactic characterisation of a decidable class, not a fence to be
 re-tested against each new trick.
 
+## 4b. The boundary is on statements, not operators — and `<<` is where it shows
+
+`<<` is the natural suspect: it is the operator that ties position to
+value, and the level map is literally `{x} = 1 << x`. But `<<` is a
+layer generator, proved necessary in 0008, and the layer is decidable —
+so no operator is the culprit. **The test is on statements**, and the
+deciding feature is the sort of the shift *amount*:
+
+| statement | shift amount | status |
+|---|---|---|
+| `x ^ (y << 3)` | a constant | in the layer (0008: `<<` is a generator) |
+| `y ^ (1 << \|x\|)` | a count | **in the tier** — 3 control states, 3 registers |
+| `z ^ (x << \|b\|)` | a count | **outside both** |
+| `y ^ (1 << x)` | a value | BIT, hence Gödel |
+
+Same operator in all four rows. Only the statements differ.
+
+The third row is the one that was not obvious, and it is the reason
+"shift by a count is fine" would have been an overclaim. **The
+membership test**: a deterministic Parikh automaton with `|Q|` control
+states and `d` registers, each moving by at most one per column, has at
+most `|Q|·(k+1)^d` configurations after `k` columns — polynomial in `k`.
+So superpolynomial residual growth rules out every such automaton,
+whatever registers it picks; the criterion needs no guess about the
+register set.
+
+Measured residuals by prefix length (probe depth equal to the maximum
+prefix, so each count is exact):
+
+```
+|A| - |B|                            1,  3,  5,  7,  9
+y ^ (1 << |x|)   shift the constant  1,  4,  6,  8, 10
+z ^ (x << |b|)   shift a set term    1,  6, 18, 50
+```
+
+and for the third, an exact lower bound rather than an extrapolation.
+Take the `2^k` prefixes carrying `b = 0`, `z = 0` and every pattern on
+`x`. Each has exactly one completion — put `k` ones on `b` next, which
+fixes the shift at `k`, and then `z` must replay that prefix's `x` bits.
+A completion built for one member fits no other, so all `2^k` are
+pairwise distinguishable and need distinct configurations:
+
+```
+prefix length     1     2     3     4     5     6
+configurations    2     4     8    16    32    64
+```
+
+`2^k` against a polynomial bound. **Shifting an arbitrary set by a count
+needs the shifted bits buffered, and a register counts — it does not
+buffer.** `1 << |x|` escapes only because the thing being shifted is the
+constant `1`, so there is nothing to buffer: the sentence pins `y` by
+its *shape* (`|y| − 1`, one bit set) and its *offset* (`|w| − |x|`),
+never by replaying bits.
+
+This is the sharpest form of the sort discipline. The count sort and the
+set sort are both ℕ; a register can hold a count and cannot hold a set;
+and a statement is in the tier exactly when what it must remember across
+a cut is a count and not a set.
+
 ## 5. Why combining the levels does not collapse
 
 The question this file was written to answer: `K` for Infinite Clue has

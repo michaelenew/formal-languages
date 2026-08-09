@@ -59,6 +59,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from itertools import product as cartesian_product
+
 from canonical_automata import Constant, Term, Variable
 from level_crossing import (CountedAutomaton, LinearConstraint,
                             popcount)
@@ -276,6 +278,122 @@ def verify_the_worked_pair(bound: int = 20, length: int = 7) -> None:
 
 
 # ---------------------------------------------------------------------
+# which shift amounts stay in the tier
+# ---------------------------------------------------------------------
+
+def nerode_classes_by_prefix_length(membership, channels: tuple[str, ...],
+                                    max_prefix_length: int,
+                                    suffix_length: int) -> list[int]:
+    """Distinct residuals among prefixes of each length.
+
+    The membership test for the tier: a deterministic Parikh automaton
+    with |Q| control states and d counters, each incremented by at most
+    one per column, has at most |Q|*(k+1)^d configurations after k
+    columns -- so its residual count is O(k^d), polynomial. **Residual
+    growth that is superpolynomial in the prefix length rules out every
+    such automaton**, whatever counters it chooses. The criterion does
+    not depend on guessing the counter set.
+    """
+    alphabet = list(cartesian_product((0, 1), repeat=len(channels)))
+    suffixes = list(cartesian_product(alphabet, repeat=suffix_length))
+
+    def values(word):
+        return {name: sum(column[index] << position
+                          for position, column in enumerate(word))
+                for index, name in enumerate(channels)}
+
+    growth = []
+    for prefix_length in range(max_prefix_length + 1):
+        signatures = set()
+        for prefix in cartesian_product(alphabet, repeat=prefix_length):
+            signatures.add(tuple(
+                membership(values(prefix + suffix),
+                           prefix_length + suffix_length)
+                for suffix in suffixes))
+        growth.append(len(signatures))
+    return growth
+
+
+def shift_by_count_forced_configurations(prefix_length: int) -> int:
+    """A machine-checked lower bound on the configurations any
+    deterministic Parikh automaton needs after `prefix_length` columns
+    of `z ^ (x << |b|)`.
+
+    The family: prefixes carrying `b = 0`, `z = 0`, and each of the
+    2^k patterns on `x`. Each has exactly one completion -- put `k`
+    ones on `b` next, which fixes the shift at `k`, and then `z` must
+    replay that prefix's `x` bits. A completion for one member fits no
+    other, so all 2^k are pairwise distinguishable and must sit in
+    distinct configurations.
+    """
+    width = 3 * prefix_length
+    distinguished = 0
+    for pattern in range(1 << prefix_length):
+        completion_shift = prefix_length
+        expected = pattern << completion_shift
+        # the completion built for `pattern` completes `pattern` ...
+        assert expected == (pattern << popcount(
+            ((1 << prefix_length) - 1) << prefix_length))
+        assert expected < (1 << width)
+        # ... and no other member of the family
+        assert not any(expected == (other << completion_shift)
+                       for other in range(1 << prefix_length)
+                       if other != pattern)
+        distinguished += 1
+    return distinguished
+
+
+def verify_the_shift_amount_is_the_boundary() -> None:
+    """`<<` is a layer generator and the layer is decidable, so no
+    operator is the culprit. The test is on statements, and two
+    statements over the same operators land on opposite sides."""
+    print("    residuals by prefix length (probe depth = max prefix, so "
+          "each count is exact)")
+    for label, membership, channels, depth in (
+            ("|A| - |B|                          ",
+             lambda v, w: popcount(v["A"]) == popcount(v["B"]),
+             ("A", "B"), 4),
+            ("y ^ (1 << |x|)   shift the constant",
+             lambda v, w: v["y"] == 1 << popcount(v["x"]),
+             ("x", "y"), 4),
+            ("z ^ (x << |b|)   shift a set term  ",
+             lambda v, w: v["z"] == v["x"] << popcount(v["b"]),
+             ("b", "x", "z"), 3)):
+        growth = nerode_classes_by_prefix_length(
+            membership, channels, depth, depth)
+        print(f"    {label}  "
+              + ", ".join(str(count) for count in growth))
+
+    print()
+    print("    forced configurations for  z ^ (x << |b|)  "
+          "(exact, by pairwise separation):")
+    forced = [(k, shift_by_count_forced_configurations(k))
+              for k in range(1, 7)]
+    print("      prefix length  " + "  ".join(f"{k:>4d}" for k, _ in forced))
+    print("      configurations " + "  ".join(f"{n:>4d}" for _, n in forced))
+    assert [n for _, n in forced] == [1 << k for k, _ in forced]
+    print("    2^k, so no deterministic Parikh automaton serves it: with "
+          "|Q| control")
+    print("    states and d registers moving by at most one per column, "
+          "there are at")
+    print("    most |Q|*(k+1)^d configurations after k columns, which is "
+          "polynomial.")
+    print("    Shifting an arbitrary set by a count needs the shifted "
+          "bits BUFFERED,")
+    print("    and a register counts -- it does not buffer.")
+    print()
+    print("    statement            shift amount    status")
+    print("    x ^ (y << 3)         a constant      in the layer "
+          "(0008: << is a generator)")
+    print("    y ^ (1 << |x|)       a count         in the tier "
+          "(3 control states, 3 registers)")
+    print("    z ^ (x << |b|)       a count         outside both, by "
+          "the bound above")
+    print("    y ^ (1 << x)         a value         BIT, hence Goedel")
+    print("    same operator in all four rows; the statements differ.")
+
+
+# ---------------------------------------------------------------------
 # why combining levels is safe
 # ---------------------------------------------------------------------
 
@@ -338,7 +456,13 @@ def run_verification_suite() -> None:
 
     print()
     print("=" * 70)
-    print("3. Why combining the levels is safe")
+    print("3. The membership test is on statements, not operators")
+    print("=" * 70)
+    verify_the_shift_amount_is_the_boundary()
+
+    print()
+    print("=" * 70)
+    print("4. Why combining the levels is safe")
     print("=" * 70)
     verify_levels_grow_orthogonally()
 
