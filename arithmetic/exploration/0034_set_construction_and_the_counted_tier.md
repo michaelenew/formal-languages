@@ -200,32 +200,122 @@ This is the reason 0005's "guarded convexity" frame was the right guess.
 It is also why the answer cannot be "add the operator and see" — the
 question is only ever *which restriction*.
 
-## 5. The guard is a scale rule
+## 5. The guard, stated on the primitives
 
-Where does the strength enter? Not from counting, and not from set
-construction as a syntactic shape. It enters at one comparison.
+### 5a. Every primitive of both levels
 
-A counter is bounded by the length of the word. A value is exponential
-in the length of the word. The two live at scales separated by exactly
-the level map `E(x) = 2^x`. Therefore:
+Measured, not asserted — each row is the automaton the workstream
+already built, in `canonical_automata.py`:
 
-- **counter against counter** — `|H1| = |H2|`, any Presburger condition
-  on the counters — costs nothing. The automaton carries the counters
-  alongside its control state and never has to reconcile scales.
-- **counter against value** — `|y-1| = x` for a channel `x` — is the
-  level crossing itself, and by §3 and §4 it is full arithmetic.
+| primitive | live states | counters | the state remembers |
+|---|---|---|---|
+| `z = x ^ y` | 1 | 0 | nothing (stateless) |
+| `z = x & y` | 1 | 0 | nothing (stateless) |
+| `z = x << 1` | 2 | 0 | the bit owed to `z` |
+| `z = x + y` | 2 | 0 | the carry |
+| `z = T(x)` | 2 | 0 | inside / outside the run |
+| **`c = \|x\|`** | **1** | **1** | nothing — the counter *is* the memory |
+| `\|A\| = \|B\|` | 1 | 2 | nothing — Presburger on the counters |
+| `{x} = 2^x` | — | — | **no automaton at either level** |
 
-That single comparison is the entire difference between a decidable tier
-and true arithmetic. It also explains 0011's boundary in its own terms:
-0011 found the true limit to be "coupling an unbounded set channel to
-its own cardinality channel", which is exactly counter-against-value.
+Every layer primitive is one or two live states with no counter. The
+counting level adds exactly one primitive, and what it adds is a
+**register**, not states. That is the whole enlargement.
 
-Read structurally: the framework has two levels, a fine level where sets
-live at unary scale and a coarse level where counts live at binary
-scale, and `{.}` is the interface. The convex system is the pair of
-levels with a one-way interface — sets may be counted downward; counts
-may not be turned back into sets upward. That is 0009's "level crossing"
-path, and the direction restriction is what makes it work.
+The last row is measured too, and it is a *different* failure from the
+balance rule. Nerode classes of `y = 2^x` truncated to width `w`:
+`5, 8, 11, 15, 20, 25, 31, 38` for `w = 2..9`, strictly increasing. Both
+the balance rule and the level map are outside the layer, but:
+
+- balance needs **count against count** — a counter supplies it;
+- the level map needs **position against value** — nothing below full
+  arithmetic supplies it.
+
+### 5b. The grammar, and the rule
+
+- **set terms**: channels, constants, closed under `^`, `&`, `<<`
+  (hence under everything automatic — `+`, `T`, and the rest).
+- **count terms**: `|t|` for a set term `t`; integer constants;
+  ℤ-linear combinations of those.
+- **set atoms**: any automatic relation among set terms.
+- **count atoms**: any Presburger relation among count terms.
+- **formulas**: Boolean combinations of atoms, and `∃` over set
+  channels — a *counted* channel may be hidden only when it is
+  functionally determined by the visible ones (§7).
+
+The boundary is two clauses, and it needs both:
+
+> **(i)** No set term is built by a non-automatic operation. In
+> particular `{.}` is not a term-former.
+> **(ii)** No atom mixes a set term with a count term.
+
+Neither implies the other, and each has its own witness:
+
+- Drop **(ii)**, keep (i): `|y-1| = x` is writable, which by §3 is
+  `y = 2^x`, which by §4 is BIT.
+- Drop **(i)**, keep (ii): `|x| = |{y} - {0}|` is writable. Both sides
+  are counts, so (ii) is satisfied — and `{y} - {0}` is `2^y - 1`, whose
+  size is `y`, so the statement *is* `|x| = y`. Same Gödel, through the
+  term rather than the comparison.
+
+The second witness is the reason the earlier one-clause phrasing of this
+section ("the single forbidden move is comparing a counter to a value")
+was wrong, and it is worth keeping visible: the fence has a gate in the
+terms as well as one in the atoms.
+
+**Why this is a fence and not a list of patched holes.** Anything
+obeying (i) and (ii) compiles to a deterministic Parikh automaton — set
+terms give the automatic control part, `|t|` a counter on a
+functionally-determined channel, count atoms the Presburger acceptance
+predicate, Boolean operations the closure of §6 — and that class is
+decidable. So the two clauses are a syntactic characterisation of a
+decidable class, not a heuristic that has to be re-checked against each
+new trick. If some combination of them expressed BIT, the class would be
+undecidable, contradicting the cited theorem.
+
+### 5c. Why those two clauses, in eigen-frame terms
+
+The complexity workstream already assigns each primitive an operator
+family and its eigen-frame (0023–0028):
+
+| primitive | operator family | frame |
+|---|---|---|
+| `&` | restrictions `f(x) ↦ f(x & m)` | ring / Davio |
+| `^` | translations `f(x) ↦ f(x ^ a)` | Walsh |
+| `<<` | the shift | automaton / sharing (Myhill–Nerode) |
+| **`\|.\|`** | **`S_n` permuting bit positions** | **counting / symmetric** |
+
+The last row is exact: the orbits of `S_n` on bitstrings are precisely
+the popcount levels (verified exhaustively at width 5), so popcount is
+the *complete* invariant of position permutation. And 0013/0014's
+obstruction table already named permutation invariance as one of the
+four things any generating set must break, with `<<` as its breaker. So
+the size operator is the invariant of exactly the symmetry `<<` exists
+to break — **the counting level is the other half of a split this
+workstream had already found, not a new direction**. 0030's measured row
+"counting/symmetric → home = all three shared frames" is the same fact
+from the frame side.
+
+That gives the cleanest reading of the two clauses. A deterministic
+Parikh automaton factors a statement into an **order-sensitive finite
+part** (the control state — the shift quotient) and an
+**order-invariant unbounded part** (the counter vector — the
+`S_n`-invariant coordinate). The factorisation exists only because those
+two coordinates are separate. And `{x} = 2^x` is precisely the map that
+turns a *value* into a *position*: it identifies the order-invariant
+coordinate with the order coordinate. Clause (ii) forbids identifying
+them in an atom; clause (i) forbids building the identification into a
+term. They are two ways to write the same collapse.
+
+Scale says the same thing in one line: a counter is bounded by the word
+length, a value is exponential in it, and `E(x) = 2^x` is exactly the
+map between those two scales. The convex system is the pair of levels
+with a one-way interface — sets may be counted downward, counts may not
+be turned back into sets upward. That is 0009's "level crossing" path,
+and the direction restriction is what makes it work. It also restates
+0011's boundary in its own terms: 0011 found the true limit to be
+"coupling an unbounded set channel to its own cardinality channel",
+which is the collapse both clauses exist to prevent.
 
 ## 6. The tier, implemented
 

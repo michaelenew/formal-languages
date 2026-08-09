@@ -22,14 +22,29 @@ Three facts, each machine-checked here:
    This sits strictly below 0001's ceiling: one binary relation, no
    arithmetic operator needed.
 
-3. **The guard is a scale rule, not a syntax restriction.**  A count is
-   bounded by the length of the word; a value is exponential in it. An
-   automaton may carry counters and compare them *to each other*
-   (Presburger on the counters) and never lose decidability. The single
-   forbidden move is comparing a counter to a *value* -- and that move
-   is exactly `|y-1| = x`, i.e. exactly {.}. The tier below the move is
-   implemented here as `CountedAutomaton`, a deterministic Parikh
-   automaton over the layer's own bit columns.
+3. **The guard is two clauses on the primitives, and it needs both.**
+   Set terms are built from `^`, `&`, `<<` (everything automatic);
+   count terms are `|t|` and integer combinations. Then: **(i)** no set
+   term is built by a non-automatic operation, so {.} is not a
+   term-former; **(ii)** no atom mixes a set term with a count term.
+   Each clause has its own escape if dropped -- `|y-1| = x` defeats (i)
+   alone, and `|x| = |{y} - {0}|` defeats (ii) alone, both landing on
+   the same BIT. Anything obeying both compiles to a deterministic
+   Parikh automaton, which is decidable, so the pair is a syntactic
+   characterisation of a decidable class rather than a fence to be
+   re-checked. `CountedAutomaton` below is that class, over the layer's
+   own bit columns.
+
+   In eigen-frame terms (0023-0028): `&` diagonalises restrictions,
+   `^` translations, `<<` the shift -- and `|.|` is the complete
+   invariant of the remaining family, `S_n` permuting bit positions
+   (verified). 0013/0014's obstruction table already named permutation
+   invariance as what `<<` exists to break, so the counting level is
+   that split's other half. A deterministic Parikh automaton factors a
+   statement into an order-sensitive finite part (the control state)
+   and an order-invariant unbounded part (the counters); {.} = 2^x is
+   the map that turns a value into a position, identifying the two
+   coordinates the factorisation keeps apart.
 
 `CountedAutomaton` is closed under intersection, union and complement
 (determinism makes complement free, which the nondeterministic Parikh
@@ -56,7 +71,9 @@ import sys
 from itertools import product as cartesian_product
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from canonical_automata import DFA
+from canonical_automata import (
+    DFA, relation_addition, relation_exclusive_or, relation_intersection,
+    relation_shift_fill_zero, relation_trailing_ones)
 
 
 ColumnKey = tuple[int, ...]
@@ -216,6 +233,82 @@ def verify_balance_is_not_automatic(max_prefix_length: int = 6) -> None:
     print("    residual bound, and the index here is the running "
           "difference of the")
     print("    two counts, which is unbounded by construction.")
+
+
+def _level_map_language(width: int) -> set[tuple[tuple[int, int], ...]]:
+    """{(x, y) : y = 2^x} as length-`width` words of columns (x-bit,
+    y-bit), least significant position first."""
+    words = set()
+    for exponent in range(width):
+        value, power = exponent, 1 << exponent
+        words.add(tuple(((value >> position) & 1,
+                         (power >> position) & 1)
+                        for position in range(width)))
+    return words
+
+
+def level_map_minimal_states(width: int) -> int:
+    """Minimal DFA size of the level map truncated to `width` positions,
+    by direct Nerode counting over all prefixes."""
+    language = _level_map_language(width)
+    classes = set()
+    for prefix_length in range(width + 1):
+        prefixes = {word[:prefix_length] for word in language}
+        prefixes |= {tuple(column) for column
+                     in cartesian_product(((0, 0), (0, 1), (1, 0), (1, 1)),
+                                          repeat=prefix_length)}
+        for prefix in prefixes:
+            classes.add(frozenset(
+                word[prefix_length:] for word in language
+                if word[:prefix_length] == prefix))
+    return len(classes)
+
+
+def verify_level_map_is_not_automatic(max_width: int = 9) -> None:
+    """The level map is outside the layer by the same kind of
+    measurement as the balance rule -- but for the opposite reason: it
+    compares a position to a value, not a count to a count."""
+    sizes = [(width, level_map_minimal_states(width))
+             for width in range(2, max_width + 1)]
+    shown = ", ".join(f"{width}:{size}" for width, size in sizes)
+    print(f"  y = 2^x truncated to width w    Nerode classes -- {shown}")
+    counts = [size for _, size in sizes]
+    assert all(later > earlier
+               for earlier, later in zip(counts, counts[1:])), counts
+    print("    strictly increasing, so the level map has no DFA either.")
+    print("    Different disease from the balance rule: balance needs "
+          "count against count,")
+    print("    which a counter supplies; the level map needs position "
+          "against value,")
+    print("    which nothing below full arithmetic supplies.")
+
+
+def verify_popcount_is_the_permutation_invariant(width: int = 5) -> None:
+    """Popcount is the complete invariant of the position-permuting
+    action -- the orbits of S_n on bitstrings are exactly the popcount
+    levels. This is why the size operator is the invariant of precisely
+    the symmetry that << exists to break (0013/0014's obstruction
+    table)."""
+    from itertools import permutations
+    orbits: dict[int, frozenset[int]] = {}
+    for value in range(1 << width):
+        bits = [(value >> position) & 1 for position in range(width)]
+        orbit = frozenset(
+            sum(bits[order[position]] << position
+                for position in range(width))
+            for order in permutations(range(width)))
+        orbits[value] = orbit
+    by_popcount: dict[int, set[int]] = {}
+    for value in range(1 << width):
+        by_popcount.setdefault(popcount(value), set()).add(value)
+    for value, orbit in orbits.items():
+        assert set(orbit) == by_popcount[popcount(value)], value
+    print(f"  S_n orbits on {width}-bit strings are exactly the "
+          f"{width + 1} popcount levels (exhaustive)")
+    print("    so |.| is the complete invariant of position "
+          "permutation, and << is")
+    print("    what 0013/0014 identified as the escape from that same "
+          "invariance.")
 
 
 # ---------------------------------------------------------------------
@@ -793,6 +886,55 @@ def balance_statement(left: str, right: str, relation: str = "=",
         LinearConstraint({left: 1, right: -1}, relation, offset))
 
 
+def size_primitive(channel: str, counter_name: str | None = None
+                   ) -> CountedAutomaton:
+    """The tier's one new primitive: c = |channel|. One control state,
+    one counter, incremented by the channel's bit at every column. The
+    counter is the register the layer does not have."""
+    del counter_name
+    return CountedAutomaton((channel,), (channel,), 1, 0,
+                            {(0, column): 0
+                             for column in columns_over((channel,))},
+                            [AlwaysTrue()])
+
+
+def primitive_table() -> None:
+    """Every primitive of both levels, with its automaton, measured."""
+    print("  primitive     live states  counters  the state remembers")
+    layer_rows = (
+        ("z = x ^ y ", relation_exclusive_or("x", "y", "z"),
+         "nothing (stateless)"),
+        ("z = x & y ", relation_intersection("x", "y", "z"),
+         "nothing (stateless)"),
+        ("z = x << 1", relation_shift_fill_zero("x", "z"),
+         "the bit owed to z"),
+        ("z = x + y ", relation_addition("x", "y", "z"), "the carry"),
+        ("z = T(x)  ", relation_trailing_ones("x", "z"),
+         "inside / outside the run"),
+    )
+    for label, automaton, remembers in layer_rows:
+        # the constructor's own count is the live one; completing for
+        # minimisation adds a single dead state to each.
+        assert automaton.minimized().state_count <= automaton.state_count + 1
+        print(f"  {label}  {automaton.state_count:>11d}  {0:>8d}  "
+              f"{remembers}")
+    counting = size_primitive("x")
+    print(f"  c = |x|     {counting.state_count:>11d}  "
+          f"{len(counting.counted_channels):>8d}  "
+          "nothing -- the counter is the memory")
+    balance = balance_statement("A", "B")
+    print(f"  |A| = |B|   {balance.state_count:>11d}  "
+          f"{len(balance.counted_channels):>8d}  "
+          "nothing -- Presburger on the counters")
+    print("  {x} = 2^x            no automaton at either level, "
+          "measured above")
+    print()
+    print("    every layer primitive is 1-2 live states with no "
+          "counter; the counting")
+    print("    level adds exactly one primitive, and it adds a register "
+          "rather than states.")
+
+
 def verify_boolean_closure(window: int = 4) -> None:
     balance = balance_statement("A", "B")
     assert not balance.is_empty(window)
@@ -879,10 +1021,20 @@ def run_verification_suite() -> None:
     print("2. What the layer cannot hold")
     print("=" * 70)
     verify_balance_is_not_automatic()
+    print()
+    verify_level_map_is_not_automatic()
+    print()
+    verify_popcount_is_the_permutation_invariant()
 
     print()
     print("=" * 70)
-    print("3. The counted tier")
+    print("3. The primitives of both levels")
+    print("=" * 70)
+    primitive_table()
+
+    print()
+    print("=" * 70)
+    print("4. The counted tier")
     print("=" * 70)
     for window in (3, 4):
         verify_boolean_closure(window)

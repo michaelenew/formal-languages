@@ -844,13 +844,35 @@ bounds, zero disagreements. **The wall, unconditional**: `{p} & X != 0`
 is Ackermann's BIT, and `(N, BIT)` is `(V_omega, in)`, bi-interpretable
 with `(N,+,x)` — so layer + `{.}` is undecidable and no convex syntax
 can carry it, strictly below 0001's ceiling (one binary relation, no
-arithmetic operator). **The guard is a scale rule**: a counter is
-bounded by the word length, a value is exponential in it, and the two
-scales are separated by exactly `E(x) = 2^x` — so counter-against-counter
-is free and counter-against-value *is* the level crossing. That single
-comparison is the whole difference, and it restates 0011's boundary
-("coupling an unbounded set channel to its own cardinality channel") in
-its own terms. **The tier**: `CountedAutomaton`, a deterministic Parikh
+arithmetic operator). **The guard is two clauses on the primitives, and it
+needs both**: set terms are the automatic terms (`^`, `&`, `<<` and
+their closure), count terms are `|t|` and integer combinations, and then
+(i) no set term is built by a non-automatic operation, so `{.}` is not a
+term-former, and (ii) no atom mixes a set term with a count term.
+Dropping (ii) admits `|y-1| = x`; dropping (i) admits
+`|x| = |{y} - {0}|`, which is the same statement written with counts on
+both sides — both land on BIT. Anything obeying both compiles to a
+deterministic Parikh automaton, which is decidable, so the pair is a
+syntactic characterisation of a decidable class rather than a fence. In
+eigen-frame terms the counting level is not new: `&` diagonalises
+restrictions, `^` translations, `<<` the shift, and `|.|` is the
+complete invariant of `S_n` permuting bit positions (orbits = popcount
+levels, verified) — the very invariance 0013/0014's obstruction table
+named `<<` as the escape from. A deterministic Parikh automaton factors
+a statement into an order-sensitive finite part (control state) and an
+order-invariant unbounded part (counters), and `{.} = 2^x` is exactly
+the map that turns a value into a position, identifying the two
+coordinates the factorisation keeps apart. Scale says it in one line: a
+counter is bounded by the word length, a value is exponential in it. The
+primitive table is measured — every layer primitive is 1–2 live states
+with no counter, `c = |x|` is 1 state with one counter (the counting
+level adds a register, not states), and `y = 2^x` has no automaton at
+either level (Nerode classes `5,8,11,15,20,25,31,38` at widths 2–9);
+balance fails the layer by needing count-against-count, which a counter
+supplies, while the level map fails it by needing position-against-value,
+which nothing below full arithmetic supplies. This restates 0011's
+boundary ("coupling an unbounded set channel to its own cardinality
+channel") in its own terms. **The tier**: `CountedAutomaton`, a deterministic Parikh
 automaton over the layer's bit columns; counters are monoid
 homomorphisms of the word hence padding-invariant; closed under `and`,
 `or` and **complement** (free because deterministic — the
