@@ -112,40 +112,52 @@ deterministic Parikh automaton, and that class is decidable. The check
 is a syntactic characterisation of a decidable class, not a fence to be
 re-tested against each new trick.
 
-## 4b. The boundary is on statements, not operators — and `<<` is where it shows
+## 4b. `<<` is unary, and the construct is *iteration*
 
-`<<` is the natural suspect: it is the operator that ties position to
-value, and the level map is literally `{x} = 1 << x`. But `<<` is a
-layer generator, proved necessary in 0008, and the layer is decidable —
-so no operator is the culprit. **The test is on statements**, and the
-deciding feature is the sort of the shift *amount*:
+`<<` is the natural suspect, since the level map is literally
+`{x} = 1 << x`. But `<<` is **unary**, as the corpus framed it: `x << 3`
+is three applications, a finite composition, and finite composition
+never leaves the layer. `<<` is also a proved-necessary layer generator
+(0008) and the layer is decidable, so no operator is the culprit.
 
-| statement | shift amount | status |
-|---|---|---|
-| `x ^ (y << 3)` | a constant | in the layer (0008: `<<` is a generator) |
-| `y ^ (1 << \|x\|)` | a count | **in the tier** — 3 control states, 3 registers |
-| `z ^ (x << \|b\|)` | a count | **outside both** |
-| `y ^ (1 << x)` | a value | BIT, hence Gödel |
+What leaves the layer is **iterating a unary operator a variable number
+of times** — the same construct 0002 met when a finite composition could
+not compute the successor, and answered there with the stabilizing
+series. Two independent features of the iteration decide where it lands:
 
-Same operator in all four rows. Only the statements differ.
+| statement | iterated | carried across a cut | status |
+|---|---|---|---|
+| `w ^ (x << 3)` | a constant | nothing | layer |
+| `y ^ (1 << \|x\|)` | a count | a count | **in the tier** |
+| `z ^ (x << \|b\|)` | a count | a **set** — the bits to place | **outside** |
+| `y ^ (1 << x)` | a value | — | closes to BIT |
 
-The third row is the one that was not obvious, and it is the reason
-"shift by a count is fine" would have been an overclaim. **The
-membership test**: a deterministic Parikh automaton with `|Q|` control
-states and `d` registers, each moving by at most one per column, has at
-most `|Q|·(k+1)^d` configurations after `k` columns — polynomial in `k`.
-So superpolynomial residual growth rules out every such automaton,
-whatever registers it picks; the criterion needs no guess about the
-register set.
+Same operator in all four rows.
+
+Row three is the one that was not obvious, and it is why "iterate by a
+count is fine" would have been an overclaim. **The membership test**: a
+deterministic Parikh automaton with `|Q|` control states and `d`
+registers, each moving by at most one per column, has at most
+`|Q|·(k+1)^d` configurations after `k` columns — polynomial in `k`. So
+superpolynomial residual growth rules out every such automaton, whatever
+registers it picks; the criterion needs no guess about the register set.
 
 Measured residuals by prefix length (probe depth equal to the maximum
 prefix, so each count is exact):
 
 ```
+z ^ (x ^ y)      << not used         1,  2,  2,  2
+w ^ (x << 1)     << applied once     1,  3,  3,  3,  3
+w ^ (x << 3)     << applied 3 times  1,  3,  5,  9,  9
 |A| - |B|                            1,  3,  5,  7,  9
 y ^ (1 << |x|)   shift the constant  1,  4,  6,  8, 10
 z ^ (x << |b|)   shift a set term    1,  6, 18, 50
 ```
+
+The first three rows are the point about unarity, measured: constant
+iteration keeps the residual count flat, and `x << 3` costs a flat 9
+because it buffers exactly three bits. `x << |b|` has to buffer an
+unbounded number.
 
 and for the third, an exact lower bound rather than an extrapolation.
 Take the `2^k` prefixes carrying `b = 0`, `z = 0` and every pattern on
@@ -170,6 +182,22 @@ This is the sharpest form of the sort discipline. The count sort and the
 set sort are both ℕ; a register can hold a count and cannot hold a set;
 and a statement is in the tier exactly when what it must remember across
 a cut is a count and not a set.
+
+**One caution, and it is why the last row above is phrased differently
+from the other three.** The residual test decides membership in the
+*tier*. It does not decide Gödel. Undecidability is a property of the
+**closed class**, not of any single statement's width — adding the level
+map to the layer and closing under the Boolean moves and projection is
+what yields full arithmetic (0034 §4). Concretely, `y = 2^x` truncated
+to width `w` has a *polynomial* minimal automaton (`5, 8, 11, 15, 20,
+25, 31, 38` at `w = 2..9`, measured in `level_crossing.py`), so a
+statement can be narrow and still generate an undecidable theory. Two
+different lines, and they must not be run together:
+
+- **in the tier / outside the tier** — a width question about one
+  statement, decided by the residual test;
+- **decidable / Gödel** — a closure question about a class, decided by
+  what the class contains and is closed under.
 
 ## 5. Why combining the levels does not collapse
 

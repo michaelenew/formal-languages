@@ -869,13 +869,16 @@ decidable, `2^x` (a set from a value) is BIT. Not forbidden, contrary to
 the obvious guesses: a *section* (`T(A) ^ A` vanishes on `2^k − 1`, the
 corpus's own canonical set of size k, so "the set of size c" is
 writable for c a count), constants (`|y| − 1` is legal — naming points
-is not naming the map), or hiding. **The boundary is on statements, not operators**, and `<<` is
-where that shows: `<<` is a layer generator (0008) and `{x} = 1 << x`,
-so the deciding feature is the *sort of the shift amount* — `x ^ (y<<3)`
-(constant) is in the layer, `y ^ (1 << |x|)` (count) is in the tier at 3
-control states and 3 registers, `y ^ (1 << x)` (value) is BIT, and
-`z ^ (x << |b|)` (count, but shifting a *set term*) is **outside both**.
-Same operator in all four; only the statements differ. Membership test,
+is not naming the map), or hiding. **The boundary is on statements, not operators.** `<<` is
+**unary**, so `x << 3` is a finite composition and never leaves; the
+construct that leaves is *iterating a unary operator a variable number
+of times* — 0002's situation, answered there by the stabilizing series.
+Two features of the iteration decide: what it is iterated by, and what
+it must carry across a cut. `w ^ (x<<3)` (constant / nothing) is layer;
+`y ^ (1 << |x|)` (count / a count) is in the tier at 3 control states
+and 3 registers; `z ^ (x << |b|)` (count / a **set**, the bits to place)
+is **outside both**; `y ^ (1 << x)` (value) closes to BIT. Same operator
+in all four; only the statements differ. Membership test,
 model-robust: a deterministic Parikh automaton with |Q| states and d
 registers moving by ≤1 per column has ≤ |Q|(k+1)^d configurations after
 k columns, so superpolynomial residual growth rules out every such
@@ -887,7 +890,24 @@ shifted bits *buffered*, and a register counts, it does not buffer.
 the sentence pins `y` by shape and offset and never replays bits.
 Anything passing the sort check is a *candidate*; being in the tier also
 requires that what must be remembered across a cut is a count and not a
-set. **Why combining levels does not collapse**: union multiplies the
+set. **Two lines, not to be run together**: in-the-tier / outside is a
+width question about one statement, decided by the residual test;
+decidable / Gödel is a closure question about a class. A statement can
+be narrow and still generate an undecidable theory — `y = 2^x` truncated
+to width w has a polynomial minimal automaton (5, 8, 11, 15, 20, 25, 31,
+38 at w = 2..9). **Correction to 0034 §5c**: it paired each primitive
+with "its" eigen-frame and slotted `|.|` in as a fourth; that table was
+not the taxonomy and is withdrawn. The eigen-frames are classified per
+coordinate (three GF(2) bases plus ≤6 lift kinds) times the parameters,
+`<<` names no frame (the automaton is Shannon *plus sharing*, and 0027
+put sink-ness in the sharing move), and the register is outside the
+taxonomy's scope rather than a frame it missed — the taxonomy classifies
+representations of a fixed-n function, and a register only means
+something over unbounded words, so 0028's finite-frame conjecture is
+untouched. What survives and is checked: popcount is the complete
+invariant of the S_n position action, `<<` is what 0013/0014 named as
+the escape from that invariance, and 0030 already homed
+counting/symmetric subclasses in the shared frames. **Why combining levels does not collapse**: union multiplies the
 control automata and concatenates the registers, and the two grow
 orthogonally — measured, a set sentence moves the control column and
 never the register column, a count form over existing measures moves

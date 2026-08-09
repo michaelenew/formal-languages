@@ -315,26 +315,43 @@ pins it (§7); the projection guard is not what separates them either.
 
 ### 5c. Why those two clauses, in eigen-frame terms
 
-The complexity workstream already assigns each primitive an operator
-family and its eigen-frame (0023–0028):
+**Correction to an earlier version of this section.** It carried a
+four-row table pairing each primitive with "its" eigen-frame, with
+`|.|` as a fourth peer. That table was not the taxonomy and is
+withdrawn. What 0023–0030 actually establish:
 
-| primitive | operator family | frame |
-|---|---|---|
-| `&` | restrictions `f(x) ↦ f(x & m)` | ring / Davio |
-| `^` | translations `f(x) ↦ f(x ^ a)` | Walsh |
-| `<<` | the shift | automaton / sharing (Myhill–Nerode) |
-| **`\|.\|`** | **`S_n` permuting bit positions** | **counting / symmetric** |
+- the eigen-frames are classified **per coordinate**, and over GF(2)
+  there are exactly three bases — `{1,x}` (positive Davio), `{1,1^x}`
+  (negative Davio), `{x,1^x}` (Shannon) — plus at most six lift kinds
+  (0024, 0030);
+- a **frame** is a product of those over coordinates, times the
+  parameters *order, polarity, GL(n,2), sharing, lift*;
+- `&` and `^` do carry genuine eigenbasis statements (ANF diagonalises
+  the restrictions, Walsh the translations, 0023), but `<<` does **not**
+  name a frame: the automaton is Shannon *plus sharing*, and 0027
+  explicitly located sink-ness in the sharing move rather than in any
+  fixed frame. So there is no one-primitive-one-frame correspondence to
+  extend, and `|.|` cannot be slotted into one.
 
-The last row is exact: the orbits of `S_n` on bitstrings are precisely
-the popcount levels (verified exhaustively at width 5), so popcount is
-the *complete* invariant of position permutation. And 0013/0014's
-obstruction table already named permutation invariance as one of the
-four things any generating set must break, with `<<` as its breaker. So
-the size operator is the invariant of exactly the symmetry `<<` exists
-to break — **the counting level is the other half of a split this
-workstream had already found, not a new direction**. 0030's measured row
-"counting/symmetric → home = all three shared frames" is the same fact
-from the frame side.
+What does survive, and is checked:
+
+- popcount is the **complete invariant of the `S_n` action** permuting
+  bit positions — the orbits are exactly the popcount levels, verified
+  exhaustively at width 5;
+- 0013/0014's obstruction table names permutation invariance as one of
+  the four things a generating set must break, with `<<` as its breaker,
+  so the size operator is the invariant of exactly the symmetry `<<`
+  exists to break;
+- 0030 already measured counting/symmetric subclasses as homed in the
+  three shared frames, so *symmetric functions* are inside the taxonomy
+  and need nothing new.
+
+The **register** is what is outside, and for a reason of scope rather
+than of classification: the taxonomy classifies canonical
+representations of a fixed-`n` Boolean function, and a register only
+means anything over unbounded words. That is why 0028's finite-frame
+conjecture is untouched by this file — the counted tier is not a
+candidate frame it failed to enumerate.
 
 That gives the cleanest reading of the two clauses. A deterministic
 Parikh automaton factors a statement into an **order-sensitive finite

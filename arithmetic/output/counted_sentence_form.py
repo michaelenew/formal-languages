@@ -350,6 +350,12 @@ def verify_the_shift_amount_is_the_boundary() -> None:
     print("    residuals by prefix length (probe depth = max prefix, so "
           "each count is exact)")
     for label, membership, channels, depth in (
+            ("z ^ (x ^ y)      << not used       ",
+             lambda v, w: v["z"] == (v["x"] ^ v["y"]), ("x", "y", "z"), 3),
+            ("w ^ (x << 1)     << applied once   ",
+             lambda v, w: v["w"] == (v["x"] << 1), ("x", "w"), 4),
+            ("w ^ (x << 3)     << applied 3 times",
+             lambda v, w: v["w"] == (v["x"] << 3), ("x", "w"), 4),
             ("|A| - |B|                          ",
              lambda v, w: popcount(v["A"]) == popcount(v["B"]),
              ("A", "B"), 4),
@@ -382,15 +388,33 @@ def verify_the_shift_amount_is_the_boundary() -> None:
           "bits BUFFERED,")
     print("    and a register counts -- it does not buffer.")
     print()
-    print("    statement            shift amount    status")
-    print("    x ^ (y << 3)         a constant      in the layer "
-          "(0008: << is a generator)")
-    print("    y ^ (1 << |x|)       a count         in the tier "
-          "(3 control states, 3 registers)")
-    print("    z ^ (x << |b|)       a count         outside both, by "
-          "the bound above")
-    print("    y ^ (1 << x)         a value         BIT, hence Goedel")
-    print("    same operator in all four rows; the statements differ.")
+    print("    << is UNARY. `x << 3` is three applications, a finite "
+          "composition, so it")
+    print("    keeps the residual count flat. What leaves the layer is "
+          "ITERATING it a")
+    print("    variable number of times, and two things about that "
+          "iteration matter:")
+    print()
+    rows = (("w ^ (x << 3)", "a constant", "nothing", "layer"),
+            ("y ^ (1 << |x|)", "a count", "a count", "in the tier"),
+            ("z ^ (x << |b|)", "a count", "a SET: the bits to place",
+             "outside"),
+            ("y ^ (1 << x)", "a value", "--", "closes to BIT"))
+    print(f"    {'statement':<16}{'iterated':<12}"
+          f"{'carried across a cut':<27}status")
+    for statement, iterated, carried, status in rows:
+        print(f"    {statement:<16}{iterated:<12}{carried:<27}{status}")
+    print()
+    print("    CAUTION, and it is the reason the last row is phrased "
+          "differently: the")
+    print("    residual test above decides membership in the TIER. It "
+          "does not decide")
+    print("    Goedel. Undecidability is a property of the CLOSED "
+          "class, not of one")
+    print("    statement's width -- adding the level map to the layer "
+          "and closing under")
+    print("    the Boolean moves and projection is what gives full "
+          "arithmetic (0034).")
 
 
 # ---------------------------------------------------------------------
