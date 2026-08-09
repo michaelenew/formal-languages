@@ -195,6 +195,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0034_set_construction_and_the_counted_tier.md` — the
   set-construction operator located: the game that forces it, the
   unconditional wall, and the counted tier that carries it.
+- `exploration/0035_counted_tier_in_sentence_form.md` — the same tier
+  in the corpus's own sentence form; supersedes 0034 §5's presentation
+  of the boundary.
+- `output/counted_sentence_form.py` — the three measure laws, the
+  section from the count sort, the worked pair as sentences with the
+  sort error raised where it is written, and the orthogonal growth of
+  the two levels under union. Run directly.
 - `output/level_crossing.py` — the interdefinability of `{.}` and
   `|.|`, the corpus level-map correction, the unbounded Myhill-Nerode
   index of the balance rule, and `CountedAutomaton` (deterministic
@@ -844,16 +851,34 @@ bounds, zero disagreements. **The wall, unconditional**: `{p} & X != 0`
 is Ackermann's BIT, and `(N, BIT)` is `(V_omega, in)`, bi-interpretable
 with `(N,+,x)` — so layer + `{.}` is undecidable and no convex syntax
 can carry it, strictly below 0001's ceiling (one binary relation, no
-arithmetic operator). **The guard is two clauses on the primitives, and it
-needs both**: set terms are the automatic terms (`^`, `&`, `<<` and
-their closure), count terms are `|t|` and integer combinations, and then
-(i) no set term is built by a non-automatic operation, so `{.}` is not a
-term-former, and (ii) no atom mixes a set term with a count term.
-Dropping (ii) admits `|y-1| = x`; dropping (i) admits
-`|x| = |{y} - {0}|`, which is the same statement written with counts on
-both sides — both land on BIT. Anything obeying both compiles to a
-deterministic Parikh automaton, which is decidable, so the pair is a
-syntactic characterisation of a decidable class rather than a fence. In
+arithmetic operator). **The guard is a sort discipline — restated in sentence form
+in 0035, which supersedes the presentation here**: two sorts, each with
+its own equality and its own zero. The set sort is the corpus's
+idempotent ring, equality `^`, a sentence asserts a term is the empty
+set, truth checker "the track reads all zeros". The count sort is ℤ, so
+equality is `−` not `^`, a sentence asserts a form is zero, truth
+checker "the register reads zero" — the same checker quantified over
+registers instead of positions. The only bridge is the measure, with
+three verified laws (the first two the corpus's own): `|A^B| + 2|A&B| =
+|A|+|B|`, `A&B = 0 ⟺ |A^B| = |A|+|B|`, and `|A<<1| = |A|`. So `|.|` is a
+measure, not a ring map, and it cannot see `<<` at all — which is the
+one-line form of "the measure is the complete invariant of position
+permutation". Both sorts are ℕ, and **undecidability is exactly the
+identification of the two copies**: `2^|x|` (a set from a count) is
+decidable, `2^x` (a set from a value) is BIT. Not forbidden, contrary to
+the obvious guesses: a *section* (`T(A) ^ A` vanishes on `2^k − 1`, the
+corpus's own canonical set of size k, so "the set of size c" is
+writable for c a count), constants (`|y| − 1` is legal — naming points
+is not naming the map), or hiding. Anything passing the sort check
+compiles to a deterministic Parikh automaton, which is decidable, so the
+check is a syntactic characterisation of a decidable class rather than a
+fence. **Why combining levels does not collapse**: union multiplies the
+control automata and concatenates the registers, and the two grow
+orthogonally — measured, a set sentence moves the control column and
+never the register column, a count form over existing measures moves
+neither, and measuring a new term costs one register plus the wire
+pinning it. Collapse would need a register to name a position; no
+sentence has such a term, so no union of sentences does. In
 eigen-frame terms the counting level is not new: `&` diagonalises
 restrictions, `^` translations, `<<` the shift, and `|.|` is the
 complete invariant of `S_n` permuting bit positions (orbits = popcount
