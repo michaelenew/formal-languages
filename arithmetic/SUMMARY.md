@@ -204,10 +204,16 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0037_pointwise_and_the_containment_test.md` — why
   `KH ^ H` stops collapsing at `<<`: the test loses completeness, not
   the rule set. Corrects 0035 §1's Presburger restriction.
-- `output/pointwise_and_the_containment_test.py` — the balance pair in
-  the corpus's discipline, pointwise completeness of the containment
-  test, the shift residual computed non-empty, and the position-indexed
-  reduction `H_i = K_(i-1)`. Run directly.
+- `output/pointwise_and_the_containment_test.py` — pointwise
+  completeness of the containment test, the shift residual computed
+  non-empty, the s-closure repair, and the width-proportional depth.
+  Run directly.
+- `exploration/0038_the_nonemptiness_primitive.md` — the infinite
+  closure's closed form is the nonemptiness indicator `N`; three rules,
+  terminating; the test becomes exact.
+- `output/nonemptiness_primitive.py` — the closed form verified, the
+  test exact in both directions, the s-graded ANF engine and the
+  two-step derivation, the termination measure. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1042,7 +1048,43 @@ set but fails linearity, so there is nothing to close under; `s` is a
 linear bijection of statements and stays inside the sentence algebra
 while `|.|` leaves the sort — the sentence-side form of the
 two-copies-of-ℕ line, and why `<<` needs only a closure rule while the
-measure needed a register. Completeness in general is unproven. **Correction recorded**: an
+measure needed a register. Completeness in general is unproven.
+
+**The infinite closure has a closed form, and it is one symbol (0038).**
+0037's unrolling does not have to be expanded in the original
+primitives. Reading a statement as a set of positions, the up-closure is
+every position at or above min(T) and the down-closure every position at
+or below max(T), so for non-empty T the two-way closure is **every
+position**: `C(T) = 0` if T is empty and the universe otherwise —
+verified for every `T < 2^10`. **The infinite union is the nonemptiness
+indicator `N`.** It is the primitive the workstream already named:
+0015/0016 concluded from the automaton side that what the framing lacked
+was the existential, nonemptiness, and here the same object arrives from
+the sentence side as the closed form of the shift closure. **It costs
+nothing** — 0011's "at least k" at k = 1 is 2 states, so N is already
+inside the layer and convexity is untouched. **The test becomes exact**:
+`H ^ H·N(K)` collapses exactly when K entails H, 0 unsound and 0
+incomplete on 3438 random satisfiable pairs — which also supplies the
+soundness check 0037 never ran at its width-proportional depths.
+**Rules**: `N(0) -> 0`, `N(1) -> 1`, `N(N a) -> N a`,
+`N(a|b) -> N(a)|N(b)`, `N(s a) -> N(a)` (s injective), and the
+cancellation `a & N(b) -> a` whenever `N(a)` and `N(b)` share a normal
+form — the side condition decided by putting the term in **s-graded ANF**
+and dividing out the largest power of `s`. 0037's worked example
+collapses in two steps, every intermediate checked semantically.
+**Termination** by term size counting shift degree, which the division
+rule consumes (200/200 strictly smaller, never larger) — a bound readable
+off the term, which the unrolling could not offer. **This corrects
+0037's headline**: it is not true that the sentence frame must unroll
+while the automaton is the finite form; N is the finite form on the
+sentence side. The two are two closed forms of the same series, and
+0019's measured incomparability applies to the pair as before. Open:
+completeness of `{N, ^, &, s, h, constants}` (yes on the sample, now for
+a structural reason); confluence, which is unchecked and which a
+canonical form also needs; the law for `N(h a)` (`h` kills a lone low
+bit, so `N(h a) != N(a)`); and `N(|a|) = N(a)`, the one law relating the
+two levels inside the sentence algebra, which may give the counted tier
+the sentence-side handle 0037 said it lacked. **Correction recorded**: an
 earlier version of 0037 concluded no rule set could repair the test; it
 reached that by reasoning about values of x where K is not empty, which
 the framing excludes — asserting K *is* the definition of the context.
