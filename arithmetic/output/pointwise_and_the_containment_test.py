@@ -281,6 +281,156 @@ def verify_the_shift_closure_rule(bound: int = 1 << 12) -> None:
     print("    automaton (0006, 0023).")
 
 
+def verify_closure_distributes_over_union(bound: int = 1 << 10) -> None:
+    """The theorem that makes closing-at-ingest a protocol rather than a
+    query-time trick: C(A | B) = C(A) | C(B), because s and h are both
+    ring homomorphisms and `|` is built from `^` and `&`. So recording
+    each new piece of information I as its own closure I' and updating
+    K := K | I' gives exactly the same knowledge as closing K at the
+    end."""
+    left = lambda x: x ^ 2
+    right = lambda x: (x & 5) ^ 1
+    depth = 3
+    closed_together = two_way_closure(
+        lambda x: join(left(x), right(x)), depth)
+    closed_apart = lambda x: join(two_way_closure(left, depth)(x),
+                                  two_way_closure(right, depth)(x))
+    assert all(closed_together(x) == closed_apart(x)
+               for x in range(bound))
+    print("  C(A | B) = C(A) | C(B)   verified for A := x ^ 2, "
+          f"B := (x & 5) ^ 1, x < {bound}")
+    print("    so closing each increment at ingest and closing the whole "
+          "K at query time")
+    print("    give the same object. The protocol is well defined: "
+          "I' := C(I), K := K | I'.")
+
+
+def verify_chaining(bound: int = 64) -> None:
+    """Transitivity through the closure: two increments, neither of
+    which mentions the conclusion."""
+    failures = []
+    for x in range(bound):
+        for y in range(bound):
+            first = x ^ 2                       # x = 2
+            second = y ^ shift(x)               # y = s(x)
+            def closed(value, depth=2):
+                total = rising = falling = value
+                for _ in range(depth):
+                    rising <<= 1
+                    falling >>= 1
+                    total = join(join(total, rising), falling)
+                return total
+            knowledge = join(closed(first), closed(second))
+            hypothesis = y ^ 4                  # y = 4
+            if hypothesis ^ (hypothesis & knowledge) != 0:
+                failures.append((x, y))
+    assert not failures, failures[:5]
+    print("  I1 := x ^ 2      I2 := y ^ s(x)      H := y ^ 4")
+    print(f"    H ^ H·(C(I1) | C(I2)) collapses for every x, y < {bound}")
+    print("    -- chaining works, because A ^ B is always inside A | B, "
+          "so equalities")
+    print("    compose without any transitivity rule of their own.")
+
+
+def verify_the_linearity_criterion(bound: int = 1 << 8) -> None:
+    """Which operators admit a statement-level closure rule at all."""
+    def trailing_ones(value: int) -> int:
+        return value & ~(value + 1)
+
+    print("  operator          f(0) = 0   f(a^b) = f(a)^f(b)   "
+          "closure rule?")
+    rows = [("s(x) = x << 1", lambda v: v << 1),
+            ("h(x) = x >> 1", lambda v: v >> 1),
+            ("x + 1", lambda v: v + 1),
+            ("x + 3", lambda v: v + 3),
+            ("T(x)", trailing_ones),
+            ("|x|", lambda v: bin(v).count("1"))]
+    for label, operation in rows:
+        linear = all(operation(a ^ b) == (operation(a) ^ operation(b))
+                     for a in range(bound) for b in range(bound))
+        zero = operation(0) == 0
+        print(f"  {label:<16}  {str(zero):<9}  {str(linear):<19}  "
+              f"{'yes' if (zero and linear) else 'no'}")
+    print("    A statement-level rule `from T infer f(T)` needs f to "
+          "carry the empty set")
+    print("    to itself AND to be ^-linear, so that f(u) ^ f(v) = "
+          "f(u ^ v) turns")
+    print("    congruence into a rule about whole statements. Only the "
+          "two shifts")
+    print("    qualify. The failure of `+` is exactly the carry -- "
+          "0002's founding wall.")
+
+
+def measure_required_depth(trials: int = 1200,
+                           seed: int = 20260810) -> None:
+    """How deep the closure has to go. This is the price."""
+    print("  width probed   smallest extra depth with no misses")
+    measurements = []
+    for bits in (6, 8, 10, 12):
+        bound = 1 << bits
+        for extra in range(0, 26):
+            generator = random.Random(seed)
+            clean = True
+            for _ in range(trials):
+                knowledge, _ = _random_arithmetic_statement(generator, 2)
+                hypothesis, depth = _random_arithmetic_statement(
+                    generator, 2)
+                models = [x for x in range(bound) if knowledge(x) == 0]
+                if not models:
+                    continue
+                if not all(hypothesis(x) == 0 for x in models):
+                    continue
+                closure = two_way_closure(knowledge, depth + extra)
+                if not all(
+                        (hypothesis(x) ^ (hypothesis(x) & closure(x))) == 0
+                        for x in range(bound)):
+                    clean = False
+                    break
+            if clean:
+                measurements.append((bits, extra))
+                print(f"  x < 2^{bits:<3}       {extra}")
+                break
+    # linear in the width with slope 1 -- the intercept is a detail of
+    # the sample, the slope is the finding.
+    steps = [(later_bits - earlier_bits, later - earlier)
+             for (earlier_bits, earlier), (later_bits, later)
+             in zip(measurements, measurements[1:])]
+    assert all(width_step == depth_step
+               for width_step, depth_step in steps), measurements
+    print("    one extra level of closure per extra bit of width, at "
+          "every width")
+    print("    measured. So the depth the closure needs")
+    print("    is PROPORTIONAL TO THE WIDTH, not a constant and not a "
+          "function of the")
+    print("    hypothesis alone: the closed K is an unrolling, and it "
+          "grows with the")
+    print("    problem. That is the price of staying in the sentence "
+          "frame -- and the")
+    print("    automaton is precisely the finite representation of this "
+          "unrolling.")
+
+
+def _random_arithmetic_statement(generator: random.Random, budget: int):
+    kind = generator.random()
+    if budget == 0 or kind < 0.30:
+        constant = generator.choice([1, 2, 3, 4, 6, 8])
+        return (lambda x, c=constant: x ^ c), 0
+    if kind < 0.45:
+        offset = generator.choice([1, 2, 3])
+        constant = generator.choice([1, 2, 3, 4, 5])
+        return (lambda x, o=offset, c=constant: (x + o) ^ c), 0
+    if kind < 0.62:
+        inner, depth = _random_arithmetic_statement(generator, budget - 1)
+        return (lambda x, f=inner: shift(f(x))), depth + 1
+    left, left_depth = _random_arithmetic_statement(generator, budget - 1)
+    right, right_depth = _random_arithmetic_statement(generator, budget - 1)
+    if kind < 0.82:
+        return ((lambda x, a=left, b=right: a(x) & b(x)),
+                max(left_depth, right_depth))
+    return ((lambda x, a=left, b=right: join(a(x), b(x))),
+            max(left_depth, right_depth))
+
+
 def probe_closure_completeness(trials: int = 3000, bound: int = 1 << 9,
                                seed: int = 20260810) -> None:
     """Is testing against the s-closure complete? Measured, not assumed."""
@@ -371,6 +521,22 @@ def run_verification_suite() -> None:
     print("4. Is the closure test complete? Measured")
     print("=" * 70)
     probe_closure_completeness()
+
+    print()
+    print("=" * 70)
+    print("5. Closing at ingest: the protocol")
+    print("=" * 70)
+    verify_closure_distributes_over_union()
+    print()
+    verify_chaining()
+
+    print()
+    print("=" * 70)
+    print("6. Which operators admit the rule, and what it costs")
+    print("=" * 70)
+    verify_the_linearity_criterion()
+    print()
+    measure_required_depth()
 
     print()
     print("=" * 70)

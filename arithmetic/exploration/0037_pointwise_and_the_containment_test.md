@@ -122,17 +122,87 @@ this sample**; general completeness is unproven, and the depth bound
 (`shift-depth of H`, plus a margin in the two-way case) is measured
 rather than derived.
 
-## 6. What this means for the measure
+## 6. Closing at ingest is a protocol, not a query-time trick
 
-`|.|` is not pointwise either, so §3 applies to it as well and the
-containment test against a bare `K` will miss entailments. The question
-0035/0036 should have been asking is whether `|.|` admits a closure rule
-of the same shape. It does not, in the same form: `s` is a bijection of
-statements up to the bottom bit, so closing under it and its inverse
-stays inside the sentence algebra, whereas `|.|` maps a statement to an
-object of a different sort. That asymmetry is the sentence-side version
-of the two-copies-of-ℕ line, and it is why the counted tier needed a
-register while `<<` needs only a closure rule.
+Record each new piece of information as its own closure and union it in:
+
+```
+I' := I | s(I) | s2(I) | ...  (and the h side)
+K  := K | I'
+```
+
+This is well defined because **the closure distributes over `|`**:
+
+```
+C(A | B) = C(A) | C(B)          verified for x < 1024
+```
+
+which holds because `s` and `h` are ring homomorphisms and `|` is built
+from `^` and `&`. So closing each increment as it arrives gives exactly
+the same object as closing the whole of `K` at query time — the protocol
+is consistent, and `K` never has to be reopened.
+
+**Chaining comes free.** With `I1 := x ^ 2` and `I2 := y ^ s(x)`, the
+hypothesis `H := y ^ 4` collapses against `C(I1) | C(I2)` for every
+`x, y < 64`. No transitivity rule is needed, because `A ^ B` is always
+inside `A | B` — equalities compose in the algebra itself.
+
+**Which operators admit the rule.** A statement-level rule
+`from T infer f(T)` needs `f` to carry the empty set to itself *and* to
+be `^`-linear, so that `f(u) ^ f(v) = f(u ^ v)` turns congruence into a
+statement about whole statements. Measured:
+
+| operator | `f(0) = 0` | `f(a^b) = f(a)^f(b)` | closure rule? |
+|---|---|---|---|
+| `s(x) = x << 1` | yes | yes | **yes** |
+| `h(x) = x >> 1` | yes | yes | **yes** |
+| `x + 1`, `x + 3` | no | no | no |
+| `T(x)` | yes | no | no |
+| `\|x\|` | yes | no | no |
+
+Only the two shifts qualify — and **the failure of `+` is exactly the
+carry**, 0002's founding wall, appearing here as the reason addition
+gets no closure rule of its own.
+
+## 6b. The price: the depth is proportional to the width
+
+`+` needs no rule of its own after all — the shift closure reaches
+`+`-entailments too, provided it goes deep enough. But "deep enough" is
+the whole story:
+
+```
+width probed   smallest extra depth with no misses
+x < 2^6         6
+x < 2^8         8
+x < 2^10       10
+x < 2^12       12
+```
+
+**One extra level of closure per extra bit of width.** So the depth is
+not a constant, and not a function of the hypothesis alone as §4
+suggested — it is proportional to the width of the problem. The closed
+`K` is an **unrolling**, and it grows with the problem.
+
+That is the honest cost of staying in the sentence frame, and it is also
+the cleanest statement of what the automaton is *for*: a finite
+representation of exactly this unrolling. 0006 said the automaton is the
+closed form of the stabilizing series; here the series is
+`K | s(K) | s²(K) | …`, the unrolling is width-proportional, and the
+automaton is what makes it finite. The two frames are not rivals — one is
+the closed form of the other.
+
+## 6c. What this means for the measure
+
+`|.|` is not pointwise either, so §3 applies to it as well. But it does
+not admit a closure rule at all: the table above shows it preserves the
+empty set and fails linearity, so `|u| ^ |v| ≠ |u ^ v|` and there is no
+statement-level rule to close under. `s` is a linear bijection of
+statements (up to the bottom bit), so closing under it and its inverse
+stays inside the sentence algebra; `|.|` leaves the sort entirely.
+
+That asymmetry is the sentence-side form of the two-copies-of-ℕ line, and
+it is why `<<` needs only a closure rule while the measure needed a
+register.
 
 ## 7. Open
 

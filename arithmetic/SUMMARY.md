@@ -1016,8 +1016,33 @@ was ever unsound, the upward closure missed 67 true entailments, and all
 67 are *downward* inferences (from `s(x) = 4` infer `x = 2`) needing the
 injectivity of `s`. The mirror rule *from K infer K >> 1* — the corpus's
 own `h`, here a closure rule rather than a term-former — closes every
-miss in the sample. Completeness in general is unproven and the two-way
-depth bound is measured, not derived. **Correction recorded**: an
+miss in the sample. **Closing at ingest is a protocol, not a query-time trick**: the closure
+distributes over `|` (`C(A|B) = C(A)|C(B)`, verified — `s` and `h` are
+ring homomorphisms and `|` is built from `^` and `&`), so recording each
+increment as `I' := C(I)` and updating `K := K | I'` gives exactly the
+same object as closing K at query time; K never has to be reopened.
+Chaining comes free — `A ^ B` is always inside `A | B`, so equalities
+compose with no transitivity rule (`x = 2`, `y = s(x)` ⊢ `y = 4`,
+verified). **Which operators admit such a rule**: `f` must carry the
+empty set to itself *and* be `^`-linear, so that `f(u)^f(v) = f(u^v)`
+turns congruence into a rule about whole statements. Measured, only the
+two shifts qualify; `+`, `T` and `|.|` all fail — and **the failure of
+`+` is exactly the carry**, 0002's founding wall. **The price**: `+`
+needs no rule of its own after all, since the shift closure reaches
+`+`-entailments given enough depth, but the depth required is
+**proportional to the width** — one extra level of closure per extra bit,
+measured at four widths (6/8/10/12). So the closed K is an *unrolling*
+that grows with the problem, which is the cleanest statement of what the
+automaton is for: 0006 called the automaton the closed form of the
+stabilizing series, and here the series is `K | s(K) | s²(K) | …`, the
+unrolling is width-proportional, and the automaton is what makes it
+finite. The two frames are not rivals — one is the closed form of the
+other. **And the measure gets no such rule**: `|.|` preserves the empty
+set but fails linearity, so there is nothing to close under; `s` is a
+linear bijection of statements and stays inside the sentence algebra
+while `|.|` leaves the sort — the sentence-side form of the
+two-copies-of-ℕ line, and why `<<` needs only a closure rule while the
+measure needed a register. Completeness in general is unproven. **Correction recorded**: an
 earlier version of 0037 concluded no rule set could repair the test; it
 reached that by reasoning about values of x where K is not empty, which
 the framing excludes — asserting K *is* the definition of the context.
