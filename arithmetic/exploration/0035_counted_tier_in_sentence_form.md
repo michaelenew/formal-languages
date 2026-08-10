@@ -15,7 +15,7 @@ redoes §5 of 0034 in that frame. Code: `output/counted_sentence_form.py`.
 |---|---|---|
 | terms | `^`, `&`, `<<`, `1` over symbols | integer forms over measures `\|t\|` |
 | structure | idempotent ring | ℤ, not idempotent |
-| **equality is** | **`^`** | **`−`** |
+| **equality is** | **`^`** | **`−`** (too narrow — see 0037 §6: `^` works too) |
 | a sentence asserts | the term is the empty set | the form is zero |
 | truth checker | the track reads all zeros | the register reads zero |
 | "both hold" | union, `S₁ ^ S₂ ^ S₁S₂` | a *system* — no single form does it |
@@ -26,10 +26,16 @@ but upstairs that quantifies over **positions** and downstairs over
 why the corpus's one-sided judgment survives intact: a sentence is true
 when nothing is left, in either sort.
 
-The `^` overloading in 0034 was the actual error. `^` is the set sort's
-equality. The count sort is ℤ, where `a ^ a = 0` is false and `a − a = 0`
-is the law. Writing `^` between counts, or `−` between sets, is not a
-notational slip — it is the sort violation itself.
+The `^` overloading in 0034 was the actual error — `=` was standing for
+two different equalities. **But the repair offered here was too narrow,
+and 0037 §6 corrects it**: counts are numbers and numbers are bitsets,
+so `a ^ b = 0` iff `a = b` downstairs as well, and `^` is a perfectly
+good equality in both sorts. More, the count level need not be
+restricted to ℤ-with-`+`: if it carries the layer's own signature
+`{^, &, <<, 1}` plus `+`, the tier stays decidable and Boolean-closed.
+**The count level is a second copy of the layer's language.** What is a
+sort violation is not an operator but a *term that mixes levels* — the
+rest of this file should be read with that substitution.
 
 A **counted sentence** is a pair `⟨ S ; C ⟩`: a set term asserted empty,
 and a list of integer forms asserted zero.

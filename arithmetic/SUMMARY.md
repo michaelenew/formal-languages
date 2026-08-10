@@ -201,6 +201,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `exploration/0036_canonicity_under_the_measure.md` — three senses of
   canonical form; no canonical form unguarded; the intended Pareto
   impossibility for the tier fails; canonical up to GL(d, ℤ).
+- `exploration/0037_pointwise_and_the_containment_test.md` — why
+  `KH ^ H` stops collapsing at `<<`: the test loses completeness, not
+  the rule set. Corrects 0035 §1's Presburger restriction.
+- `output/pointwise_and_the_containment_test.py` — the balance pair in
+  the corpus's discipline, pointwise completeness of the containment
+  test, the shift residual computed non-empty, and the position-indexed
+  reduction `H_i = K_(i-1)`. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -982,7 +989,45 @@ mandatory. Structural reading: the layer's canonical form is
 coordinate-free because a finite residual set has no coordinates; the
 measure makes the residual set infinite, and an infinite state space
 must be coordinatised to be written down. **The measure costs
-coordinate-freedom, not canonicity.** Remaining open, now sharper:
+coordinate-freedom, not canonicity.**
+
+**Why `KH ^ H` stops collapsing (0037).** The corpus's containment test
+is complete for `{^, &, 1}` for a real reason: every one of those
+operators is **pointwise**, so a counterexample squeezes into a one-point
+universe where entailment and containment are the same condition
+(machine-checked on 400 random terms). `<<` is the first non-pointwise
+operator — it carries position p to p+1, the one-point universe is not
+closed under it, and the argument dies. For `K = x ^ 2`, `H = s(x) ^ 4`:
+the entailment holds, the containment fails, and `KH ^ H` is `4, 4, 0,
+2, 8, …` — **not identically empty**. So the residual is not knowably
+empty and no rewrite rule can collapse it; a rule that did would be
+unsound. **The missing piece was never the rule set, it was the test**,
+and it was lost at exactly the first operator that moves information
+between positions — 0015/0016's "the framing lacked ∃" arriving from the
+rewrite side. What works instead is one line: index by position, where
+`K = ∅` is one equation per position and the shift relabels the index —
+then **`H_i = K_(i-1)` exactly** (verified as a polynomial identity), so
+H reduces to K shifted by one. Reverse-engineering the automaton's shift
+into ANF therefore yields an operation on the *indexed family* of
+equations, not an axiom inside a term; a finite description of such a
+family is an automaton, which is why 0023 found the DFA forced by the
+theorem that forced `<<`. The "templating" repair is unsound as stated
+(the residual is false at x = 0); its sound form is reduction modulo the
+ideal of the shift's position-indexed relations (`s_0`, `s_(i+1) ^ x_i`)
+— a Gröbner basis, and 0020 already identified expand-and-cancel as
+Polynomial Calculus over GF(2), the proof system for ideal membership.
+Those relations are finite per width and infinite over all widths, which
+is the precise reason no finite *position-free* rule set exists.
+**Correction to 0035 §1**: the count level's equality is `^` after all
+(counts are numbers, `a ^ b = 0` iff `a = b`), and the acceptance
+predicate need not be Presburger — if it is Büchi-arithmetic definable,
+i.e. the count level carries the layer's own signature, the tier stays
+decidable and Boolean-closed, since the achievable register vectors are
+semilinear hence Büchi-definable. So **the count level is a second copy
+of the layer's language, and the discipline is about *level*, not about
+which operators are available**.
+
+Remaining open, now sharper:
 prove the GL(d, ℤ) statement in general (only the instance is checked);
 finite presentability of the Nerode quotient off the window; and whether
 the canonical form is reachable by rewriting rather than by

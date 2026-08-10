@@ -101,8 +101,10 @@ The split is forced. What is *not* forced is the **basis** of the
 register space.
 
 0034 §6 found two unrelated presentations of the balance rule that reduce
-to identical canonical forms: `|A| = |B|`, and `|A^B| = 2|A|` under
-disjointness. Their register vectors are related by an integer matrix:
+to identical canonical forms. In the corpus's discipline (0037 §1) they
+are the terms `(|A| ^ |B|) | (A&B)` and `(|A^B| ^ s(|A|)) | (A&B)` —
+note that `2|A|` would read as `2 & |A|` under juxtaposition, so the
+doubling is `s(|A|)`. Their register vectors are related by an integer matrix:
 
 ```
 (|A|, |A^B|) = M (|A|, |B|),    M = [[1,0],[1,1]],    det M = 1
