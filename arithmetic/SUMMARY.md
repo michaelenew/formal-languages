@@ -991,33 +991,36 @@ measure makes the residual set infinite, and an infinite state space
 must be coordinatised to be written down. **The measure costs
 coordinate-freedom, not canonicity.**
 
-**Why `KH ^ H` stops collapsing (0037).** The corpus's containment test
-is complete for `{^, &, 1}` for a real reason: every one of those
-operators is **pointwise**, so a counterexample squeezes into a one-point
-universe where entailment and containment are the same condition
-(machine-checked on 400 random terms). `<<` is the first non-pointwise
-operator — it carries position p to p+1, the one-point universe is not
-closed under it, and the argument dies. For `K = x ^ 2`, `H = s(x) ^ 4`:
-the entailment holds, the containment fails, and `KH ^ H` is `4, 4, 0,
-2, 8, …` — **not identically empty**. So the residual is not knowably
-empty and no rewrite rule can collapse it; a rule that did would be
-unsound. **The missing piece was never the rule set, it was the test**,
-and it was lost at exactly the first operator that moves information
-between positions — 0015/0016's "the framing lacked ∃" arriving from the
-rewrite side. What works instead is one line: index by position, where
-`K = ∅` is one equation per position and the shift relabels the index —
-then **`H_i = K_(i-1)` exactly** (verified as a polynomial identity), so
-H reduces to K shifted by one. Reverse-engineering the automaton's shift
-into ANF therefore yields an operation on the *indexed family* of
-equations, not an axiom inside a term; a finite description of such a
-family is an automaton, which is why 0023 found the DFA forced by the
-theorem that forced `<<`. The "templating" repair is unsound as stated
-(the residual is false at x = 0); its sound form is reduction modulo the
-ideal of the shift's position-indexed relations (`s_0`, `s_(i+1) ^ x_i`)
-— a Gröbner basis, and 0020 already identified expand-and-cancel as
-Polynomial Calculus over GF(2), the proof system for ideal membership.
-Those relations are finite per width and infinite over all widths, which
-is the precise reason no finite *position-free* rule set exists.
+**Why `H ^ HK` stops collapsing at `<<`, and the rule that repairs it
+(0037).** The corpus's test is complete for `{^, &, 1}` for a real
+reason: every one of those operators is **pointwise**, so a failure of
+containment squeezes into a one-point universe where entailment and
+containment are the same condition (machine-checked on 400 random
+terms). `<<` carries position p to p+1, the squeeze dies, and with
+`K := x ^ 2`, `H := s(x) ^ 4` the residual `H ^ HK` does not reduce to 0.
+**The repair is one rule, and it acts on statements rather than terms**:
+*from K infer s(K)*, sound because `s` carries the empty set to itself.
+It closes the example on contact — `s(x ^ 2)` pushes down to `s(x) ^ 4`,
+which IS `H`, so `H ^ H·s(K)` is 0 with no new term machinery. The
+knowledge in force is K's **s-closure** `K | s(K) | ss(K) | …`, and the
+depth needed is the **shift-depth of the hypothesis**, read off H — so
+the search is bounded a priori, which is the corpus's own termination
+requirement. The closure is an infinite union, and a finite
+representation of an infinite union closed under the shift is an
+automaton: this is the sentence-side derivation of 0006's "the automaton
+is the closed form of the stabilizing series" and of 0023's "what forces
+the DFA". The templating instinct was right; what gets injected is the
+*shifted knowledge*, not the residual. **Sound but not complete, and the
+gap is the inverse**: on 2424 random satisfiable K/H pairs neither test
+was ever unsound, the upward closure missed 67 true entailments, and all
+67 are *downward* inferences (from `s(x) = 4` infer `x = 2`) needing the
+injectivity of `s`. The mirror rule *from K infer K >> 1* — the corpus's
+own `h`, here a closure rule rather than a term-former — closes every
+miss in the sample. Completeness in general is unproven and the two-way
+depth bound is measured, not derived. **Correction recorded**: an
+earlier version of 0037 concluded no rule set could repair the test; it
+reached that by reasoning about values of x where K is not empty, which
+the framing excludes — asserting K *is* the definition of the context.
 **Correction to 0035 §1**: the count level's equality is `^` after all
 (counts are numbers, `a ^ b = 0` iff `a = b`), and the acceptance
 predicate need not be Presburger — if it is Büchi-arithmetic definable,
