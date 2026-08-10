@@ -220,6 +220,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/tiles_and_the_n_layer.py` — the identity family measured, the
   tile-wise closure, the semantic/symbolic split, and the realisable
   N-vectors. Run directly.
+- `exploration/0040_tiles_are_windows.md` — the tiles are the windows
+  of the bit string, the single N-law is far from sufficient, and the
+  realisable set is the de Bruijn walk-sets: the N-layer IS the
+  automaton.
+- `output/tiles_are_windows.py` — tiles-are-windows verified, the law's
+  insufficiency counted, and the de Bruijn characterisation checked
+  exact. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1116,6 +1123,46 @@ the symbol count; and the N-laws of the other operators — `N(h x) ≠
 N(x)` since `h` kills a lone low bit, while `|.|` fails 0037's linearity
 criterion yet satisfies `N(|a|) = N(a)` exactly, so that criterion does
 not govern this layer.
+
+**The tiles are windows, and the N-layer is the automaton (0040).**
+0039's first open question, chased and settled negatively. Over the
+symbols `{x, s(x), …, s^(n-1)(x)}` the tile of polarity p is non-empty
+**exactly when p occurs as a length-n window of x's bit string**
+(verified n = 2, 3, 4) — because bit i of `s^k(x)` is bit i−k of x, so
+fixing every polarity at a position fixes the window ending there. A
+tile is therefore not an arbitrary Venn region but the assertion that a
+bit pattern appears somewhere in x. Consequently the single law
+`N(s^k x) = N(s^(k+1) x)` is **sound but nowhere near sufficient**:
+realisable vectors number 3, 11, 57 at n = 2, 3, 4 against 12, 220,
+64596 satisfying the law (of 2^(2^n) = 16, 256, 65536). What does
+characterise the realisable set is the **de Bruijn condition** —
+consecutive windows overlap in n−1 symbols, so the occurring windows are
+exactly the vertices of a sliding-window walk (free bits while reading
+x, then forced zeros above its top bit), and realisable = walk-vertex-
+sets exactly at every n measured. **So the tiles are de Bruijn states,
+the realisable set is the set of runs, and "which tiles are non-empty"
+is "which states the run visits".** The tile decomposition does not
+replace the automaton frame — it reconstructs it, at the same 2^n cost,
+from the sentence side. That also settles 0039's second question: the
+pair (tile support, realisable set) is canonical exactly insofar as the
+automaton is, because it *is* the automaton's run structure. And it
+revises 0038: the two frames are not independent closed forms of one
+series but one object, with 0019's incomparability being about how
+compactly a statement is *written* in each, not about what they are.
+**The chain, end to end**: the containment test is complete exactly on
+the pointwise fragment (0037); `<<` is not pointwise so knowledge must
+be closed under it, and the closure is an infinite union (0037) whose
+closed form is `N` (0038); the closure distributes over tiles, and over
+shift-generated symbols the tiles are the windows of the bit string
+(0039, 0040) — so the closed knowledge is the run structure of the
+sliding-window automaton, and the sentence frame reaches the automaton
+by its own road. Open: whether "tiles are windows" survives other
+operators (`{x, x+1}` and `{x, T(x)}` are the immediate experiments, and
+would say whether it is a fact about the shift or about the framework);
+whether the counted tier's register is the **Parikh image of the same
+run** — counts of visits rather than sets of visited states, which would
+not be a coincidence since the tier's decision procedure is Parikh's
+theorem; and the growth of the realisable set (3, 11, 57).
 
 Open:
 
