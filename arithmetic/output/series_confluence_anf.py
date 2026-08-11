@@ -602,6 +602,27 @@ def random_poly(generator, budget):
                       random_poly(generator, budget - 1))
 
 
+def configure_without_h() -> None:
+    """Delete the right shift and everything built on it.
+
+    0044 s9 lists `h` in three places: as a shift, and as the shift of
+    the two series `!h` and `D`. Removing it removes exactly the `h`
+    column of 0042 s1 -- the two cells 0042 s6.3 flagged as absent from
+    the corpus's own operator list. Everything else stands.
+    """
+    SHIFTS.pop("h", None)
+    for name in ("!h", "D"):
+        SERIES.pop(name, None)
+        LOW_BIT_SERIES.pop(name, None)
+    for key in [k for k in ABSORB if "D" in k or "!h" in k]:
+        del ABSORB[key]
+    APPLY.clear()
+    APPLY.update({name: (lambda v, n=name: _run(n, v)) for name in SERIES})
+    APPLY["N"] = nonempty
+    for cached in (evaluate, size, rewrites):
+        cached.cache_clear()
+
+
 def interesting_subterms():
     """The redexes each structural rule is *for*.
 
@@ -648,7 +669,7 @@ def verify_the_structural_rules_fire(seed=20260813) -> None:
         base = series_poly(name, VARIABLE)
         # a shift the series does not use, so that `S(sibling)` is
         # irreducible and `collect` is actually allowed to fire
-        other = "a" if shift != "a" else "h"
+        other = next(name for name in SHIFTS if name != shift)
         sibling = series_poly(name, shift_poly(other, VARIABLE))
         cases += [
             ("collect", apply_join(join, base, sibling)),

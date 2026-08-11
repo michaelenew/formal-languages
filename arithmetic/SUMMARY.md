@@ -253,6 +253,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   polynomials with `|` derived; the targeted redex pool, the
   per-redex uniqueness check, both divergence searches, and the
   two-column rule census. Run directly.
+- `exploration/0045_removing_the_right_shift.md` — `ker h = ker (&(Ω^1))`,
+  the `a^d` elimination, the `h` column being exactly the two cells the
+  corpus never had, `N` as the language's one downward channel, and the
+  termination measure reverting.
+- `output/removing_the_right_shift.py` — the kernel comparison, the
+  elimination procedure verified as an exact scaling, the schema
+  without `h`, the LSB-causality table, and 0044's suite re-run with
+  `h` removed. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1340,6 +1348,46 @@ like `N`'s analogue of distribution, and would belong in 0042 §2);
 whether `telescope`'s ordering can be removed by a representation in
 which cancellation is itself a rewrite; and two symbols, now with a
 targeted pool to generate from.
+
+**The right shift is `&` in disguise, and it comes out (0045).**
+Objection to 0044 §9: `h` has no business being primitive, because `&`
+was the only operator that could erase information and Post's lattice
+gives a two-valued logic one information-losing direction, not two. The
+objection holds on every count. **`a(h(v)) = (Ω^1) v`** for every `v`,
+and — the statement that settles it, since an operator's information
+loss *is* the partition it induces — **`ker h = ker (&(Ω^1))`**, the
+same 2048 classes. `h` destroys the low bit, by masking, and nothing
+else. The **general elimination**: `a` is an algebra homomorphism, so it
+pushes to the leaves and cancels at an `h`; for a base-algebra term of
+`h`-depth `d`, **`a^d(E)` is `h`-free and equals `E << d` exactly** —
+stronger than the zero-equivalence asked for, and `E = 0 ⟺ a^d(E) = 0`
+follows. Verified on 1849 terms carrying an `h`. **What the series
+column costs is exactly the two cells the corpus never had**: dropping
+`h` from 0042 §1's table deletes `{!ʰ, D}`, which is precisely the pair
+0042 §6.3 flagged as absent from the corpus's operator list, leaving
+`{!, U, T} + N` — the corpus's own series. **`N` is the language's one
+downward channel**: measured, every `h`-free operator is LSB-causal
+(output bit *i* depends only on input bits ≤ *i*) and `N` is not, so
+nothing over `{x, ^, &, a, b, !, U, T, constants}` computes it — which
+is no obstacle, since `N` is already primitive, and is the sharper
+statement of what `h` was for. **The rewrite system stays confluent**
+with `SHIFTS = {a,b}`, `SERIES = {!,U,T}`: nothing had to be added, the
+ten rule names are unchanged, and the tables inside shrink from 47 to
+**32 rule instances** (`absorb` 18→10, `collect`/`telescope` 5→3 each).
+One rule disappears outright, `h(D t) & 1 → N(h t) & 1` — and **that was
+the rule that forced 0044 §5's measure reorder**, so 0043's ordering
+`(series count, argument size, non-N, size)` is verified sufficient
+again. Honest cost: 0042 §3's `N = U | D` stops being a sentence of the
+language; `N` keeps its rules and its behaviour, loses its derivation.
+Limits: the `a^d` procedure covers `h` in the base algebra only — it
+does not push through a series argument (`a` does not commute with `T`),
+which §3 makes moot by deleting the `h`-series rather than translating
+them; the causality test is exhaustive at width 10 for the listed
+operators, not a proof over all expressions. Open: whether `N` has a
+telescoping after all, now that `N = U | D` is unavailable as its
+explanation; whether `{^, &, a, constants} + N` is minimal (`b(t) =
+a(t) ^ 1`, so `b` is not primitive), which is 0013/0014's Post-style
+completeness question applied to what remains.
 
 
 
