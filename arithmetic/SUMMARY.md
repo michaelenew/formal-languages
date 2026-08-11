@@ -192,6 +192,99 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   GF(2^n) construction, the full-rank-under-GL measurements, the
   matrix-tree cross-checks, the determinant's two faces. Run
   directly.
+- `exploration/0034_set_construction_and_the_counted_tier.md` — the
+  set-construction operator located: the game that forces it, the
+  unconditional wall, and the counted tier that carries it.
+- `exploration/0035_counted_tier_in_sentence_form.md` — the same tier
+  in the corpus's own sentence form; supersedes 0034 §5's presentation
+  of the boundary.
+- `exploration/0036_canonicity_under_the_measure.md` — three senses of
+  canonical form; no canonical form unguarded; the intended Pareto
+  impossibility for the tier fails; canonical up to GL(d, ℤ).
+- `exploration/0037_pointwise_and_the_containment_test.md` — why
+  `KH ^ H` stops collapsing at `<<`: the test loses completeness, not
+  the rule set. Corrects 0035 §1's Presburger restriction.
+- `output/pointwise_and_the_containment_test.py` — pointwise
+  completeness of the containment test, the shift residual computed
+  non-empty, the s-closure repair, and the width-proportional depth.
+  Run directly.
+- `exploration/0038_the_nonemptiness_primitive.md` — the infinite
+  closure's closed form is the nonemptiness indicator `N`; three rules,
+  terminating; the test becomes exact.
+- `output/nonemptiness_primitive.py` — the closed form verified, the
+  test exact in both directions, the s-graded ANF engine and the
+  two-step derivation, the termination measure. Run directly.
+- `exploration/0039_tiles_and_the_n_layer.md` — the telescoping
+  identities as a family; the closure is tile-wise; the shift's whole
+  content is one Boolean law in the N-layer.
+- `output/tiles_and_the_n_layer.py` — the identity family measured, the
+  tile-wise closure, the semantic/symbolic split, and the realisable
+  N-vectors. Run directly.
+- `exploration/0040_tiles_are_windows.md` — the tiles are the windows
+  of the bit string, the single N-law is far from sufficient, and the
+  realisable set is the de Bruijn walk-sets: the N-layer IS the
+  automaton.
+- `output/tiles_are_windows.py` — tiles-are-windows verified, the law's
+  insufficiency counted, and the de Bruijn characterisation checked
+  exact. Run directly.
+- `exploration/0041_canonicalising_T.md` — T is `succ` under
+  complement and `U` under De Morgan; its tiles are ones-padded
+  windows, so it inherits 0040's canonical form.
+- `output/canonicalising_T.py` — the elementary form, the
+  complement-conjugacy bridge, both fixpoints and both telescopings,
+  the dependence measurement, and T's tiles. Run directly.
+- `exploration/0042_the_series_schema.md` — the nine cells of the
+  series schema, the three universal laws, what the join decides, and
+  the closing composition table for {N, T, U, D}.
+- `output/the_series_schema.py` — the cells enumerated and identified,
+  the laws verified per cell, `N = U | D`, and the composition table.
+  Run directly.
+- `exploration/0043_series_confluence.md` — confluence completed in
+  nine rounds; `collect` is the orientation that works; the residue is
+  the `|`-as-primitive convention.
+- `output/series_confluence.py` — the rewrite engine, the soundness and
+  termination checks, the critical pair, and the exhaustive divergence
+  search. Run directly.
+- `exploration/0044_confluence_without_the_union_primitive.md` — the
+  ANF rebuild: six of 0043's rules discharged by the constructors,
+  `N-absorb` added, `collect`'s three side conditions unified, and the
+  finding that random terms never exercise the schema's own rules.
+- `output/series_confluence_anf.py` — the same engine over ANF
+  polynomials with `|` derived; the targeted redex pool, the
+  per-redex uniqueness check, both divergence searches, and the
+  two-column rule census. Run directly.
+- `exploration/0045_removing_the_right_shift.md` — `ker h = ker (&(Ω^1))`,
+  the `a^d` elimination, the `h` column being exactly the two cells the
+  corpus never had, `N` as the language's one downward channel, and the
+  termination measure reverting.
+- `output/removing_the_right_shift.py` — the kernel comparison, the
+  elimination procedure verified as an exact scaling, the schema
+  without `h`, the LSB-causality table, and 0044's suite re-run with
+  `h` removed. Run directly.
+- `exploration/0046_the_primitive_basis.md` — eight primitive
+  operations, the split between algebra signature and rewrite
+  signature, and every operator worked on a bitstring with its
+  expansion beside it.
+- `output/the_primitive_basis.py` — constants as a/b chains, the
+  smaller `{1, a, ^}` basis, `Ω = N(b 0)`, the measures as
+  telescopings and as each other's complement, and the worked
+  examples. Run directly.
+- `output/canonicity_under_the_measure.py` — the bit-length measure
+  table, the failed Pareto construction with the language's Nerode
+  index, and the unimodular register basis change with its singular
+  counterexample. Run directly.
+- `output/counted_sentence_form.py` — the three measure laws, the
+  section from the count sort, the worked pair as sentences with the
+  sort error raised where it is written, and the orthogonal growth of
+  the two levels under union. Run directly.
+- `output/level_crossing.py` — the interdefinability of `{.}` and
+  `|.|`, the corpus level-map correction, the unbounded Myhill-Nerode
+  index of the balance rule, and `CountedAutomaton` (deterministic
+  Parikh automaton) with Boolean closure, entailment, canonical form
+  and the machine-enforced hiding guard. Run directly.
+- `output/infinite_clue.py` — Infinite Clue defined and solved on the
+  counted tier, the clamp diagonal, and cross-validation against brute
+  force. Run directly.
 - `output/guarded_multiplication.py` — the guarded family and constant
   multiplication, with the measurement suite. Run directly.
 - `output/clue_solver.py` — the mechanical solver for finite Clue-like
@@ -810,6 +903,528 @@ the complete complexity theory of representations for this logic,
 with its outside mapped and named, and the remaining mathematics
 beyond it is the rigidity wall itself.
 
+**Set construction located, and the counted tier that carries it
+(0034).** The corpus's expected `{x} = 2^x` operator is the size
+operator: `y = 2^x iff |y| = 1 and |y-1| = x` (verified both
+directions). **Why the finite game never needed it**: boundedness is a
+complete escape — a known deck makes every hand size a constant, and a
+constant size is 0011's clamped counter. **The game that forces it**:
+*Infinite Clue* — categories by `i mod 3`, one envelope card per
+category, two balanced hands, the dealt cards an initial segment `[0,N)`
+whose length is not announced, and a spectator who learns only passes
+and refutations. Every axiom is automatic (2, 3, 9 states; `card+3` per
+move) except `|H1| = |H2|`, whose Myhill-Nerode index is the running
+count difference and grows without bound (measured `1,3,5,7,9,11,13`),
+so by Büchi-Bruyère it is not expressible in the layer in any
+presentation. **No clamp substitutes**: the best regular
+over-approximation at clamp `k` decides the game at scale `k` and loses
+it at scale `k+1` (measured diagonal), because the game's deduction is a
+bootstrap between the balance rule and the initial-segment rule that
+advances a counter each round. Measured payoff: five grid cells decided
+only with balance, cross-validated against brute force at three deck
+bounds, zero disagreements. **The wall, unconditional**: `{p} & X != 0`
+is Ackermann's BIT, and `(N, BIT)` is `(V_omega, in)`, bi-interpretable
+with `(N,+,x)` — so layer + `{.}` is undecidable and no convex syntax
+can carry it, strictly below 0001's ceiling (one binary relation, no
+arithmetic operator). **The guard is a sort discipline — restated in sentence form
+in 0035, which supersedes the presentation here**: two sorts, each with
+its own equality and its own zero. The set sort is the corpus's
+idempotent ring, equality `^`, a sentence asserts a term is the empty
+set, truth checker "the track reads all zeros". The count sort is ℤ, so
+equality is `−` not `^`, a sentence asserts a form is zero, truth
+checker "the register reads zero" — the same checker quantified over
+registers instead of positions. The only bridge is the measure, with
+three verified laws (the first two the corpus's own): `|A^B| + 2|A&B| =
+|A|+|B|`, `A&B = 0 ⟺ |A^B| = |A|+|B|`, and `|A<<1| = |A|`. So `|.|` is a
+measure, not a ring map, and it cannot see `<<` at all — which is the
+one-line form of "the measure is the complete invariant of position
+permutation". Both sorts are ℕ, and **undecidability is exactly the
+identification of the two copies**: `2^|x|` (a set from a count) is
+decidable, `2^x` (a set from a value) is BIT. Not forbidden, contrary to
+the obvious guesses: a *section* (`T(A) ^ A` vanishes on `2^k − 1`, the
+corpus's own canonical set of size k, so "the set of size c" is
+writable for c a count), constants (`|y| − 1` is legal — naming points
+is not naming the map), or hiding. **The boundary is on statements, not operators.** `<<` is
+**unary**, so `x << 3` is a finite composition and never leaves; the
+construct that leaves is *iterating a unary operator a variable number
+of times* — 0002's situation, answered there by the stabilizing series.
+Two features of the iteration decide: what it is iterated by, and what
+it must carry across a cut. `w ^ (x<<3)` (constant / nothing) is layer;
+`y ^ (1 << |x|)` (count / a count) is in the tier at 3 control states
+and 3 registers; `z ^ (x << |b|)` (count / a **set**, the bits to place)
+is **outside both**; `y ^ (1 << x)` (value) closes to BIT. Same operator
+in all four; only the statements differ. Membership test,
+model-robust: a deterministic Parikh automaton with |Q| states and d
+registers moving by ≤1 per column has ≤ |Q|(k+1)^d configurations after
+k columns, so superpolynomial residual growth rules out every such
+automaton whatever registers it picks. Measured residuals `1,3,5,7,9` /
+`1,4,6,8,10` / `1,6,18,50`, and for the third an exact `2^k` lower bound
+by pairwise separation — shifting an arbitrary set by a count needs the
+shifted bits *buffered*, and a register counts, it does not buffer.
+`1 << |x|` escapes only because the shifted thing is the constant 1, so
+the sentence pins `y` by shape and offset and never replays bits.
+Anything passing the sort check is a *candidate*; being in the tier also
+requires that what must be remembered across a cut is a count and not a
+set. **Two lines, not to be run together**: in-the-tier / outside is a
+width question about one statement, decided by the residual test;
+decidable / Gödel is a closure question about a class. A statement can
+be narrow and still generate an undecidable theory — `y = 2^x` truncated
+to width w has a polynomial minimal automaton (5, 8, 11, 15, 20, 25, 31,
+38 at w = 2..9). **Correction to 0034 §5c**: it paired each primitive
+with "its" eigen-frame and slotted `|.|` in as a fourth; that table was
+not the taxonomy and is withdrawn. The eigen-frames are classified per
+coordinate (three GF(2) bases plus ≤6 lift kinds) times the parameters,
+`<<` names no frame (the automaton is Shannon *plus sharing*, and 0027
+put sink-ness in the sharing move), and the register is outside the
+taxonomy's scope rather than a frame it missed — the taxonomy classifies
+representations of a fixed-n function, and a register only means
+something over unbounded words, so 0028's finite-frame conjecture is
+untouched. What survives and is checked: popcount is the complete
+invariant of the S_n position action, `<<` is what 0013/0014 named as
+the escape from that invariance, and 0030 already homed
+counting/symmetric subclasses in the shared frames. **Why combining levels does not collapse**: union multiplies the
+control automata and concatenates the registers, and the two grow
+orthogonally — measured, a set sentence moves the control column and
+never the register column, a count form over existing measures moves
+neither, and measuring a new term costs one register plus the wire
+pinning it. Collapse would need a register to name a position; no
+sentence has such a term, so no union of sentences does. In
+eigen-frame terms the counting level is not new: `&` diagonalises
+restrictions, `^` translations, `<<` the shift, and `|.|` is the
+complete invariant of `S_n` permuting bit positions (orbits = popcount
+levels, verified) — the very invariance 0013/0014's obstruction table
+named `<<` as the escape from. A deterministic Parikh automaton factors
+a statement into an order-sensitive finite part (control state) and an
+order-invariant unbounded part (counters), and `{.} = 2^x` is exactly
+the map that turns a value into a position, identifying the two
+coordinates the factorisation keeps apart. Scale says it in one line: a
+counter is bounded by the word length, a value is exponential in it. The
+primitive table is measured — every layer primitive is 1–2 live states
+with no counter, `c = |x|` is 1 state with one counter (the counting
+level adds a register, not states), and `y = 2^x` has no automaton at
+either level (Nerode classes `5,8,11,15,20,25,31,38` at widths 2–9);
+balance fails the layer by needing count-against-count, which a counter
+supplies, while the level map fails it by needing position-against-value,
+which nothing below full arithmetic supplies. This restates 0011's
+boundary ("coupling an unbounded set channel to its own cardinality
+channel") in its own terms. **The tier**: `CountedAutomaton`, a deterministic Parikh
+automaton over the layer's bit columns; counters are monoid
+homomorphisms of the word hence padding-invariant; closed under `and`,
+`or` and **complement** (free because deterministic — the
+nondeterministic Parikh class has undecidable universality); entailment
+decidable; canonical form = the Nerode quotient of the configuration
+space, presentation-independent on the 0006 test (two unrelated
+presentations of balance, identical signatures). **The exclusion**: you
+may not count what you freely hide, enforced by measurement with a
+witness word, and *allowed* when the hidden channel is functionally
+determined (0008's uniquely-determined wire, now carrying a counter).
+The exclusion mirrors 0016's knowledge/hypothesis asymmetry exactly and
+inverts the layer's economics — in the layer hiding was cheap and
+negation was traded; at the counted tier negation is free and hiding is
+the dangerous move. Infinite Clue lands inside the guard because a Clue
+player counts the hands, and the hands are the named channels.
+**Canonicity, settled in three senses (0036).** *Some computable
+canonical form*: fails unguarded (a canonical form reached by
+terminating reduction IS a decision procedure, and the unguarded theory
+is undecidable — so none exists, unconditionally), holds for the tier
+(decidable equivalence plus an r.e. class gives "least equivalent
+representation", which the layer also has and which therefore
+distinguishes nothing). The rewrite-side diagnosis, separate and weaker:
+layer operators move bit-length by at most one, `{.}` moves it from L to
+2^L, so no measure certifying the layer's termination certifies its own.
+*Determined by the semantics*: the intended impossibility for the tier —
+a Pareto frontier between control states and registers — **does not
+exist**. `popcount ≡ 0 mod m` has presentations at (m states, 0
+registers) and (1 state, 1 register) with neither dominating, but the
+language is regular with Nerode index exactly m, so the second is simply
+not minimal; every buildable trade concerns a regular sub-part that the
+minimal automaton absorbs, and on the non-regular part the resources do
+not trade. What is true instead: **the register content is free exactly
+up to GL(d, ℤ)** — the two presentations of balance have register
+vectors related by [[1,0],[1,1]], det 1 (verified), while a singular
+matrix collapses a balanced and an unbalanced pair onto one vector. The
+register map is the abelian part of the transition monoid, so a change
+of register basis is an invertible integer matrix; **GL(d, ℤ) is the
+count sort's GL(n,2)**, and 0030 already showed that parameter
+mandatory. Structural reading: the layer's canonical form is
+coordinate-free because a finite residual set has no coordinates; the
+measure makes the residual set infinite, and an infinite state space
+must be coordinatised to be written down. **The measure costs
+coordinate-freedom, not canonicity.**
+
+**Why `H ^ HK` stops collapsing at `<<`, and the rule that repairs it
+(0037).** The corpus's test is complete for `{^, &, 1}` for a real
+reason: every one of those operators is **pointwise**, so a failure of
+containment squeezes into a one-point universe where entailment and
+containment are the same condition (machine-checked on 400 random
+terms). `<<` carries position p to p+1, the squeeze dies, and with
+`K := x ^ 2`, `H := s(x) ^ 4` the residual `H ^ HK` does not reduce to 0.
+**The repair is one rule, and it acts on statements rather than terms**:
+*from K infer s(K)*, sound because `s` carries the empty set to itself.
+It closes the example on contact — `s(x ^ 2)` pushes down to `s(x) ^ 4`,
+which IS `H`, so `H ^ H·s(K)` is 0 with no new term machinery. The
+knowledge in force is K's **s-closure** `K | s(K) | ss(K) | …`, and the
+depth needed is the **shift-depth of the hypothesis**, read off H — so
+the search is bounded a priori, which is the corpus's own termination
+requirement. The closure is an infinite union, and a finite
+representation of an infinite union closed under the shift is an
+automaton: this is the sentence-side derivation of 0006's "the automaton
+is the closed form of the stabilizing series" and of 0023's "what forces
+the DFA". The templating instinct was right; what gets injected is the
+*shifted knowledge*, not the residual. **Sound but not complete, and the
+gap is the inverse**: on 2424 random satisfiable K/H pairs neither test
+was ever unsound, the upward closure missed 67 true entailments, and all
+67 are *downward* inferences (from `s(x) = 4` infer `x = 2`) needing the
+injectivity of `s`. The mirror rule *from K infer K >> 1* — the corpus's
+own `h`, here a closure rule rather than a term-former — closes every
+miss in the sample. **Closing at ingest is a protocol, not a query-time trick**: the closure
+distributes over `|` (`C(A|B) = C(A)|C(B)`, verified — `s` and `h` are
+ring homomorphisms and `|` is built from `^` and `&`), so recording each
+increment as `I' := C(I)` and updating `K := K | I'` gives exactly the
+same object as closing K at query time; K never has to be reopened.
+Chaining comes free — `A ^ B` is always inside `A | B`, so equalities
+compose with no transitivity rule (`x = 2`, `y = s(x)` ⊢ `y = 4`,
+verified). **Which operators admit such a rule**: `f` must carry the
+empty set to itself *and* be `^`-linear, so that `f(u)^f(v) = f(u^v)`
+turns congruence into a rule about whole statements. Measured, only the
+two shifts qualify; `+`, `T` and `|.|` all fail — and **the failure of
+`+` is exactly the carry**, 0002's founding wall. **The price**: `+`
+needs no rule of its own after all, since the shift closure reaches
+`+`-entailments given enough depth, but the depth required is
+**proportional to the width** — one extra level of closure per extra bit,
+measured at four widths (6/8/10/12). So the closed K is an *unrolling*
+that grows with the problem, which is the cleanest statement of what the
+automaton is for: 0006 called the automaton the closed form of the
+stabilizing series, and here the series is `K | s(K) | s²(K) | …`, the
+unrolling is width-proportional, and the automaton is what makes it
+finite. The two frames are not rivals — one is the closed form of the
+other. **And the measure gets no such rule**: `|.|` preserves the empty
+set but fails linearity, so there is nothing to close under; `s` is a
+linear bijection of statements and stays inside the sentence algebra
+while `|.|` leaves the sort — the sentence-side form of the
+two-copies-of-ℕ line, and why `<<` needs only a closure rule while the
+measure needed a register. Completeness in general is unproven.
+
+**The infinite closure has a closed form, and it is one symbol (0038).**
+0037's unrolling does not have to be expanded in the original
+primitives. Reading a statement as a set of positions, the up-closure is
+every position at or above min(T) and the down-closure every position at
+or below max(T), so for non-empty T the two-way closure is **every
+position**: `C(T) = 0` if T is empty and the universe otherwise —
+verified for every `T < 2^10`. **The infinite union is the nonemptiness
+indicator `N`.** It is the primitive the workstream already named:
+0015/0016 concluded from the automaton side that what the framing lacked
+was the existential, nonemptiness, and here the same object arrives from
+the sentence side as the closed form of the shift closure. **It costs
+nothing** — 0011's "at least k" at k = 1 is 2 states, so N is already
+inside the layer and convexity is untouched. **The test becomes exact**:
+`H ^ H·N(K)` collapses exactly when K entails H, 0 unsound and 0
+incomplete on 3438 random satisfiable pairs — which also supplies the
+soundness check 0037 never ran at its width-proportional depths.
+**Rules**: `N(0) -> 0`, `N(1) -> 1`, `N(N a) -> N a`,
+`N(a|b) -> N(a)|N(b)`, `N(s a) -> N(a)` (s injective), and the
+cancellation `a & N(b) -> a` whenever `N(a)` and `N(b)` share a normal
+form — the side condition decided by putting the term in **s-graded ANF**
+and dividing out the largest power of `s`. 0037's worked example
+collapses in two steps, every intermediate checked semantically.
+**Termination** by term size counting shift degree, which the division
+rule consumes (200/200 strictly smaller, never larger) — a bound readable
+off the term, which the unrolling could not offer. **This corrects
+0037's headline**: it is not true that the sentence frame must unroll
+while the automaton is the finite form; N is the finite form on the
+sentence side. The two are two closed forms of the same series, and
+**Tiles, and where the shift's content lives (0039).** The telescoping
+identities are a family: `!x ^ s(!x) = x`, `U(x) ^ s(U x) = V₂(x)` (the
+lowest set bit, 0008's own primitive), and `N(x) ^ s(N x) = [x ≠ 0]` as
+one bit at position 0 — so **`T ^ s(T)` is what a shift-series
+measures**. (The proposed `s(x) ^ s(N x) ^ N(x)` is not empty; it fails
+at x = 1, 2, 3. Right shape, wrong right-hand side.) `U` also satisfies
+the fixpoint `U(x) = x | s(U x)`, the stabilizing-series shape of 0002
+exactly. **The closure is tile-wise**: treating `x` and `s(x)` as
+different circles on a Venn diagram, `C(K) = ⋃ over K's tiles of
+C(tile)`, verified — so it can be taken at checking time rather than at
+ingest, and the two are the same computation at different moments.
+**What tiles buy is a relocation of the content.** Semantically
+`C(T) = N(T)`; symbolically over free symbols it is false (the first
+five shifts of the tile `x·~s(x)` are five distinct maps) — that gap is
+0037's unrolling. Tiles reconcile them: **the Boolean structure lives in
+the tiles, which are free, and everything the shift contributes lives in
+the N-layer** as a constraint on which tiles can be non-empty together.
+For `{x, s(x)}` only 5 of 16 non-emptiness vectors are realisable, and
+every one satisfies `N(x·s(x)) ∨ N(x·~s(x)) == N(x·s(x)) ∨ N(~x·s(x))`,
+i.e. `N(x) = N(s x)` — **that single Boolean law is the whole of what
+the shift contributes**. Consequently entailment becomes a propositional
+implication over the realisable non-emptiness vectors: finite and
+decidable by enumeration, a different shape from both the rewrite
+closure (0037) and the new term-former (0038), and the same two-layer
+split the counted tier has (0035) with a Boolean upper layer instead of
+an arithmetic one. Open: the realisable set for larger symbol sets and
+whether it is always generated by `N(sᵏx) = N(sᵏ⁺¹x)`; whether the pair
+(tile support, realisable set) is canonical, given that tiles are 2ⁿ in
+the symbol count; and the N-laws of the other operators — `N(h x) ≠
+N(x)` since `h` kills a lone low bit, while `|.|` fails 0037's linearity
+criterion yet satisfies `N(|a|) = N(a)` exactly, so that criterion does
+not govern this layer.
+
+**The tiles are windows, and the N-layer is the automaton (0040).**
+0039's first open question, chased and settled negatively. Over the
+symbols `{x, s(x), …, s^(n-1)(x)}` the tile of polarity p is non-empty
+**exactly when p occurs as a length-n window of x's bit string**
+(verified n = 2, 3, 4) — because bit i of `s^k(x)` is bit i−k of x, so
+fixing every polarity at a position fixes the window ending there. A
+tile is therefore not an arbitrary Venn region but the assertion that a
+bit pattern appears somewhere in x. Consequently the single law
+`N(s^k x) = N(s^(k+1) x)` is **sound but nowhere near sufficient**:
+realisable vectors number 3, 11, 57 at n = 2, 3, 4 against 12, 220,
+64596 satisfying the law (of 2^(2^n) = 16, 256, 65536). What does
+characterise the realisable set is the **de Bruijn condition** —
+consecutive windows overlap in n−1 symbols, so the occurring windows are
+exactly the vertices of a sliding-window walk (free bits while reading
+x, then forced zeros above its top bit), and realisable = walk-vertex-
+sets exactly at every n measured. **So the tiles are de Bruijn states,
+the realisable set is the set of runs, and "which tiles are non-empty"
+is "which states the run visits".** The tile decomposition does not
+replace the automaton frame — it reconstructs it, at the same 2^n cost,
+from the sentence side. That also settles 0039's second question: the
+pair (tile support, realisable set) is canonical exactly insofar as the
+automaton is, because it *is* the automaton's run structure. And it
+revises 0038: the two frames are not independent closed forms of one
+series but one object, with 0019's incomparability being about how
+compactly a statement is *written* in each, not about what they are.
+**The chain, end to end**: the containment test is complete exactly on
+the pointwise fragment (0037); `<<` is not pointwise so knowledge must
+be closed under it, and the closure is an infinite union (0037) whose
+closed form is `N` (0038); the closure distributes over tiles, and over
+shift-generated symbols the tiles are the windows of the bit string
+(0039, 0040) — so the closed knowledge is the run structure of the
+sliding-window automaton, and the sentence frame reaches the automaton
+by its own road. Open: whether "tiles are windows" survives other
+operators (`{x, x+1}` and `{x, T(x)}` are the immediate experiments, and
+would say whether it is a fact about the shift or about the framework);
+whether the counted tier's register is the **Parikh image of the same
+run** — counts of visits rather than sets of visited states, which would
+not be a coincidence since the tier's decision procedure is Parikh's
+theorem; and the growth of the realisable set (3, 11, 57).
+
+**T re-expressed: it is not a new series, it is `U` in a mirror
+(0041).** Two reconstructions of the corpus's `$`/`T`. **With addition,
+a finite term**: `T(x) = x & neg(x+1)`, no series at all — but it closes
+a circle with the successor, which the corpus defines as
+`succ(x) = x ^ b(T x)`, so **T and succ are interdefinable, each a
+two-symbol term in the other, and neither is prior**. **With the
+up-closure, no new operator at all**: one bridge identity
+`neg(b(y)) = s(neg y)` (b and a are complement-conjugate) makes De
+Morgan turn the intersection series into 0039's union series, giving
+`T(x) = neg(U(neg x))` — verified. So `$` and `U` are **one operator
+seen through complement**, and T inherits U's whole algebra: fixpoints
+`U(x) = x | s(U x)` and `T(x) = x & b(T x)`, and telescopings
+`U(x) ^ s(U x) =` the lowest **set** bit and `T(x) ^ b(T x) =` the
+lowest **zero** bit — the latter being 0039's telescoping family gaining
+its T member, and the piece canonicalisation most wants. **No finite
+shift-term reaches T**: bit 6 of T(x) depends on x's bits 0..6, every
+bit at or below it, while a term of shift-depth d reaches only i−d..i —
+0002's locality argument on the term side, which also says the two
+reconstructions are the only shapes available. **Canonicalisation
+payoff**: T's own tiles over `{x, b(x), …}` are the length-n windows of
+x with **ones** padding the bottom instead of zeros (verified n = 2, 3,
+4), since b fills with ones where a fills with zeros — so **T inherits
+0040 unchanged**, its tiles are de Bruijn states, its realisable set is
+the runs, and there is no separate canonicalisation problem for T. Net:
+the corpus's operator list is redundant in a specific way — `$` is the
+union-series dualised and `!` is the third member of the same
+telescoping family. Open: whether the whole family is **one
+construction parameterised by the join** (`!` joins with `^`, `U` with
+`|`, `T` with `&`; telescopings x, lowest set bit, lowest zero bit),
+which would collapse the series zoo to a single schema; whether the
+T/succ circle can be broken over `{^, &, <<, N}` with neither series nor
+addition, `N` being the candidate unavailable when 0002 ran the locality
+argument; and whether 0040's window reading survives a non-shift symbol,
+since `b` is still a shift.
+
+**The series zoo is one schema, with its own rewrite rules (0042).**
+Every series in the corpus has the shape `S(x) = x ∘ σ(x) ∘ σ²(x) ∘ …`
+for a join `∘ ∈ {^, |, &}` and a shift `σ ∈ {a, b, h}`. Nine cells,
+enumerated: `(^,a) = !`, `(^,h) = !ʰ` suffix parity, `(|,a) = U`,
+`(|,h) = D` down-closure, `(&,b) = T`; `(^,b)` diverges, and `(|,b)`,
+`(&,a)`, `(&,h)` are constants. **Five non-trivial cells, and they are
+exactly the operators the corpus carries separately** — one construction
+with two parameters, not five primitives. **Three universal laws**,
+verified for every survivor and serving as the expansion, combination
+and cancellation rules: fixpoint `S(x) = x ∘ σ(S x)`, distribution
+`S(a ∘ b) = S(a) ∘ S(b)` over its OWN join and no other, and telescoping
+`S(x) ^ σ(S x) = the measure`. **Two further properties split by join,
+exclusively**: `^` measures x, is invertible, never idempotent (`x =
+S(x) ^ σ(S x)` IS its telescoping); `|` measures the extremal element
+and `&` the extremal gap, both idempotent and neither invertible. Filled
+in: `!`/`!ʰ` measure x, `U` the lowest set bit, `D` the highest set bit,
+`T` the lowest **zero** bit. **`N` is not a cell** — `N(x) = U(x) | D(x)`,
+verified — which is why it behaves unlike the rest and why its rules had
+to be found separately in 0038: combining two cells destroys the
+telescoping, since no single extremum survives. **The composition table
+for `{N, T, U, D}` closes**: every composite collapses to something
+already named, so the set is closed under composition — the property a
+terminating rewrite system wants. `N` absorbs on either side, `T` and `D`
+absorb each other, and exactly two entries move information rather than
+deleting it: `N(T x) -> N(x & 1)` and `T(U x) -> N(x & 1)`, both saying
+that `T(x)` is empty exactly when x's low bit is clear. **The resulting
+system** is expansion / combination / cancellation / idempotence (`|`
+and `&` only) / absorption, and every rule either reduces the number of
+series symbols or replaces a series by a measure, so a depth-counting
+measure decreases. **Confluence is the honest remaining gap** — the same
+one 0038 §6 left open, but the rule set is now finite, uniform and
+derived from the schema rather than assembled case by case, so
+critical-pair analysis is feasible. Also open: whether losing the
+telescoping is generic for joins of cells or special to `N`; and whether
+the `h`-side members `!ʰ` and `D`, which fall out of the schema but are
+absent from the corpus's operator list, are useful or merely formal.
+
+**Confluence: completed, and the residue located (0043).** 0042 left it
+unchecked; checked here by exploring the WHOLE rewrite graph of each
+term, so more than one normal form is a proof of divergence rather than
+evidence of it (every rule is verified meaning-preserving first, so a
+divergence can only be syntactic). **The starting state was worse than
+0042 claimed**: 28 divergent terms of 4000, and the size measure did not
+certify termination — `distribute` grows terms. **Nine completion
+rounds**, each round's smallest witness forcing exactly one missing or
+misoriented rule. **Round 1 is load-bearing**: 0042 oriented combination
+as *distribute*, and that orientation cannot be completed because it
+destroys the very redex telescoping needs; oriented as **collect**
+(`S(a) ∘ S(b) → S(a ∘ b)`) the predicted critical pair vanishes outright
+— the collected form is exactly what telescope matches — and a genuine
+termination measure appears, `(series count, argument size, non-N series,
+size, unsortedness)` lexicographic, verified strictly decreasing on every
+application. The other eight rounds add constant folding, units and
+annihilators, low-bit rules, a constant-splitting rule, and an oriented
+commutativity, taking the rule set from five to fourteen. **Result: 2
+divergent terms of 4000 remain, and both become identical once the base
+algebra is put in ANF** — the engine keeps `|` primitive while the corpus
+expands `a | b = a ^ b ^ ab`, where Boolean absorption is an identity
+(`1 & (1 ^ x ^ 1x) = 1`). So **the series rules are confluent; the
+residue is a base-algebra convention the engine imposed and the corpus
+does not have**. Honest limits: exhaustive graph search over 4000 random
+single-variable terms at depth 3, not a critical-pair proof over all
+terms; the rule set grew from five to fourteen and minimality is
+unexamined; multi-variable terms may open pairs this search cannot see.
+Open: rebuild on an ANF base (§3 suggests it discharges the residue and
+probably absorbs several bookkeeping rules); a Knuth–Bendix proof, now
+feasible with a working termination order; and the two-symbol extension.
+
+**Rebuilt on an ANF base: ten rules, and the sampling was wrong (0044).**
+0043's rebuild, done. Terms *are* ANF polynomials over `^` and `&` with
+`|` built as `a ^ b ^ ab`, so the constructors are total functions into
+normal form and **six of 0043's fourteen rules cease to exist** —
+constant folding, units, annihilators, idempotence, commutativity, and
+`split-constant` (which only existed to expose a constant through `|`).
+0043 §3's guess held: both of its surviving divergent terms are
+identities here. **But the rebuild also showed 0043's verdict was
+under-tested.** In 3000 random depth-3 terms the census reads `collect`
+0, `telescope` 0, `N-lowbit` 0 — random terms essentially never build
+the redexes of the schema's three *structural* rules, so 0043's
+confluence was measured on the bookkeeping. Against a targeted pool
+built from those redexes (`interesting_subterms`), the same rules fire
+623/46/1, and **six of eight further completion rounds are visible only
+to it** — including one that was not a confluence failure at all: a
+**rule was unsound**, my port having folded `N-lowbit` into `low-arg` as
+`N(t&1) → t&1`, which confuses a bit with the whole universe. Three
+rounds collapse into one general side condition — **`collect` fires only
+between series atoms that are irreducible alone**, since combination
+buries its arguments where nothing can reach them; this is 0043's round
+1 stated in general. Two orderings are forced by the base algebra rather
+than by rule orientation: **`telescope` is a last resort** (XOR
+cancellation creates and destroys its redex behind the rule set's back —
+running it first fails in mirror image, stealing a monomial a pending
+`fold` would have annihilated), and **`low-bit` must reach through
+`shift-out`** via `h(D t) & 1 → N(h t) & 1`, which trades a named series
+for `N` at the cost of a bigger argument and so reorders the termination
+measure to `(series count, non-N series, argument size, size)`. One
+genuinely **new** rule, not in 0043 and not bookkeeping: **`N-absorb`,
+`N(p) & m → m` wherever `m` vanishes with `p`** — the statement that `N`
+is a *guard, not a factor*, since `N(p)` is the whole universe exactly
+where anything derived from `p` is non-zero. Also new to 0042 §4's
+table: `N(! t) = N(t)` and `N(!ʰ t) = N(t)`, the `^` series being
+invertible and fixing 0. **Result: ten rules, no divergence in either
+pool** — 2996 random and 1137 structured terms explored to completion,
+all 22 canonical redexes firing their rule with exactly one normal form,
+soundness over 2615 + 6410 applications, termination strictly decreasing
+throughout. Honest limits: still graph search rather than a
+critical-pair proof; 63 of 1200 structured terms hit the node cap;
+still single-variable; and confluence now leans on two *strategy*
+conditions rather than orientation alone — ordinary priority rewriting,
+unique normal form, but a weaker object than unordered confluence. Open:
+whether `N-absorb` is a law of the schema rather than a repair (it reads
+like `N`'s analogue of distribution, and would belong in 0042 §2);
+whether `telescope`'s ordering can be removed by a representation in
+which cancellation is itself a rewrite; and two symbols, now with a
+targeted pool to generate from.
+
+**The right shift is `&` in disguise, and it comes out (0045).**
+Objection to 0044 §9: `h` has no business being primitive, because `&`
+was the only operator that could erase information and Post's lattice
+gives a two-valued logic one information-losing direction, not two. The
+objection holds on every count. **`a(h(v)) = (Ω^1) v`** for every `v`,
+and — the statement that settles it, since an operator's information
+loss *is* the partition it induces — **`ker h = ker (&(Ω^1))`**, the
+same 2048 classes. `h` destroys the low bit, by masking, and nothing
+else. The **general elimination**: `a` is an algebra homomorphism, so it
+pushes to the leaves and cancels at an `h`; for a base-algebra term of
+`h`-depth `d`, **`a^d(E)` is `h`-free and equals `E << d` exactly** —
+stronger than the zero-equivalence asked for, and `E = 0 ⟺ a^d(E) = 0`
+follows. Verified on 1849 terms carrying an `h`. **What the series
+column costs is exactly the two cells the corpus never had**: dropping
+`h` from 0042 §1's table deletes `{!ʰ, D}`, which is precisely the pair
+0042 §6.3 flagged as absent from the corpus's operator list, leaving
+`{!, U, T} + N` — the corpus's own series. **`N` is the language's one
+downward channel**: measured, every `h`-free operator is LSB-causal
+(output bit *i* depends only on input bits ≤ *i*) and `N` is not, so
+nothing over `{x, ^, &, a, b, !, U, T, constants}` computes it — which
+is no obstacle, since `N` is already primitive, and is the sharper
+statement of what `h` was for. **The rewrite system stays confluent**
+with `SHIFTS = {a,b}`, `SERIES = {!,U,T}`: nothing had to be added, the
+ten rule names are unchanged, and the tables inside shrink from 47 to
+**32 rule instances** (`absorb` 18→10, `collect`/`telescope` 5→3 each).
+One rule disappears outright, `h(D t) & 1 → N(h t) & 1` — and **that was
+the rule that forced 0044 §5's measure reorder**, so 0043's ordering
+`(series count, argument size, non-N, size)` is verified sufficient
+again. Honest cost: 0042 §3's `N = U | D` stops being a sentence of the
+language; `N` keeps its rules and its behaviour, loses its derivation.
+Limits: the `a^d` procedure covers `h` in the base algebra only — it
+does not push through a series argument (`a` does not commute with `T`),
+which §3 makes moot by deleting the `h`-series rather than translating
+them; the causality test is exhaustive at width 10 for the listed
+operators, not a proof over all expressions. Open: whether `N` has a
+telescoping after all, now that `N = U | D` is unavailable as its
+explanation; whether `{^, &, a, constants} + N` is minimal (`b(t) =
+a(t) ^ 1`, so `b` is not primitive), which is 0013/0014's Post-style
+completeness question applied to what remains.
+
+
+
+Open:
+
+completeness of `{N, ^, &, s, h, constants}` (yes on the sample, now for
+a structural reason); confluence, which is unchecked and which a
+canonical form also needs; the law for `N(h a)` (`h` kills a lone low
+bit, so `N(h a) != N(a)`); and `N(|a|) = N(a)`, the one law relating the
+two levels inside the sentence algebra, which may give the counted tier
+the sentence-side handle 0037 said it lacked. **Correction recorded**: an
+earlier version of 0037 concluded no rule set could repair the test; it
+reached that by reasoning about values of x where K is not empty, which
+the framing excludes — asserting K *is* the definition of the context.
+**Correction to 0035 §1**: the count level's equality is `^` after all
+(counts are numbers, `a ^ b = 0` iff `a = b`), and the acceptance
+predicate need not be Presburger — if it is Büchi-arithmetic definable,
+i.e. the count level carries the layer's own signature, the tier stays
+decidable and Boolean-closed, since the achievable register vectors are
+semilinear hence Büchi-definable. So **the count level is a second copy
+of the layer's language, and the discipline is about *level*, not about
+which operators are available**.
+
+Remaining open, now sharper:
+prove the GL(d, ℤ) statement in general (only the instance is checked);
+finite presentability of the Nerode quotient off the window; and whether
+the canonical form is reachable by rewriting rather than by
+construction-then-minimisation.
+
 **And a canonical sentence form exists but cannot be cheap (0019 d).**
 The algebra does canonicalise — `<<` distributes over `^` and `&`, and
 `&` over `^`, so ANF is a genuine canonical form (verified). Cost is
@@ -908,15 +1523,23 @@ else. Threshold clue events added to the solver.
 
 ## Next steps, in order of leverage
 
-1. **The level-crossing extension** (0009's path 1): a two-level system
-   — value-level automata and exponent-level automata joined only by
-   the {x} = 2^x map — to make unbounded pow2-multiplication and
-   genuine exponentiation statements convex per level. This is the
-   remaining half of the × prize (bounded factors are done) and the
-   whole of the exponentiation prize. Alternative if it stalls:
-   sound-partial × after proving the two conservativity lemmas of
-   0005 §2.
-2. **Prove the Post-style completeness criterion** (0013/0014): the
+1. **Close the counted tier's canonicity** (0034 §8): show the Nerode
+   congruence on configurations is Presburger-definable and decidable
+   via the product automaton's semilinear Parikh-indexed reachability.
+   That converts the tier from *decidable* to *convex* in this
+   workstream's sense, and it is the last step between 0034 and the
+   framework's own standard.
+2. **The level-crossing extension, upward** (0009's path 1): 0034 uses
+   the {x} = 2^x map only downward (sets counted into numbers), where
+   counters are the abelian shadow of the coarse level. Genuine
+   exponentiation statements need the coarse level to be a second
+   *automaton* rather than a counter vector — a pair of automata joined
+   by the level map, with 0034 §5's scale rule as the interface
+   discipline. This is the remaining half of the × prize (bounded
+   factors are done) and the whole of the exponentiation prize.
+   Alternative if it stalls: sound-partial × after proving the two
+   conservativity lemmas of 0005 §2.
+3. **Prove the Post-style completeness criterion** (0013/0014): the
    two known proper fragments — permutation-invariant {&, constants}
    and stable {<<, constants} — are not yet proved *maximal*. Proving
    it would give "a set of ingredients generates the layer iff it
@@ -929,15 +1552,24 @@ else. Threshold clue events added to the solver.
    *minimal* positive signature, and is the exponential
    determinisation of run-encoded definitions intrinsic, given that
    their hidden tracks are a one-hot partition?
-3. **The closure principle** (0002): convexity preserved under bounded
+4. **The closure principle** (0002): convexity preserved under bounded
    stabilizing series, as a theorem — now with the sharper conjectured
    form: series with finite-state transition structure land in the
    automatic fragment (0006's "automata are the closed forms"), and
    0008's addition-as-one-hidden-wire as the worked exemplar.
-4. **ω-extension** for the infinite game: S1S/Büchi territory; the
+5. **ω-extension** for the infinite game: S1S/Büchi territory; the
    canonical object needs a design decision (minimal Büchi automata not
-   unique).
-5. **Variable-size counting**: 0007's sizes are constant-k (one witness
-   per card). "Hands of equal unknown size" needs Presburger-style
-   counting over the automatic layer; also investigate the observed
-   monotone shrinkage of K's canonical size under knowledge updates.
+   unique). After 0034 this is the only remaining piece of "infinite
+   Clue" untouched — unbounded decks are handled, genuinely infinite
+   plays are not.
+6. **Variable-size counting**: closed for equal-unknown-size hands by
+   0034's counted tier (Presburger on counters over the automatic
+   layer, which is what "hands of equal unknown size" needed). Still
+   open from 0007: the observed monotone shrinkage of K's canonical
+   size under knowledge updates.
+7. **Where the counted tier sits in the frame taxonomy** (0026–0033):
+   its state space is infinite and semilinear rather than a product
+   over coordinates, so it is the first natural object outside the
+   product structure over which 0028's finite-frame conjecture was
+   stated. Whether it refutes or merely extends that conjecture is
+   open.
