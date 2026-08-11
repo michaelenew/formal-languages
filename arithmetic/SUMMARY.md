@@ -269,6 +269,17 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   smaller `{1, a, ^}` basis, `Ω = N(b 0)`, the measures as
   telescopings and as each other's complement, and the worked
   examples. Run directly.
+- `exploration/0047_the_guarded_canonical_form.md` — the truth guard
+  collapsing onto the word problem, bounded state as the invariant that
+  decides, `N` as the guard, the (guard, minimal machine) canonical
+  form, the two defects measured in the 0044/0045 rule set, lasso
+  constants, and the wall at unbounded state.
+- `output/guarded_canonical_form.py` — the term-to-Mealy-machine
+  compiler, the reachability decision procedure with guard
+  consistency, minimal-machine canonicalisation, the six missing laws,
+  the ANF constant-folding correction, the lasso table, the
+  head-to-head against the rewrite engine, and the `x^y` / `x+y` /
+  `x*y` residual counts. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1396,6 +1407,65 @@ telescoping after all, now that `N = U | D` is unavailable as its
 explanation; whether `{^, &, a, constants} + N` is minimal (`b(t) =
 a(t) ^ 1`, so `b` is not primitive), which is 0013/0014's Post-style
 completeness question applied to what remains.
+
+**The guarded canonical form exists, and the wall is somewhere else
+(0047).** Target: a form sound and complete for *true* statements
+(terms denoting ∅), sloppy about which nonempty set a false one
+denotes, so undecidability gets pushed out of the true class. **First,
+the guard buys nothing on the decision side**: `E1 = E2` iff
+`E1 ^ E2 = 0`, and `^` is in the signature, so recognising exactly the
+true statements *is* deciding the word problem. Only the *output* can
+be weakened — a zero test owes no normal form to the nonzero terms.
+**The invariant that decides is not LSB-causality (0045 §4) but bounded
+state**: every operator but `N` is a one- or two-state Mealy step read
+LSB upward (`!` carries a parity bit, `U` a seen bit, `T`/`lowzero` an
+alive bit, `a` a delay), so an `N`-free term is a finite transducer and
+"identically 0" is reachability — verified against the interpreter on
+24000 runs over 4000 two-variable terms. **`N` is exactly the guard**:
+fix each `N` subterm to 0 or Ω, carry one emission flag per `N`
+argument plus the root, close each configuration under a tail of zeros,
+and accept a guard only when the settled flags match it. 2^k sweeps for
+k distinct `N` subterms; against brute force on 1500 terms, every
+refutation carries a witnessing input and no term called empty is
+nonzero at width 11. 0038's and 0042's hand-found `N` rules all fall
+out of the guard, with no rule for `N` at all. **The canonical form is
+(guard, minimal Mealy machine) per consistent guard, and the statement
+holds iff every entry is the zero machine** — 600 terms, never
+disagreeing with the decision procedure. So the answer to the question
+as asked is *positive*: at the 0046 signature nothing is undecidable.
+**What the exercise actually found is two defects in 0043–0046.**
+(1) **Width-bound**: 30 of 836 normal forms do not mean what the term
+meant, because `fold` evaluates constants inside a fixed width —
+`a(Ω) → 510`, `!(Ω) → 341` at width 9, when unboundedly `a(Ω) = Ω ^ 1`
+is *cofinite*. Those rewrites are sound at width 9 and at no other.
+(2) **Incomplete**: 3 of 836 terms are identically empty without
+normalising to `0`, and 92 pairs mean the same at every width with
+different normal forms; six named true laws are missed six times over
+(`b(x) = a(x)^1`, `T(a x) = 0`, `U(b x) = Ω`, `N(x&1) = !(x&1)`,
+`a(Ω^x)·b(x) = 0`, `7 = 1 ^ 6`). **Correction to 0044**: its census
+listed `fold-of-two-constants` among the rules "gone — building an ANF
+polynomial already does them". It is not gone; ANF folds constants only
+when the masks are *equal*, where cancellation does it, so
+`xor(const 1, const 6)` is two monomials with no rewrites. **The repair
+is a new kind of constant, not a new operation**: the constants are not
+closed under the signature (`U` of any nonzero finite set is cofinite,
+`!(Ω)` alternates forever), every closed term is a machine with no
+input hence a **lasso**, and the rewrite system's constants must be
+ultimately periodic `(prefix)(cycle)^ω` rather than integers — 0046
+§2's algebra/rewrite signature split arriving a second time. **The wall
+is bounded state**, measured by residual counts: `x ^ y` needs one
+state, `x + y` needs two (**so addition is free** — a finite-state
+operator the corpus never had), `x * y` is LSB-causal yet its count
+multiplies by four per bit read (1, 4, 16, 64, 256, 1024, 4096). Limits:
+the decision procedure is verified, not proved; brute force bounds the
+"empty at every width" direction at one width only; the head-to-head is
+single-variable because the engine is; the rewrite system has **not**
+been rebuilt over lasso constants. Open: rebuild `fold` over lassos;
+find which identities are unreachable by *any* finite rule set over
+this signature (the sharp form of "canonicity leaves the term
+language"); take addition into the counted tier of 0034–0036; and
+whether the guard count `k` can be reduced the way the machine merges
+states.
 
 
 
