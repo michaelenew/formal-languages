@@ -227,6 +227,12 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/tiles_are_windows.py` — tiles-are-windows verified, the law's
   insufficiency counted, and the de Bruijn characterisation checked
   exact. Run directly.
+- `exploration/0041_canonicalising_T.md` — T is `succ` under
+  complement and `U` under De Morgan; its tiles are ones-padded
+  windows, so it inherits 0040's canonical form.
+- `output/canonicalising_T.py` — the elementary form, the
+  complement-conjugacy bridge, both fixpoints and both telescopings,
+  the dependence measurement, and T's tiles. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1163,6 +1169,41 @@ whether the counted tier's register is the **Parikh image of the same
 run** — counts of visits rather than sets of visited states, which would
 not be a coincidence since the tier's decision procedure is Parikh's
 theorem; and the growth of the realisable set (3, 11, 57).
+
+**T re-expressed: it is not a new series, it is `U` in a mirror
+(0041).** Two reconstructions of the corpus's `$`/`T`. **With addition,
+a finite term**: `T(x) = x & neg(x+1)`, no series at all — but it closes
+a circle with the successor, which the corpus defines as
+`succ(x) = x ^ b(T x)`, so **T and succ are interdefinable, each a
+two-symbol term in the other, and neither is prior**. **With the
+up-closure, no new operator at all**: one bridge identity
+`neg(b(y)) = s(neg y)` (b and a are complement-conjugate) makes De
+Morgan turn the intersection series into 0039's union series, giving
+`T(x) = neg(U(neg x))` — verified. So `$` and `U` are **one operator
+seen through complement**, and T inherits U's whole algebra: fixpoints
+`U(x) = x | s(U x)` and `T(x) = x & b(T x)`, and telescopings
+`U(x) ^ s(U x) =` the lowest **set** bit and `T(x) ^ b(T x) =` the
+lowest **zero** bit — the latter being 0039's telescoping family gaining
+its T member, and the piece canonicalisation most wants. **No finite
+shift-term reaches T**: bit 6 of T(x) depends on x's bits 0..6, every
+bit at or below it, while a term of shift-depth d reaches only i−d..i —
+0002's locality argument on the term side, which also says the two
+reconstructions are the only shapes available. **Canonicalisation
+payoff**: T's own tiles over `{x, b(x), …}` are the length-n windows of
+x with **ones** padding the bottom instead of zeros (verified n = 2, 3,
+4), since b fills with ones where a fills with zeros — so **T inherits
+0040 unchanged**, its tiles are de Bruijn states, its realisable set is
+the runs, and there is no separate canonicalisation problem for T. Net:
+the corpus's operator list is redundant in a specific way — `$` is the
+union-series dualised and `!` is the third member of the same
+telescoping family. Open: whether the whole family is **one
+construction parameterised by the join** (`!` joins with `^`, `U` with
+`|`, `T` with `&`; telescopings x, lowest set bit, lowest zero bit),
+which would collapse the series zoo to a single schema; whether the
+T/succ circle can be broken over `{^, &, <<, N}` with neither series nor
+addition, `N` being the candidate unavailable when 0002 ran the locality
+argument; and whether 0040's window reading survives a non-shift symbol,
+since `b` is still a shift.
 
 Open:
 
