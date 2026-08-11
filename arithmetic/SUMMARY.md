@@ -239,6 +239,12 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/the_series_schema.py` — the cells enumerated and identified,
   the laws verified per cell, `N = U | D`, and the composition table.
   Run directly.
+- `exploration/0043_series_confluence.md` — confluence completed in
+  nine rounds; `collect` is the orientation that works; the residue is
+  the `|`-as-primitive convention.
+- `output/series_confluence.py` — the rewrite engine, the soundness and
+  termination checks, the critical pair, and the exhaustive divergence
+  search. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1247,6 +1253,38 @@ critical-pair analysis is feasible. Also open: whether losing the
 telescoping is generic for joins of cells or special to `N`; and whether
 the `h`-side members `!ʰ` and `D`, which fall out of the schema but are
 absent from the corpus's operator list, are useful or merely formal.
+
+**Confluence: completed, and the residue located (0043).** 0042 left it
+unchecked; checked here by exploring the WHOLE rewrite graph of each
+term, so more than one normal form is a proof of divergence rather than
+evidence of it (every rule is verified meaning-preserving first, so a
+divergence can only be syntactic). **The starting state was worse than
+0042 claimed**: 28 divergent terms of 4000, and the size measure did not
+certify termination — `distribute` grows terms. **Nine completion
+rounds**, each round's smallest witness forcing exactly one missing or
+misoriented rule. **Round 1 is load-bearing**: 0042 oriented combination
+as *distribute*, and that orientation cannot be completed because it
+destroys the very redex telescoping needs; oriented as **collect**
+(`S(a) ∘ S(b) → S(a ∘ b)`) the predicted critical pair vanishes outright
+— the collected form is exactly what telescope matches — and a genuine
+termination measure appears, `(series count, argument size, non-N series,
+size, unsortedness)` lexicographic, verified strictly decreasing on every
+application. The other eight rounds add constant folding, units and
+annihilators, low-bit rules, a constant-splitting rule, and an oriented
+commutativity, taking the rule set from five to fourteen. **Result: 2
+divergent terms of 4000 remain, and both become identical once the base
+algebra is put in ANF** — the engine keeps `|` primitive while the corpus
+expands `a | b = a ^ b ^ ab`, where Boolean absorption is an identity
+(`1 & (1 ^ x ^ 1x) = 1`). So **the series rules are confluent; the
+residue is a base-algebra convention the engine imposed and the corpus
+does not have**. Honest limits: exhaustive graph search over 4000 random
+single-variable terms at depth 3, not a critical-pair proof over all
+terms; the rule set grew from five to fourteen and minimality is
+unexamined; multi-variable terms may open pairs this search cannot see.
+Open: rebuild on an ANF base (§3 suggests it discharges the residue and
+probably absorbs several bookkeeping rules); a Knuth–Bendix proof, now
+feasible with a working termination order; and the two-symbol extension.
+
 
 
 Open:
