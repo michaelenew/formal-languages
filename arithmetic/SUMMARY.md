@@ -245,6 +245,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/series_confluence.py` — the rewrite engine, the soundness and
   termination checks, the critical pair, and the exhaustive divergence
   search. Run directly.
+- `exploration/0044_confluence_without_the_union_primitive.md` — the
+  ANF rebuild: six of 0043's rules discharged by the constructors,
+  `N-absorb` added, `collect`'s three side conditions unified, and the
+  finding that random terms never exercise the schema's own rules.
+- `output/series_confluence_anf.py` — the same engine over ANF
+  polynomials with `|` derived; the targeted redex pool, the
+  per-redex uniqueness check, both divergence searches, and the
+  two-column rule census. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1284,6 +1292,54 @@ unexamined; multi-variable terms may open pairs this search cannot see.
 Open: rebuild on an ANF base (§3 suggests it discharges the residue and
 probably absorbs several bookkeeping rules); a Knuth–Bendix proof, now
 feasible with a working termination order; and the two-symbol extension.
+
+**Rebuilt on an ANF base: ten rules, and the sampling was wrong (0044).**
+0043's rebuild, done. Terms *are* ANF polynomials over `^` and `&` with
+`|` built as `a ^ b ^ ab`, so the constructors are total functions into
+normal form and **six of 0043's fourteen rules cease to exist** —
+constant folding, units, annihilators, idempotence, commutativity, and
+`split-constant` (which only existed to expose a constant through `|`).
+0043 §3's guess held: both of its surviving divergent terms are
+identities here. **But the rebuild also showed 0043's verdict was
+under-tested.** In 3000 random depth-3 terms the census reads `collect`
+0, `telescope` 0, `N-lowbit` 0 — random terms essentially never build
+the redexes of the schema's three *structural* rules, so 0043's
+confluence was measured on the bookkeeping. Against a targeted pool
+built from those redexes (`interesting_subterms`), the same rules fire
+623/46/1, and **six of eight further completion rounds are visible only
+to it** — including one that was not a confluence failure at all: a
+**rule was unsound**, my port having folded `N-lowbit` into `low-arg` as
+`N(t&1) → t&1`, which confuses a bit with the whole universe. Three
+rounds collapse into one general side condition — **`collect` fires only
+between series atoms that are irreducible alone**, since combination
+buries its arguments where nothing can reach them; this is 0043's round
+1 stated in general. Two orderings are forced by the base algebra rather
+than by rule orientation: **`telescope` is a last resort** (XOR
+cancellation creates and destroys its redex behind the rule set's back —
+running it first fails in mirror image, stealing a monomial a pending
+`fold` would have annihilated), and **`low-bit` must reach through
+`shift-out`** via `h(D t) & 1 → N(h t) & 1`, which trades a named series
+for `N` at the cost of a bigger argument and so reorders the termination
+measure to `(series count, non-N series, argument size, size)`. One
+genuinely **new** rule, not in 0043 and not bookkeeping: **`N-absorb`,
+`N(p) & m → m` wherever `m` vanishes with `p`** — the statement that `N`
+is a *guard, not a factor*, since `N(p)` is the whole universe exactly
+where anything derived from `p` is non-zero. Also new to 0042 §4's
+table: `N(! t) = N(t)` and `N(!ʰ t) = N(t)`, the `^` series being
+invertible and fixing 0. **Result: ten rules, no divergence in either
+pool** — 2996 random and 1137 structured terms explored to completion,
+all 22 canonical redexes firing their rule with exactly one normal form,
+soundness over 2615 + 6410 applications, termination strictly decreasing
+throughout. Honest limits: still graph search rather than a
+critical-pair proof; 63 of 1200 structured terms hit the node cap;
+still single-variable; and confluence now leans on two *strategy*
+conditions rather than orientation alone — ordinary priority rewriting,
+unique normal form, but a weaker object than unordered confluence. Open:
+whether `N-absorb` is a law of the schema rather than a repair (it reads
+like `N`'s analogue of distribution, and would belong in 0042 §2);
+whether `telescope`'s ordering can be removed by a representation in
+which cancellation is itself a rewrite; and two symbols, now with a
+targeted pool to generate from.
 
 
 
