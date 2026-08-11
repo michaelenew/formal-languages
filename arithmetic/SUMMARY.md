@@ -233,6 +233,12 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/canonicalising_T.py` — the elementary form, the
   complement-conjugacy bridge, both fixpoints and both telescopings,
   the dependence measurement, and T's tiles. Run directly.
+- `exploration/0042_the_series_schema.md` — the nine cells of the
+  series schema, the three universal laws, what the join decides, and
+  the closing composition table for {N, T, U, D}.
+- `output/the_series_schema.py` — the cells enumerated and identified,
+  the laws verified per cell, `N = U | D`, and the composition table.
+  Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1204,6 +1210,44 @@ T/succ circle can be broken over `{^, &, <<, N}` with neither series nor
 addition, `N` being the candidate unavailable when 0002 ran the locality
 argument; and whether 0040's window reading survives a non-shift symbol,
 since `b` is still a shift.
+
+**The series zoo is one schema, with its own rewrite rules (0042).**
+Every series in the corpus has the shape `S(x) = x ∘ σ(x) ∘ σ²(x) ∘ …`
+for a join `∘ ∈ {^, |, &}` and a shift `σ ∈ {a, b, h}`. Nine cells,
+enumerated: `(^,a) = !`, `(^,h) = !ʰ` suffix parity, `(|,a) = U`,
+`(|,h) = D` down-closure, `(&,b) = T`; `(^,b)` diverges, and `(|,b)`,
+`(&,a)`, `(&,h)` are constants. **Five non-trivial cells, and they are
+exactly the operators the corpus carries separately** — one construction
+with two parameters, not five primitives. **Three universal laws**,
+verified for every survivor and serving as the expansion, combination
+and cancellation rules: fixpoint `S(x) = x ∘ σ(S x)`, distribution
+`S(a ∘ b) = S(a) ∘ S(b)` over its OWN join and no other, and telescoping
+`S(x) ^ σ(S x) = the measure`. **Two further properties split by join,
+exclusively**: `^` measures x, is invertible, never idempotent (`x =
+S(x) ^ σ(S x)` IS its telescoping); `|` measures the extremal element
+and `&` the extremal gap, both idempotent and neither invertible. Filled
+in: `!`/`!ʰ` measure x, `U` the lowest set bit, `D` the highest set bit,
+`T` the lowest **zero** bit. **`N` is not a cell** — `N(x) = U(x) | D(x)`,
+verified — which is why it behaves unlike the rest and why its rules had
+to be found separately in 0038: combining two cells destroys the
+telescoping, since no single extremum survives. **The composition table
+for `{N, T, U, D}` closes**: every composite collapses to something
+already named, so the set is closed under composition — the property a
+terminating rewrite system wants. `N` absorbs on either side, `T` and `D`
+absorb each other, and exactly two entries move information rather than
+deleting it: `N(T x) -> N(x & 1)` and `T(U x) -> N(x & 1)`, both saying
+that `T(x)` is empty exactly when x's low bit is clear. **The resulting
+system** is expansion / combination / cancellation / idempotence (`|`
+and `&` only) / absorption, and every rule either reduces the number of
+series symbols or replaces a series by a measure, so a depth-counting
+measure decreases. **Confluence is the honest remaining gap** — the same
+one 0038 §6 left open, but the rule set is now finite, uniform and
+derived from the schema rather than assembled case by case, so
+critical-pair analysis is feasible. Also open: whether losing the
+telescoping is generic for joins of cells or special to `N`; and whether
+the `h`-side members `!ʰ` and `D`, which fall out of the schema but are
+absent from the corpus's operator list, are useful or merely formal.
+
 
 Open:
 
