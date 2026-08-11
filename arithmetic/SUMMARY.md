@@ -261,6 +261,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   elimination procedure verified as an exact scaling, the schema
   without `h`, the LSB-causality table, and 0044's suite re-run with
   `h` removed. Run directly.
+- `exploration/0046_the_primitive_basis.md` — eight primitive
+  operations, the split between algebra signature and rewrite
+  signature, and every operator worked on a bitstring with its
+  expansion beside it.
+- `output/the_primitive_basis.py` — constants as a/b chains, the
+  smaller `{1, a, ^}` basis, `Ω = N(b 0)`, the measures as
+  telescopings and as each other's complement, and the worked
+  examples. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
