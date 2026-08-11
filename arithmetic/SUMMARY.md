@@ -280,6 +280,15 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the ANF constant-folding correction, the lasso table, the
   head-to-head against the rewrite engine, and the `x^y` / `x+y` /
   `x*y` residual counts. Run directly.
+- `exploration/0048_canonicity_in_sentence_form.md` — the mask deleted,
+  `a` pushed to the leaves, the prefix analysis and its three rules, the
+  join deciding which rule each schema cell needs, and containment as
+  the threshold an ANF engine cannot cross.
+- `output/sentence_canonical_form.py` — mask-free ANF over the 0046
+  basis, `known_prefix` and `support_bound`, the eleven rules, the
+  prefix-depth measurement, the residue classifier, and the rule
+  census. Uses 0047's decision procedure only as an oracle. Run
+  directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1466,6 +1475,71 @@ this signature (the sharp form of "canonicity leaves the term
 language"); take addition into the counted tier of 0034–0036; and
 whether the guard count `k` can be reduced the way the machine merges
 states.
+
+**Canonicity in sentence form: the mask goes, containment is left
+(0048).** Two objections to 0047: `7` vs `1 ^ 6` was never a gap in the
+algebra — constants are not primitive (0046 §1) and that pair exists
+only because the engine carried an **integer mask** on every monomial —
+and the machine speaks to procedure where a sentence speaks to
+structure. Both hold. **Mask-free ANF**: a monomial is a set of atoms
+and the EMPTY monomial is `Ω` (the multiplicative unit, since
+`Ω & t = t`); a polynomial is a set of monomials and the empty one is
+`0`; atoms are `x`, `1`, and the unary operators. No integer appears.
+The load-bearing construction is that **`a` pushes to the leaves** — it
+is a homomorphism for *both* joins, since bit *i* of either side reads
+bit *i−1* of each argument — which makes **`a(Ω) = Ω ^ 1` a fact of
+construction rather than a constant evaluated at some width, and that
+is 0047 §5's entire width-bound family repaired**. Of 0047's seven
+laws, **four are then free** (`b(x) = a(x)^1`, `a(Ω) = Ω^1`, `7 = 1^6`,
+`a(Ω^x)·b(x) = 0`); the three that survive are all about the argument's
+low bits. **One syntactic analysis covers them**: `known_prefix(P, d)`,
+the 0047 machine table run over `{0, 1, unknown}` (checked on 288000
+bit-positions), feeding `settle`, `low-bit` and `confine` — where
+`settle` reads the prefix of an *argument* and `low-bit` reads bit 0 of
+a monomial's *factors*, the same analysis at opposite ends. **`settle`
+never fires above the argument's own shift depth** (measured: positions
+0–3 over 3000 terms, `a`-depth 2), which is what "bounded state" looks
+like in a sentence — the term carries its own bound. **Which KIND of
+rule a schema cell needs is read off its join alone**: `^` makes the
+two-element algebra a *group*, so nothing absorbs and no prefix ever
+settles `!` (or its identity measure) — only cancellation, i.e.
+telescope; `|` saturates at Ω and `&` annihilates at 0, and both settle.
+0042 gave one schema for the operators; this is one for their rules.
+**Eleven rules** (`settle`, `low-bit`, `confine`, `unit`, `absorb`,
+`shift-out`, `N-see-through`, `N-absorb`, `contain`, `collect`,
+`telescope`) against 0043's fourteen and 0044's ten, all 2284 sampled
+applications meaning-preserving. `fold` is gone — no constant domain —
+leaving only `unit`, a closed width-free table on `0` and `Ω`;
+`low-arg` became `confine`; `N-shift` split into `settle` (the `b`
+case) and `N-see-through` (the `a` case), which are different facts;
+and `telescope` had to be generalised to fire under a common factor.
+**The threshold is containment.** The schema carries an order,
+`T(t) ⊆ t ⊆ U(t) ⊆ N(t)`, with **`U(t)` the top of everything the
+schema builds from `t`** (measured over `t`, `!(t)`, `T(t)`, `U(t)`,
+`lowset(t)` and every `a`-shift; the exceptions are the predicted ones —
+`lowzero(t) ⊆ U(t^Ω)` is the dual, `N(t)` is above everything). Adding
+`contain` cuts unidentified pairs 36 → 19, **and the 19 survivors are
+also containments**, needing `A ⊆ B` with `B` compound (`T(t) ⊆ b(T t)`,
+`N(t&1) ⊆ U(t)`). So: **every gap that survives the mask-free
+representation is a containment, and containment is what an ANF engine
+cannot see on principle** — `⊆` reads `A & B = A`, ANF is built on `^`,
+`^` makes the algebra a group, and a group admits no compatible order.
+That is 0045's Post argument from the other side: there only the
+ordering direction loses information, here only the ordering direction
+is invisible to the canonical form. Limits: the rule set is **not**
+complete and 0044's divergence search has not been re-run over this
+representation, so confluence does not carry over; `contain` implements
+a deliberately conservative atom-against-atom fragment of `⊆`, which is
+what the 19 survivors measure; single variable; the machine is used
+only as an oracle. Two mid-build claims corrected against measurement:
+that the representation absorbs `low-bit` (it absorbs only the shift
+half — `S(t)&1 = t&1` is a real rule), and that `lowset`/`lowzero`
+never settle (they do, at the same bit their series does; only `!` never
+does). Open: give containment a representation — a normal form keeping
+monomials in a `⊆`-antichain would absorb `contain` the way ANF absorbs
+commutativity; prove `U(t)` is the top of the orbit; re-run the
+divergence search; and whether `!(Ω)`, which has no finite name over
+`{1, a, ^, &}`, deserves a symbol.
 
 
 
