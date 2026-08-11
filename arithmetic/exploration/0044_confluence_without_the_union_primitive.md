@@ -203,7 +203,120 @@ could open.
   priority rewriting and the normal form is still unique, but it is a
   weaker object than an unordered confluent system.
 
-## 9. Open
+## 9. The rule set, in canonical form and priority order
+
+No `|` anywhere: joins are `^` and juxtaposition, `0` is the empty set
+(true), `Ω` the universe, `1` the bit-0 constant. `t`, `p`, `m` are
+polynomials; `c` a constant. Per 0042 §1, each series `S` carries a join
+`∘_S`, a shift `σ_S` and a measure `m_S`:
+
+| S | `∘_S` | `σ_S` | `m_S(t)` |
+|---|---|---|---|
+| `!` | `^` | `a` | `t` |
+| `!ʰ` | `^` | `h` | `t` |
+| `U` | `\|` | `a` | lowest set bit |
+| `D` | `\|` | `h` | highest set bit |
+| `T` | `&` | `b` | lowest zero bit |
+
+The priority is three tiers, and each tier's condition is just
+*exhaustion of the tier above*.
+
+---
+
+### Tier 0 — the constructors, not rules
+
+`xor` and `conj` are total functions into normal form, so associativity,
+commutativity, idempotence, units, annihilators and constant folding
+never appear as rewrites. This tier is where six of 0043's fourteen
+went.
+
+### Tier 1 — the local rules (unordered among themselves)
+
+```
+fold        S(c) -> S c        σ(c) -> σ c        m(c) -> m c
+
+absorb      N(N t) -> N t      N(U t) -> N t      N(D t) -> N t
+            N(! t) -> N t      N(!ʰ t) -> N t     N(T t) -> N(t1)
+            U(U t) -> U t      U(N t) -> N t      U(D t) -> N t
+                                                  U(T t) -> N(t1)
+            D(D t) -> D t      D(N t) -> N t      D(U t) -> N t
+                                                  D(T t) -> T t
+            T(T t) -> T t      T(N t) -> N t      T(D t) -> D t
+                                                  T(U t) -> N(t1)
+
+shift-out   S(σ_S t) -> σ_S(S t)
+
+low-bit     U(t)1 -> t1        T(t)1 -> t1        !(t)1 -> t1
+            D(t)1 -> N(t)1     h(D t)1 -> N(h t)1
+            N(t)1 -> t1                              [t ⊆ 1]
+            a(t)1 -> 0         b(t)1 -> 1
+
+low-arg     D(t1) -> t1        T(t1) -> t1        U(t1) -> N(t1)
+
+N-absorb    N(p) m -> m                              [m vanishes with p]
+
+N-lowbit    N(N(t)1) -> N(t)
+
+N-shift     N(a t) -> N(t)     N(b t) -> Ω
+```
+
+`m vanishes with p` is decided syntactically: every operator is
+zero-preserving except `b`, so a monomial vanishes with `p` as soon as
+one of its atoms is built from `p` — plus the one case recursion cannot
+see, `T(t)` vanishing with `t1` (0042 §4's `N(T t) = N(t1)`).
+
+### Tier 2 — combination, once tier 1 is exhausted on the arguments
+
+```
+collect     S(a) ∘_S S(b) -> S(a ∘_S b)      [S(a), S(b) both in normal form]
+```
+
+Written out, with `∘_S` expanded — this is what dropping the `|`
+primitive costs and buys:
+
+```
+!           !(a) ^ !(b)                  ->  !(a ^ b)
+!ʰ          !ʰ(a) ^ !ʰ(b)                ->  !ʰ(a ^ b)
+U           U(a) ^ U(b) ^ U(a)U(b)       ->  U(a ^ b ^ ab)
+D           D(a) ^ D(b) ^ D(a)D(b)       ->  D(a ^ b ^ ab)
+T           T(a)T(b)                     ->  T(ab)
+```
+
+The `|` cells need a **three-monomial** match, which is exactly why
+random terms almost never present one.
+
+### Tier 3 — cancellation, once tiers 1 and 2 are exhausted everywhere
+
+```
+telescope   S(t) ^ σ_S(S t) -> m_S(t)
+```
+
+```
+!           !(t)  ^ a(!(t))    ->  t
+!ʰ          !ʰ(t) ^ h(!ʰ(t))   ->  t
+U           U(t)  ^ a(U(t))    ->  lowset(t)
+D           D(t)  ^ h(D(t))    ->  highset(t)
+T           T(t)  ^ b(T(t))    ->  lowzero(t)
+```
+
+Note what canonical form exposes: **telescoping is an `^` pattern for
+every series, whatever its own join.** Cancellation does not happen in
+the series' join — it happens in the base. That is the structural reason
+this rule alone has to be ordered against the base algebra rather than
+against the other rules.
+
+### The measure
+
+Strictly decreasing on every rule above, lexicographic:
+
+```
+(series count, non-N series count, total series-argument size, size)
+```
+
+`collect` cuts the first, the `D → N` low-bit rules the second,
+`shift-out` the third, `fold` the fourth.
+
+## 10. Open
 
 1. **Is `N-absorb` derivable?** It arrived as a completion round, but
    §6 reads like a law of the schema rather than a repair. If it is
