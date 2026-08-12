@@ -55,6 +55,9 @@ ZERO = frozenset()
 OMEGA = frozenset([frozenset()])            # the empty monomial is the unit
 ONE = frozenset([frozenset([("one",)])])
 X = frozenset([frozenset([("x",)])])
+Y = frozenset([frozenset([("y",)])])
+VARS = ("x", "y")
+LEAF = ("x", "y", "one")
 
 SERIES = {"!": ("^", "a"), "U": ("|", "a"), "T": ("&", "b")}
 MEASURE = {"!": None, "U": "lowset", "T": "lowzero"}
@@ -138,8 +141,8 @@ def to_term(poly):
     for atoms in sorted(poly, key=lambda m: sorted(map(str, m))):
         piece = oracle.OMEGA
         for kind, *rest in sorted(atoms, key=str):
-            if kind == "x":
-                factor = oracle.var("x")
+            if kind in VARS:
+                factor = oracle.var(kind)
             elif kind == "one":
                 factor = oracle.ONE
             else:
@@ -158,7 +161,7 @@ def render(poly) -> str:
             pieces.append("Ω")
             continue
         pieces.append("".join(
-            "x" if kind == "x" else "1" if kind == "one"
+            kind if kind in VARS else "1" if kind == "one"
             else f"{kind}({render(rest[0])})"
             for kind, *rest in sorted(atoms, key=str)))
     return " ^ ".join(pieces)
@@ -170,7 +173,7 @@ def size(poly) -> int:
     for atoms in poly:
         total += 1
         for kind, *rest in atoms:
-            total += 1 if kind in ("x", "one") else 1 + size(rest[0])
+            total += 1 if kind in LEAF else 1 + size(rest[0])
     return total
 
 
@@ -228,7 +231,7 @@ def _atom_prefix(element, depth: int) -> tuple:
     """One atom's known prefix -- the machine table of 0047 §2, run over
     {0, 1, unknown} instead of over bits."""
     kind, *rest = element
-    if kind == "x":
+    if kind in VARS:
         return (None,) * depth
     if kind == "one":
         return tuple(1 if index == 0 else 0 for index in range(depth))
@@ -338,7 +341,7 @@ def _atom_bound(element):
     kind, *rest = element
     if kind == "one":
         return 1
-    if kind == "x":
+    if kind in VARS:
         return None
     inner = support_bound(rest[0])
     if kind == "a":
@@ -398,7 +401,7 @@ def rewrites(poly, depth: int = PREFIX_DEPTH):
         rest = _monomial(frozenset(atoms))
         for element in atoms:
             kind, *carried = element
-            if kind in ("x", "one"):
+            if kind in LEAF:
                 continue
             argument = carried[0]
             others = conj(_monomial(frozenset(atoms - {element})), OMEGA)
@@ -507,7 +510,7 @@ def _under_U(element, argument):
     `U(t ^ Ω)`, not under `U(t)`.
     """
     kind, *rest = element
-    if kind in ("x", "one"):
+    if kind in LEAF:
         return frozenset([frozenset([element])]) == argument
     if kind == "a":
         return all(len(m) == 1 and _under_U(next(iter(m)), argument)
@@ -580,7 +583,7 @@ def _sole_atom(poly):
     if len(atoms) != 1:
         return None
     (element,) = atoms
-    return None if element[0] in ("x", "one") else element
+    return None if element[0] in LEAF else element
 
 
 def _peel_shift(poly, shift):
@@ -622,8 +625,8 @@ def _atom_vanishes(element, base):
     kind, *rest = element
     if kind == "one":
         return False
-    if kind == "x":
-        return base == X
+    if kind in VARS:
+        return base == frozenset([frozenset([element])])
     if atom(kind, rest[0]) == base:
         return True
     if kind == "lowzero":
@@ -859,7 +862,7 @@ def shift_depth(poly) -> int:
     best = 0
     for atoms in poly:
         for kind, *rest in atoms:
-            if kind in ("x", "one"):
+            if kind in LEAF:
                 continue
             inner = shift_depth(rest[0])
             best = max(best, inner + (1 if kind == "a" else 0))

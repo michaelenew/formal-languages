@@ -297,6 +297,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   down-set closure check, the derived containment relation with its
   soundness check, the boundary search and classification, the
   join-cost table, and the rule-shape demonstration. Run directly.
+- `exploration/0050_expand_and_add.md` — the fixpoint law run forward
+  as the canonical form, containment as the statement `A ^ AB`, and
+  addition as the `|` cell over a guarded shift.
+- `output/expand_and_add.py` — expansion with the measures unfolded,
+  the telescope/collect separation, the per-join cost table, the carry
+  fixpoint and its unfolding, `succ` as the y=1 case, and the three
+  universal laws for the guarded cell. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1609,6 +1616,63 @@ cells); and whether 84% is a plateau or whether a complete
 join-recovery procedure exists at exponential cost — which would put
 this boundary exactly on 0019(d)'s and make the obstacle complexity
 rather than expressiveness.
+
+**Expand instead of collect; addition is a guarded cell (0050).** Two
+corrections and one construction. **Containment is not a relation
+needing a derivation system — it is a statement, `A ^ AB`** ("A is empty
+where it misses B"), and a canonical form that sends true statements to
+0 handles it with no order theory. 0048 and 0049 both built machinery
+that was not needed. **Expansion, not collection**: 0043 picked
+`collect` before there was a canonical form to judge it against; running
+0042 §2's fixpoint law FORWARD (`S(t) -> t ∘ σ_S(S t)`) and letting ANF
+cancel gives **all three telescopings at one unfolding** — `!(t)^a(!t)`,
+`U(t)^a(U t)`, `T(t)^b(T t)`. Two things had to be right: the
+**measures must unfold too** (`lowset(t) = t & ¬a(U t)`,
+`lowzero(t) = ¬t & b(T t)`, both verified), and expansion must be
+**top-level only**, since an occurrence inside `a(…)` that unfolds to a
+different depth stops cancelling. **`collect` is NOT subsumed at any
+depth** — expanding `!(x)^!(y)` and `!(x^y)` leaves the same question
+one shift up forever — because it is 0042 §2's *second* law,
+distribution, independent of the fixpoint; 0044 ordered the two against
+each other as rivals and they are not the same fact. As a canonical
+form with both rules deleted: 626 terms, **0** unsound identifications,
+**15** unidentified equal pairs against 0048's 19 — better, with two
+fewer rules. **Every containment 0049 needed goes to 0**, including
+`T(t) ^ T(t)a(T t) ^ T(t)1` at depth 1, which is exactly the identity
+**0049 §6 called the wall**; it was a wall only because `contain` was
+written as a factor-drop between two atoms when the statement is a
+polynomial. So 0049's conclusion is corrected: the obstacle was the
+rule shape, not ANF's blindness to order. **Cost by join** (monomials in
+k terms of a series): `&` is 1, `^` is k, `|` is 2^k−1 — the same number
+0049 §5 found, now as the price of expanding rather than of failing to
+recognise. **Addition**: `p = x^y`, `g = x&y`, **`C = g | (p & a(C))`**,
+**`x + y = p ^ a(C)`** — verified exactly on 4000 pairs at width 24,
+using nothing but `^`, `&`, `|`, `a`. That is 0042 §1's schema shape
+with the shift widened: `C = ⋁_k σ_p^k(g)` for `σ_p(z) = p & a(z)`, so
+**addition is the `|` cell over a guarded shift**, and the schema's own
+two shifts are the constant cases of one affine family
+`σ_{p,q}(z) = (p & a(z)) ^ q` with `a = σ_{Ω,0}`, `b = σ_{Ω,1}`. `U` is
+the p=Ω member of the family the carry already lives in. **`succ` is the
+y=1 case**: `C(x,1) = T(x)` for every x < 2^14, so
+`x+1 = (x^1) ^ a(T x) = x ^ b(T x)` — the trailing-ones mask is the
+carry set of adding one, and 0041's "neither T nor succ is prior" is
+that identity read both ways. **All three universal laws survive for the
+guarded cell** (fixpoint by definition; distribution over the base with
+the guard fixed, so `collect` applies unchanged; telescoping with
+measure `g & ¬σ_p(C)`, which at p=Ω, g=t is `lowset(t)`) — so it is a
+full member of the schema, not a degenerate one. Limits: 15-vs-19 is
+sampled, neither system complete; **termination is not established** for
+expand-and-cancel — it is a canonicalisation procedure with a depth
+parameter, not a terminating rewrite system; addition is verified
+numerically and by unfolding, not proved, and only for the `|` cell; the
+affine family is stated from three data points. Open: redo 0042's
+nine-cell table over affine shifts (does guarding fix the divergent
+`(^, b)` cell?); terminate the expansion; and multiplication — 0047 §7
+put the wall at unbounded state and located it at `x·y`, which with a
+guarded shift is a sum of `2^i`-shifted copies guarded by y's bits, the
+same shape one level up, so whether that is a second widening or where
+the family genuinely stops is the sharp question and is where this
+workstream's boundary should now be tested.
 
 
 
