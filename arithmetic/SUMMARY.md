@@ -304,6 +304,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the telescope/collect separation, the per-join cost table, the carry
   fixpoint and its unfolding, `succ` as the y=1 case, and the three
   universal laws for the guarded cell. Run directly.
+- `exploration/0051_termination_and_confluence.md` — the multiplicative
+  reduction order, the L-divergence and `!(x&1)` certificates, the
+  infinite path, the no-normal-form theorem, the two completion rules,
+  and the stuck-truth demonstration.
+- `output/termination_and_confluence.py` — the interpretation and its
+  lemma grid, the exhaustive divergence scan, the locality checks, the
+  peak census before/after repair, N-fold and annihilate, and the
+  stuck-truth certificate. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1686,6 +1694,65 @@ guarded shift is a sum of `2^i`-shifted copies guarded by y's bits, the
 same shape one level up, so whether that is a second widening or where
 the family genuinely stops is the sharp question and is where this
 workstream's boundary should now be tested.
+
+**Expand-and-cancel: not terminating, not confluent — both theorems
+(0051).** Asked for hard proof, computationally verified; both
+properties FAIL, each with a finite machine-checked certificate, and
+each failure is structural. **The inner loop terminates, by a real
+reduction order**: counting measures provably cannot work (`shift-out`'s
+b-case rewrites one atom into the two-monomial `a(S t) ^ 1`, duplicating
+every sibling — 0043/0044/0048's measured terminations sampled around
+this), but a **multiplicative interpretation** — monomial = product of
+atom weights, `w(S(P)) = 2K^(W(P)+1)`, `w(N(P)) = K^(W(P)+1)`, K = 2048
+— absorbs duplication natively; every rule reduces to a "K^linear beats
+linear" root inequality, checked exactly for n ≤ 600, audited on 3272
+computable applications. **The inner loop is NOT confluent**: L
+terminates, so complete normal-form sets are computable exactly, and
+`1x | U(1x)` reaches both `N(1x)` and `N(1x) ^ 1x ^ N(1x)·1x`, both
+irreducible — 40 of 2918 scanned terms diverge; by Newman, local
+confluence fails. Two corrections to 0048 fell out: its harness
+**silently skipped divergent terms** (`if capped or len(forms) != 1:
+continue`), and the scan caught a divergent pair that was not
+semantically equal, exposing an **unsound rule 0048 shipped**:
+`T(lowzero t) → lowzero(t&1)` — the true law is `lowzero(t) & 1`, mask
+OUTSIDE, which the absorb table cannot express; wrong at `t = Ω`; entry
+removed, neighbours re-audited sound. **Expansion does not terminate**:
+the reduction graph of `!(x)` is a SINGLE INFINITE PATH (`X_k = ⊕a^i(x)
+^ a^k(!x)`, checked to k = 40: no local redex, exactly one expansion,
+sizes strictly increase) — no strategy escapes because there is never a
+choice. **Worse, weak normalization fails**: series-free N-free terms
+are d-local (bit i depends on window `[i−d, i]`, d = a-depth; 7.6M
+window checks), no series or measure is d-local for any d (witnesses at
+every d ≤ 8), and N-guards do not help (on `x_r = 1<<r` the flags are
+eventually constant, so a flat-plus-guards term is local on a tail of
+the family, and U separates inside a shared window). Every normal form
+is flat-plus-guards, so **`U(x)` has no normal form at all** —
+non-termination is 0002 Prop 4's "the series is necessary" promoted to
+the whole rewrite system. **Expand-and-cancel is NOT confluent**:
+`!(x&1) → N(x&1)` by confine, and `→* x&1 ^ a(N(x&1))` by
+expand-then-reduce — both irreducible, distinct, equal at every width.
+Diagnosis exact: `N` is the one operator with no fixpoint law (0042 §3),
+so expansion cannot chase what confine mints; **the failure of
+confluence IS the failure of N to have an expansion, made local** —
+0047's "N is the guard", in sentence form: N is where determinism dies.
+**Knuth–Bendix on the wreckage** surfaced two missing rules, not
+guessed: `N-fold` (`C·p ^ C·a(N p) → C·N(p)`, p confined to bit 0 —
+N's fixpoint on the one domain where it has one, a contraction where an
+expansion was impossible) and `annihilate` (a monomial with finite
+support bound and all-zero known prefix is 0 — expansion of measures on
+constants mints `a(a(1))·a(1)` and nothing else removed it). Both sound,
+both fit the order; census 46/471 unjoined → 23/477, the certificate
+and the stuck-truth example heal; completion NOT run to closure, so the
+repaired system's confluence is a conjecture — the theorem is the
+negative one. **Consequence**: reaching 0 on any path is a proof, but a
+true statement can also reduce to a stuck nonzero term (`!(1x) ^ N(1x)`
+→ 0 by confine, →* `N(1x) ^ a(N(1x)) ^ 1x` irreducible by
+expand-first), so "normalize and read off" is impossible and "search
+for 0" is forced — 0050's `decides` retro-justified from first
+principles. Open: run completion to closure; test confluence of the
+N-free fragment (every certificate ingredient needs an N-minting rule);
+whether 0047's per-guard emission flag can be internalized as a bounded
+family of N-folds; weight-aware search priority.
 
 
 

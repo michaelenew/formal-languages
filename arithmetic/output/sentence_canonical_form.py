@@ -362,11 +362,16 @@ ABSORB = {("N", "N"): ("N", False), ("N", "U"): ("N", False),
           ("T", "T"): ("T", False), ("T", "N"): ("N", False),
           ("T", "U"): ("N", True),
           # the measures are single bits, so `lowset` is the identity on
-          # them and `T` cannot shrink them further
+          # them, and `T` of a single bit keeps it only at position 0.
+          # NOTE: ("T", "lowzero") is deliberately ABSENT. The sound law
+          # is `T(lowzero t) = lowzero(t) & 1` -- mask OUTSIDE -- which
+          # this table cannot express (its low flag masks the argument),
+          # and the argument-masked version `lowzero(t & 1)` is wrong at
+          # t = Omega. 0051's confluence audit caught that unsound entry
+          # after 0048 shipped it.
           ("lowset", "lowset"): ("lowset", False),
           ("lowset", "lowzero"): ("lowzero", False),
-          ("T", "lowset"): ("lowset", True),
-          ("T", "lowzero"): ("lowzero", True)}
+          ("T", "lowset"): ("lowset", True)}
 
 RULE_NAMES = ("settle", "confine", "low-bit", "unit", "absorb",
               "shift-out", "N-see-through", "N-absorb", "contain",
