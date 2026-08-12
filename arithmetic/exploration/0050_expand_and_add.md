@@ -41,9 +41,11 @@ lowset(t)  = t & ¬a(U t)          lowzero(t) = ¬t & b(T t)
 
 (each is its own telescoping solved for the measure; both verified),
 because otherwise expansion stops one step short of the identity it is
-reaching for. And expansion must be **top-level only** — an occurrence
-inside `a(…)` must stay put, or the two copies in a telescoping pair
-unfold to different depths and stop cancelling.
+reaching for. And expansion must be **positional** — one occurrence
+unfolded at a time, with the search picking which. A telescoping pair
+needs the shifted copy held fixed while the bare one unfolds; a stranded
+`a(x) & lowset(x)` needs the unfolding to happen *under* the shift. No
+uniform pass does both.
 
 **`collect` is NOT subsumed, at any depth**, and that is worth knowing.
 Expanding `!(x) ^ !(y)` gives `x ^ y ^ a(!x) ^ a(!y)`; expanding
@@ -183,9 +185,11 @@ guarded cell is a **full member** of the schema, not a degenerate one.
 
 ## 5. Honest limits
 
-- §1's "15 vs 19" is one generator at depth 3, expansion depth 2, and
-  both numbers count *sampled* pairs — neither system is complete. The
-  15 survivors still look containment-shaped (stray `a(U(x))` factors).
+- §1's "80 of 82" is one generator at depth 3 over a sampled pool, with
+  a bounded search (3 unfolding rounds, capped normal-form search). It
+  measures reach on that sample, not completeness. Raising the search
+  budget does not move the 2 survivors, which is why they are attributed
+  to the missing `collect` rather than to the budget.
 - Termination is **not** established for expand-and-cancel. Expansion
   grows terms; here it is applied a bounded number of times and the
   local rules run to a normal form in between. Whether some bound always
