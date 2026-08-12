@@ -312,6 +312,16 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   lemma grid, the exhaustive divergence scan, the locality checks, the
   peak census before/after repair, N-fold and annihilate, and the
   stuck-truth certificate. Run directly.
+- `exploration/0052_the_products_schema.md` — multiplication as the
+  `+`-join of the guarded diagonal family, the four products, the
+  unary schema as the Ω-column, the `+` row of 0042's table, lassos as
+  odd-denominator rationals, and the wall re-measured in all four
+  joins.
+- `output/the_products_schema.py` — the guarded family and the four
+  products against independent definitions, the Ω-column and b-fill
+  checks, the `+`-row fixpoints, the rational lassos, diagonal
+  distribution, N-multiplicativity, the 3→2 majority reduction, and
+  the residual tables. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1753,6 +1763,58 @@ principles. Open: run completion to closure; test confluence of the
 N-free fragment (every certificate ingredient needs an N-minting rule);
 whether 0047's per-guard emission flag can be internalized as a bounded
 family of N-folds; weight-aware search priority.
+
+**Multiplication is a series, and it brings a products schema (0052).**
+Asked: express multiplication by infinite series of existing primitives
+and find the new useful series. The decomposition is forced (peeling
+y's low bit needs the banned right shift), and it is **one new
+constructor**: the guarded diagonal family `t_i = a^i(x) & N(a^i(1)y)`
+— a two-track shift advancing accumuland and probe together, with `N`
+as the 0/Ω scalar. Then **`x·y = Σ⁺_i t_i`** (exact, exhaustive to
+128×128 and 4000 wide pairs), with Σ⁺ the 0050 carry, so every carry
+inside is the guarded-shift `|` cell; multiplication by a constant
+needs no `N` (guards evaluate; `x·a(y) = a(x·y)`, `x·b(y) = a(x·y)+x`).
+**Folding the SAME family with each join gives four products**, each
+verified against an independent definition: `^` → carryless product
+(GF(2) convolution), `|` → Minkowski sum `{i+j}`, `&` → erosion (guard
+dualises: absent terms are Ω), `+` → multiplication — dilation/erosion
+are mathematical morphology's pair, and `·` sits beside them as the
+fourth join. **0042's unary schema is the y = Ω column**: `x⊗Ω = !(x)`,
+`x⊞Ω = U(x)`, `x⊖Ω = 0` (the "dead" cell is erosion by an infinite
+structuring set), `x·Ω = −x` — and the b-fill erosion at Ω is `T(x)`.
+**The `+` join completes 0042's nine-cell table with a fourth row**
+whose fixpoints solve algebraically: `S = x + a(S) ⟹ S = −x`
+(negation), `S = x + b(S) ⟹ S = ¬x` (complement) — a group join like
+`^`, telescoping exact, and complement becomes a CELL where it
+previously needed `Ω = N(b 0)`. Since `Ω = −1`, the tiers meet in the
+2-adics: **lassos are the odd-denominator rationals** (`(10)^ω = −1/3`,
+`(01)^ω = −2/3`, verified as `q·pattern ≡ p mod 2^24`), so the constant
+tier is closed under all four products. **The laws lift**: distribution
+is diagonal in the x track (4×4 table measured — each product over its
+own join and no other, 0042 §2 verbatim; erosion anti-distributes in y,
+the morphology duality); `1` is every product's unit; `a` is a
+homomorphism in each argument; `⊗`, `⊞`, `·` commute and `⊖` does not;
+and **`N` is multiplicative** — `N(x P y) = N(x)&N(y)` for the three
+domain products, a ring-homomorphism law for the operator 0051 proved
+cannot be expanded. **The majority walks in as the family's carry**:
+`x+y+z = (x^y^z) + a(xy ^ xz ^ yz)` — Post's monotone self-dual clone
+as the 3-ary carry, the Wallace-tree layer; the candidate named series
+for a coalescing `·`-system are `⊗` (the linear layer) and the
+majority layers. **The wall re-measured**: all four products cross
+bounded state at the same measured rate (4^p residuals at these
+parameters), so the wall is unary-series vs binary-products in every
+join, not `+` vs `·`; and every constant slice returns inside —
+`x → c·x` has exactly `c` residual classes for odd c. The decidable
+tier in product language: the schema, its products with one argument a
+lasso, and their compositions. Limits: numeric verification at widths
+10–26 plus exact algebra; no asymptotic claim on the residual tie; no
+rewrite system built — deliberately, per 0050/0051's coalesce-not-
+expand lesson. Open: the coalescing system for `·` (symbols: `⊗` and
+the majority layers; first laws: diagonal distribution and
+N-multiplicativity); the b-fill product row (borrows/subtraction);
+guarded products toward division and the counted tier; and the 2-adic
+reading (`subsets of ℕ = ℤ₂, statements = zero tests`) as an
+organizing principle for the corpus.
 
 
 
