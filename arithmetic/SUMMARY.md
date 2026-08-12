@@ -1634,10 +1634,23 @@ different depth stops cancelling. **`collect` is NOT subsumed at any
 depth** — expanding `!(x)^!(y)` and `!(x^y)` leaves the same question
 one shift up forever — because it is 0042 §2's *second* law,
 distribution, independent of the fixpoint; 0044 ordered the two against
-each other as rivals and they are not the same fact. As a canonical
-form with both rules deleted: 626 terms, **0** unsound identifications,
-**15** unidentified equal pairs against 0048's 19 — better, with two
-fewer rules. **Every containment 0049 needed goes to 0**, including
+each other as rivals and they are not the same fact. As a **sentence test** —
+the corpus's own criterion, "does `A ^ B` reduce to 0", not "do two
+terms share a normal form" — with both rules deleted: **82 true
+statements, 80 reduce to 0**, and the 2 that do not are `T(T x)·T(b x)`
+shapes needing `collect`. So deleting `collect` costs 2 of 82 and
+nothing else is missing. **Three corrections to an earlier draft, all
+defects in the procedure and none in the algebra**: expansion as a
+uniform pass is the wrong operation (telescoping needs the shifted copy
+held FIXED while the bare one unfolds; stranded terms like
+`a(x) & lowset(x)` need an unfolding UNDER the shift; no single pass
+does both, so expansion must be a **positional rewrite**); `a` is a
+homomorphism so expansion must push through it, and leaving `a(U t)`
+opaque stranded `a(x) & lowset(x) = 0`; and a **capped search is not a
+failed search** — every rule preserves meaning, so reaching 0 on one
+path is a proof, and discarding capped results hid the rest. An earlier
+draft's "15 unidentified pairs" measured those three bugs, not the
+sentence form. **Every containment 0049 needed goes to 0**, including
 `T(t) ^ T(t)a(T t) ^ T(t)1` at depth 1, which is exactly the identity
 **0049 §6 called the wall**; it was a wall only because `contain` was
 written as a factor-drop between two atoms when the statement is a

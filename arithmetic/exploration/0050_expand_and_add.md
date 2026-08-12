@@ -52,10 +52,38 @@ one shift up, forever. `collect` is 0042 §2's **second** law,
 distribution, and it is independent of the fixpoint. 0044 ordered the
 two against each other as rivals; they are not the same fact.
 
-**As a canonical form**, with both `collect` and `telescope` deleted and
-expansion in their place: 626 terms, **0** pairs sharing a form without
-being equal, and **15** equal pairs with different forms — against
-0048's 19. Better, and with two fewer rules.
+**As a sentence test** — the corpus's own criterion, "does the statement
+reduce to `0`", not "do two terms share a normal form" — with both
+`collect` and `telescope` deleted and expansion in their place:
+
+```
+82 true statements `A ^ B` built from equal pairs
+80 reduce to 0            2 do not
+```
+
+and the two that do not are both `T(T x)·T(b x)` shapes needing
+`collect`, which §1 showed expansion does not subsume. So the cost of
+deleting `collect` is 2 of 82, and nothing else is missing.
+
+**Three corrections to an earlier draft of this file**, all of them
+defects in the *procedure*, none in the algebra or the primitives:
+
+1. Expansion as a uniform pass is the wrong operation. Telescoping needs
+   the shifted copy held **fixed** while the bare one unfolds; stranded
+   terms like `a(x) & lowset(x)` need the opposite, an unfolding
+   **under** the shift. No single pass does both. Expansion has to be a
+   **positional rewrite** — unfold one occurrence, let the search pick
+   which — like every other rule.
+2. `a(U t)` must be reachable. `a` is a homomorphism, so expansion
+   pushes through it; leaving it opaque stranded `a(x) & lowset(x)`,
+   which is `0`.
+3. A capped search is not a failed search. `normal_forms` reporting
+   `capped` means it stopped early, not that its results are wrong —
+   every rule preserves meaning, so reaching `0` on one path is a proof.
+   Discarding capped results as unusable hid the last of the misses.
+
+An earlier draft reported "15 unidentified pairs" as if it measured the
+sentence form. It measured those three bugs.
 
 ## 2. Containment is just a statement
 

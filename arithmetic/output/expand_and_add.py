@@ -82,9 +82,7 @@ def _expand_atom(element):
     kind, *rest = element
     if kind in S.LEAF:
         return frozenset([frozenset([element])])
-    inner = rest[0]                 # arguments are NOT expanded: an
-    # occurrence inside `a(...)` must stay put, or the two copies in a
-    # telescoping pair unfold to different depths and stop cancelling
+    inner = rest[0]
     if kind in S.SERIES:
         join, shift = S.SERIES[kind]
         return S.apply_join(join, inner,
@@ -94,6 +92,53 @@ def _expand_atom(element):
     if kind == "a":
         return S.shift_a(inner)
     return S._raw_atom(kind, inner)
+
+
+def _unfold_atom(element):
+    """One occurrence, unfolded by its own law. None if there is none."""
+    kind, *rest = element
+    if kind in S.SERIES:
+        join, shift = S.SERIES[kind]
+        return S.apply_join(join, rest[0],
+                            S.apply_shift(shift,
+                                          S._raw_atom(kind, rest[0])))
+    if kind in MEASURE_EXPANSION:
+        return MEASURE_EXPANSION[kind](rest[0])
+    return None
+
+
+def expansions(poly):
+    """Every ONE-occurrence unfolding, including under a shift.
+
+    A uniform pass cannot do this job. Telescoping needs the shifted
+    copy held FIXED while the bare one unfolds -- expand both and
+    `!(t) ^ a(!t)` stops cancelling. Stranded terms like
+    `a(x) & lowset(x)` need the opposite, an unfolding *under* the
+    shift. So expansion is a positional rewrite like every other rule,
+    and the search picks the position.
+    """
+    out = []
+    for atoms in poly:
+        rest = frozenset([frozenset(atoms)])
+        for element in atoms:
+            others = conj(frozenset([frozenset(atoms - {element})]), OMEGA)
+            for replacement in _atom_expansions(element):
+                out.append(xor(poly, xor(rest, conj(others, replacement))))
+    return out
+
+
+def _atom_expansions(element):
+    kind, *carried = element
+    if kind in S.LEAF:
+        return []
+    found = []
+    unfolded = _unfold_atom(element)
+    if unfolded is not None:
+        found.append(unfolded)
+    if kind == "a":                      # `a` is a homomorphism: push in
+        for inner in expansions(carried[0]):
+            found.append(S.shift_a(inner))
+    return found
 
 
 def _reduced(poly):
@@ -444,3 +489,82 @@ if __name__ == "__main__":
     import sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     run_verification_suite()
+
+
+# ---------------------------------------------------------------------
+# 9. the sentence test: does a true statement reduce to 0?
+# ---------------------------------------------------------------------
+
+def _reaches_zero(poly, node_cap=6000):
+    """Did any rewrite path reach 0?
+
+    `capped` means the search stopped early, NOT that its results are
+    wrong. Every rule preserves meaning, so finding `0` on one path is a
+    proof whether or not the rest of the graph was explored. Treating
+    `capped` as failure is what hid the last of the misses.
+    """
+    forms, _ = S.normal_forms(poly, node_cap=node_cap)
+    return ZERO in forms
+
+
+def decides(statement, rounds=3, cap=400):
+    """Search reduce-and-unfold for `0`.
+
+    The corpus's criterion is not "do two terms have the same normal
+    form" -- it is "does the statement reduce to 0". `A = B` is the
+    statement `A ^ B`, and `A ⊑ B` is `A ^ AB`, so one test covers both.
+    """
+    if _reaches_zero(statement):
+        return True
+    frontier = {_reduced(statement)}
+    frontier.discard(None)
+    for _ in range(rounds):
+        if ZERO in frontier:
+            return True
+        nxt = set(frontier)
+        for form in frontier:
+            for grown in expansions(form):
+                if _reaches_zero(grown):
+                    return True
+                reduced = _reduced(grown)
+                if reduced is not None:
+                    nxt.add(reduced)
+                if len(nxt) > cap:
+                    break
+        frontier = nxt
+    return ZERO in frontier
+
+
+def verify_true_statements_reduce_to_zero(trials=260, seed=20260915,
+                                          rounds=3) -> None:
+    """The completeness measurement, in sentence form."""
+    without_collect_and_telescope()
+    generator = random.Random(seed)
+    pool = []
+    for index in range(trials):
+        builder = S.random_poly if index % 2 else S.structured_poly
+        pool.append(builder(generator, 3))
+    import itertools
+    true, decided, missed = 0, 0, []
+    groups = {}
+    for poly in pool:
+        groups.setdefault(S._fingerprint(poly), []).append(poly)
+    for members in groups.values():
+        for left, right in itertools.combinations(members[:4], 2):
+            statement = xor(left, right)
+            try:
+                if not equal(statement, ZERO):
+                    continue
+            except RuntimeError:
+                continue
+            true += 1
+            if decides(statement, rounds):
+                decided += 1
+            else:
+                missed.append(render(statement))
+    print(f"  {true} true statements `A ^ B` built from equal pairs")
+    print(f"  {decided} reduce to 0 by reduce-and-unfold ({rounds} rounds)")
+    print(f"  {len(missed)} do not")
+    for shown in sorted(missed, key=len)[:6]:
+        print(f"    {shown}")
+    return missed
