@@ -322,6 +322,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   checks, the `+`-row fixpoints, the rational lassos, diagonal
   distribution, N-multiplicativity, the 3→2 majority reduction, and
   the residual tables. Run directly.
+- `exploration/0053_the_product_rewrite_system.md` — the coalescing
+  product system: `+` and negation as sugar over the carry, the
+  carry's ANF fixpoint and its fold rules, the two-monomial negation
+  found by the census, distribution as a fold, and the four walls.
+- `output/product_rewrite_system.py` — the constructors and thirty
+  rules, two-width soundness, the law table, constant-multiplication
+  coalescing, the termination audit with classified violations, and
+  the peak census. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1815,6 +1823,56 @@ N-multiplicativity); the b-fill product row (borrows/subtraction);
 guarded products toward division and the counted tier; and the 2-adic
 reading (`subsets of ℕ = ℤ₂, statements = zero tests`) as an
 organizing principle for the corpus.
+
+**The product rewrite system: what coalesces, and four walls (0053).**
+The coalescing system for 0052's products, built to be pushed until it
+breaks. **Design absorbs before rules fire**: `+` is sugar
+(`x+y = x ^ y ^ a(C(x,y))`, the carry `C` the only new symbol, `succ`
+free via `C(t,1) = T(t)`); negation is sugar; `mul` atoms hold factor
+MULTISETS (associativity+commutativity absorbed, the ANF move one
+level up); `cmul` is bilinear over `^` at construction (its native
+join); `dil` stays opaque (its join is `|`, which ANF lacks —
+deliberate). **The carry's laws**: the user-supplied ANF fixpoint
+`C = xy ^ x·a(C) ^ y·a(C)` — bit i of C is the MAJORITY of column i−1
+of {x,y,C}, so the carry is the fixpoint of the majority step (0052) —
+verified exactly and, living in the representation's own join, turned
+directly into rules: `k-fold` (the three-monomial majority pattern
+contracts to the atom), `k-low` (`C&1 = xy&1`), plus `k-neg`
+(`C(P,−P) = U(P)`), `k-one`, `k-shift`, and `u-compdual`
+(`T(P^Ω) = U(P)^Ω`). **The system found the two-monomial negation**:
+the census reported k-neg/u-compdual unjoined peaks, and chasing the
+join collapsed the four-monomial `~P+1` to **`−P = P ^ a(U(P))`** —
+Knuth–Bendix acting on a constructor; adopting it dropped the census
+to 0 unjoined of 103. **Seventeen true laws reduce to 0**, including
+`x+(−x) = 0`, `N(xy) = N(x)N(y)`, both Ω-columns, and — oriented as a
+fold — **distribution over `+`** (`p-dist-fold`: `m·xy ^ m·xz ^
+m·a(C(xy,xz)) → m·x(y+z)`); every missing law so far has fallen to
+the same move, orient the join of the peak as a contraction (N-fold,
+k-fold, k-neg, p-dist-fold). **Constant multiplication coalesces
+completely** with unique normal forms (`3x →* x ^ a(x) ^ a(C(a(x),x))`).
+**The four walls**: (W1) the **Frobenius** — `x⊗x` has zero rewrites,
+is the position-doubling map, kernel of `x² = x⊗x + carries`, and
+needs a NAME (0046's two-signature split again); (W2) the **native
+join** — `dil`-distribution over `|` cannot even be stated
+economically in ^-ANF, and cmul-assoc awaits monomial-level multisets;
+(W3) **termination audited, not proved** — 57/1168 violations, all
+classified (sibling duplication needing 0051's multiplicative
+interpretation; Ω-circularity where `u-one` mints fresh Ω factors;
+p-dist-fold's fold-growth), no divergence observed, 495/500 searches
+exhaust; (W4) **lasso constants** — peeling `Ω` regresses forever
+(`−x = x + 2(−x)+…`, caught live), so integer-constant multiplication
+coalesces but `x·(1/3)` is stuck: the rational constant tier is
+half-served. **Two unsound rules caught during construction**, both
+findings: bit 0 is a PARITY not a membership (`Ω^1` has bit 0 = 0, and
+the membership guard peeled it), and Ω-peeling was sound-per-step but
+divergent-in-the-limit. Plus `a(Ω) = Ω^1` hiding from shift-peeling.
+Limits: soundness is two-width low-bits agreement (exact by
+LSB-causality except for `N`); the census is sampled; erosion was
+left out. Open: name the Frobenius; multiset cmul; `p-lasso`
+(periodicity should quotient the peeling regress into a finite
+cycle); the variable peeling guard `N(y&1)` — 0047's guard arriving
+in the product tier, and the first step of long division; the
+extended multiplicative interpretation.
 
 
 
