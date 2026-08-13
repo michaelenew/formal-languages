@@ -372,6 +372,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the 2⁹ brute force of the magic-square skeleton, distributional
   fixed points of the trichotomy, and the carry-chain tail with the
   windowed-carry and blocked-adder measurements. Run directly.
+- `exploration/0059_correlation_and_the_paradox_tax.md` — correlated
+  distributions: the 1-bit floor (phase, not value), one coin for
+  many liars, the odometer as the maximal paradox, the Pareto-
+  dominated product solution, and the amplitude buy-back to zero.
+- `output/correlation_and_entropy.py` — orbit censuses of revision
+  maps, the stationary-polytope entropy formula, the graded tax
+  table, the truth/certainty curve, the unique no-signaling model,
+  and the invariant pure states. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2127,6 +2135,51 @@ logical skeleton, not Hilbert space. Open: correlated distributions
 contextual fraction vs the minimal-ungrounded-channels measure;
 noise in the *semantics* (flipping bits during resolution) rather
 than the inputs.
+
+**Correlation and the paradox tax (0059).** 0058's open question —
+does correlation buy back forced entropy — answered exactly. The
+joint generalization of a distributional solution is a distribution
+stationary under the revision map T (reduces to 0058's fixed points
+on products); for negation systems T is a permutation, so stationary
+= mixtures of orbit-uniforms and **the correlated floor is
+log₂(smallest orbit) = 1 bit for every odd cycle** — correlation buys
+back k−1 of k bits, and 0058's product solution turns out to be the
+*maximum*-entropy stationary point. **The residual bit is phase, not
+value**: T fixes no atom (the paradox), the world must oscillate with
+period 2, and the floor distribution — the fair coin between 00…0 and
+11…1, atoms violating every edge — is uncertainty about the clock's
+phase. The tax is **per-world, not per-paradox** (m liars cost 1 bit
+total, one shared coin, marginals still forced fair; liar + triangle
+= 1 bit) and is graded by revision period: the self-increment paradox
+`n := n+1` (carry-coupled) cycles through all 2^w states — tax = the
+whole state, Haar/odometer in the limit — while `n := n^1` (carry
+stripped) costs 1 bit; the carry channel is again the wall's agent.
+On the triangle's polytope, satisfaction is monotone but entropy
+peaks at the uniform, so **the product solution is Pareto-dominated**
+(the 6-orbit uniform has more truth AND less entropy); the true
+frontier runs (truth 2/3, log₂6 bits) → (truth 0, 1 bit), truth
+capped at 1 − contextual fraction at any price. The contextwise
+(no-signaling) reading has a **unique** empirical model — all
+parameters forced to 1/2, no global joint (verified) — so there
+correlation has nothing global to buy. Finally the **amplitude
+buy-back**: quantizing the revision map to a permutation unitary,
+pure invariant states always exist (cat states, character states —
+verified invariant, entropy zero) whose measurement statistics equal
+the classical floor. Ledger: product k bits → correlated 1 bit →
+amplitudes 0 bits. Incompleteness at the probability level =
+measurement uncertainty of a complete amplitude-level state.
+Bridged to the stat-tracker corpus at two points, stated as
+structural correspondence not theorem: the paradox re-opens a
+trust-like coordinate (the mixture weight w, which the definitions
+cannot see) even with known distributions; and influence ∝ √nats
+lives at the same square-root-of-probability level where the
+buy-back completes. Limits: permutation revision maps only
+(non-invertible bodies with `&` unexamined); one quantization, not
+compositional; LSW non-realizability cited not verified. Open:
+lossy revision maps; dynamics on the polytope coordinate itself
+(the user's inter-correlated-shape case — where the trust calculus
+becomes load-bearing); compositional amplitude semantics; whether
+the odometer is the unique full-period single-channel paradox.
 
 
 
