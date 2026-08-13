@@ -380,6 +380,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   maps, the stationary-polytope entropy formula, the graded tax
   table, the truth/certainty curve, the unique no-signaling model,
   and the invariant pure states. Run directly.
+- `exploration/0060_the_core_and_the_carry.md` — the floor extended
+  to lossy revision maps (forced entropy = log₂ shortest core cycle),
+  the trichotomy as core geometry, the carry-necessity theorem
+  (carry-free tax ≤ log w + 1), and odometer uniqueness.
+- `output/lossy_revision_and_the_carry.py` — exact stationary-space
+  dimensions for lossy maps, the absorbed liar, the 400-body census,
+  the exhaustive GF(2)-affine ceiling, Hull–Dobell, and the causal
+  conjugacy of every full-period map to n+1. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2180,6 +2188,34 @@ lossy revision maps; dynamics on the polytope coordinate itself
 (the user's inter-correlated-shape case — where the trust calculus
 becomes load-bearing); compositional amplitude semantics; whether
 the odometer is the unique full-period single-channel paradox.
+
+**The core is the tax, and every maximal paradox is the odometer
+(0060).** Both structural opens of 0059 closed. Lossy revision maps
+(bodies with `&`) are functional graphs — transient trees hanging off
+a core of cycles — and exact rational elimination confirms stationary
+distributions are exactly mixtures of core-cycle uniforms: **forced
+entropy = log₂(shortest core cycle)**, formula unchanged. The
+trichotomy is core geometry: grounded = a one-point core (**total
+absorption** — 0054's contraction as a graph), liar = no 1-cycle.
+Absorption is the cheapening mechanism, not a way to beat the tax:
+the absorbed liar `n := Ω ^ (n&1)` has a 2-atom core at every width —
+1 bit, settling in one step — while a 400-body census (floor law
+exact in every cell) shows wild taxes of 1–3 bits. **Carry-necessity
+theorem**: a carry-free (GF(2)-affine causal) revision map has L
+unipotent, so cycle length ≤ 2^(⌈log₂w⌉+1) — carry-free tax ≤
+log w + 1 bits vs w bits with carry, an exponential separation,
+verified exhaustively (every matrix × every offset, w = 4, 5): an
+expensive paradox cannot be built from XOR alone. The maximal carry
+bodies `n := a·n + b` are exactly Hull–Dobell (b odd, a ≡ 1 mod 4,
+exhaustive w = 4–6), and **every full-period causal map is causally
+conjugate to n ↦ n+1** (proved via orbit indexing — a causal
+full-period map is full-period at every truncation — and verified for
+all full-period affine maps and 142 random causal hits): one maximal
+paradox, the carry's clock. Limits: affine ceiling doesn't yet cover
+long cycles inside lossy cores; `h` breaks causality and is outside
+the uniqueness theorem. Open: whether lossy cores can beat the affine
+ceiling without simulating carry; the h-channel's maximal paradox;
+the instrument program for the mixture weight.
 
 
 
