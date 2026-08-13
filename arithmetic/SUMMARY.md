@@ -340,6 +340,15 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   addition sentence, the k-one rule as a derivation, the finite-state
   compilation, the co-guarded N with both solutions, the schema lower
   bound, and division-by-3 as a two-channel sentence. Run directly.
+- `exploration/0055_hiding_and_approximation.md` — the read-back
+  criterion (unbounded + read = the wall; write-only = the counted
+  tier), the two trades, `&` as the forced 0-state approximant, the
+  diagonal/Frobenius identity, the exact state price list, and the
+  family with its tail corrected by measurement.
+- `output/hiding_and_approximation.py` — the corner demonstrations,
+  the 16-function agreement table, the diagonal identity, minimal
+  Mealy state counts for x·y mod 2^p, and the 0-tail vs &-tail
+  comparison. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1939,6 +1948,50 @@ normal form ("how much N-ness a statement carries"); and induction as
 a controlled axiom — one designated schema shape, reasoned about as a
 single object, with the syntax displaying where the line was stepped
 over.
+
+**Hiding and approximation: the two trades at the wall (0055).** The
+Parikh observation — counters are write-only during the run, read only
+at the end — is exactly the corpus's counted tier (`CountedAutomaton`'s
+machine-enforced hiding guard), and it refines 0054's scan: **a channel
+is dangerous iff it is unbounded AND some definition body reads it.**
+Bounded read-back = finite state; unbounded write-only = counted tier
+(Parikh/Presburger); unbounded read-back = Minsky territory. The danger
+was never memory size — it is the FEEDBACK LOOP: multiplication's carry
+re-enters the datapath, popcount's counter never does, which is why one
+is the wall and the other never was. **Two dual trades** make the
+dangerous quadrant safe: HIDE (keep the state exact, forbid reading
+until the end — Gödel relocates from state size to state feedback; buys
+counting, forfeits steering) and BOUND (truncate the state to k bits —
+Gödel relocates to an error rate; priced exactly). **`&` is the 0-state
+member, forced and unique**: bit 0 of x·y is x₀y₀, so a
+position-uniform function exact at bit 0 must be AND on all four
+inputs; measured against all 16 columnwise functions it also wins mean
+agreement (0.582, exhaustive width 8). **The diagonal identity** says
+why: the i=j layer of the partial-product array is `spread(x&y) =
+F(x&y)` — the Frobenius of `&`; below bit 1 there are no cross terms
+and no carries, so the diagonal is all there is, and 0053's unnameable
+W1 operator is the shape of the cheapest approximation. **The exact
+price list** (minimal Mealy states of x·y mod 2^p): 2, 5, 12, 28 for
+p = 1..4 — ~1.2 bits of state per guaranteed bit, CHEAPER than 0054's
+2p full-product bound, because don't-cares above the horizon collapse
+residuals: approximation buys a real discount, not just a cutoff. The
+p=1 member costs 2 states (the "past bit 0 yet" flag), which is why
+1-state `&` guarantees one bit and cannot be beaten to a second.
+**The family's tail corrected by measurement**: the conjectured
+"&-above-the-horizon" tail LOSES to the 0-tail from p ≥ 1 (0.594 vs
+0.582 at p=1, 0.640 vs 0.629 at p=2) — above bit 1 the diagonal
+anticorrelates with the carry-heavy mid-range and even constant 0
+agrees more often. Corrected family: `&` at 1 state / 1 guaranteed
+bit, `x·y mod 2^p` at states(p) / p bits with 0-tail — one member per
+carry length, the conjecture's shape intact. Limits: Minsky corner
+cited not re-proved; exact counts at p ≤ 4, exhaustive width 8, no
+asymptotics; "best" = per-bit agreement under uniform inputs. Open:
+the mixed quadrant (bounded read-back + unbounded write-only —
+reverse-Parikh territory); three-valued reduction over truncated
+carries (decide everything, wrongly on a measured set — does the error
+concentrate on the sentences the exact system got stuck on?); the
+price-list asymptotics (ratio ~2.3 — the carry's intrinsic entropy);
+position-uniformity as a separate resource from data state.
 
 
 
