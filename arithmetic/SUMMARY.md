@@ -388,6 +388,15 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   dimensions for lossy maps, the absorbed liar, the 400-body census,
   the exhaustive GF(2)-affine ceiling, Hull–Dobell, and the causal
   conjugacy of every full-period map to n+1. Run directly.
+- `exploration/0061_the_paradox_as_instrument.md` — zero evidence
+  from the theory (w as pure trust coordinate), the parity channel
+  p(w) = 2(1−w)/3, the closed-form price of contextuality
+  (η(1/2) = 1/2), and the drift transplant with the fourth-root
+  oracle-gap compression.
+- `output/mixture_weight_inference.py` — exact stationarity
+  residuals, parity sufficiency, the Fisher-efficiency table, the
+  three-edge disjointness, and the Kalman verification of the
+  √ laws (influence, memory, oracle gap). Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2216,6 +2225,42 @@ long cycles inside lossy cores; `h` breaks causality and is outside
 the uniqueness theorem. Open: whether lossy cores can beat the affine
 ceiling without simulating carry; the h-channel's maximal paradox;
 the instrument program for the mixture weight.
+
+**The paradox as instrument (0061).** The mixture weight w priced,
+exactly. **Zero-evidence lemma**: the stationarity residual of
+π_w is identically zero — the theory yields zero nats about w, ever;
+within-orbit shape pinned, between-orbit weight orphaned — the
+stat-tracker probability/trust separation reproduced with fully
+known distributions (paradox manufactures the split that unknown
+noise forced there). **The instrument**: one edge read of a sampled
+world has the edge *parity* as a sufficient statistic, channel
+P(parity=1) = 2(1−w)/3 — 0059's truth/certainty curve as the response
+curve of the paradox used as a measurement device; forced entropy is
+not forced ignorance. **The price of contextuality**: context-bound
+Fisher over oracle Fisher is closed form, **η(1/2) = 1/2 exactly**
+(advantage 5× at w=1/8 → 3/2 as w→1), and the gap is charged to
+contextuality itself: the three edge parities of one world are
+disjoint across orbits ((0,0,0) vs two-ones), so simultaneous context
+access *is* the oracle — the price is for sequential access, no Monte
+Carlo anywhere. **The drift transplant** (w drifting — the
+inter-correlated-shape regime; Gaussian linearization, the one
+approximation): influence of the lag-k read = K(1−K)^k to machine
+precision, incremental nats decay as (1−K)^{2k} (exact Gaussian
+conditioning, ratio 1.220 vs 1.2213), **influence ∝ √nats verbatim**,
+memory 1/K ∝ 1/√q (window ∝ 1/drift), and the static 2× oracle gap
+compresses through the Riccati fixed point to √2 in variance and
+**2^{1/4} ≈ 1.19 in SD — a 2× information oracle is a 19% tracker**:
+the frame's version of stat-tracker's collapsed oracle gap, with the
+residual closed-form and charged to contextuality. The √ now appears
+at three independent sites (influence/nats, amplitude/probability,
+Riccati/tracking): the linearly-composing object lives at the square
+root of the additively-composing one. Limits: one-read-per-world
+sampling; §4 linearized (Bernoulli-exact filter unchecked);
+fourth-root law asymptotic in small q. Open: the Bernoulli-exact
+drift filter; contextuality as a channel-capacity theorem (bound
+sequential/global Fisher by the contextual fraction — Mermin–Peres
+as second data point); trust dynamics on the polytope (the
+covariance-of-covariance meta-trichotomy).
 
 
 
