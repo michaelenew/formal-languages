@@ -330,6 +330,16 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   rules, two-width soundness, the law table, constant-multiplication
   coalescing, the termination audit with classified violations, and
   the peak census. Run directly.
+- `exploration/0054_the_channel_form.md` — rewrite rules folded into
+  syntax: hidden channels with in-sentence definitions, guardedness as
+  the one syntactic property, the trichotomy (guarded / co-guarded /
+  schema), and the wall as the line between a conjunction and a
+  schema.
+- `output/channel_form.py` — the channel representation, the
+  contraction theorem verified, operators as guarded definitions, the
+  addition sentence, the k-one rule as a derivation, the finite-state
+  compilation, the co-guarded N with both solutions, the schema lower
+  bound, and division-by-3 as a two-channel sentence. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1873,6 +1883,62 @@ left out. Open: name the Frobenius; multiset cmul; `p-lasso`
 cycle); the variable peeling guard `N(y&1)` — 0047's guard arriving
 in the product tier, and the first step of long division; the
 extended multiplicative interpretation.
+
+**The channel form: rules folded into syntax, the wall as one
+property (0054).** The user's directive: name the hidden channels,
+write their defining identities INTO the sentence as facts, manipulate
+with fundamental laws — then a break is expressed by the syntax.
+Executed, and it lands. **The pattern**: the carry is a fresh variable
+pinned by the in-sentence fact `c ^ xy ^ x·a(c) ^ y·a(c)`, and
+"x+y=1" is ONE polynomial `(x^y^a(c)^1) | (that fact)` — verified
+exhaustively, empty at exactly the 2 solutions. **Guardedness** (every
+channel reference under at least one `a`) is a syntactic scan that
+buys a theorem: bit i of every channel depends on bits < i, so the
+definition is a 2-adic contraction and the solution is UNIQUE — 1000
+random mutually-recursive systems verified, every one-bit perturbation
+breaking a fact. **The operator tier IS the guarded-channel tier**
+(`s = t ^ a(s)` solves to `!(t)`, etc. — 0042's fixpoint law was the
+definition all along), and **guarded systems compile to finite state**
+(k channels → ≤ 2^k states, bounds hit exactly) — 0047's machine
+derived from syntax. **Rules become derivations**: k-one replayed as
+substitute y:=1 into C's fact, annihilate the one impossible monomial,
+and the result literally equals T's definition — uniqueness concludes.
+**N is the co-guarded channel**: its definition `n = t | h(n)`
+references the FUTURE, has no boundary at infinity, and provably does
+not pin its channel — boundary 0 gives the down-closure D(t), boundary
+1 gives Ω, both satisfy every interior step (exhaustive), and
+`N(t) = U(D(t))`. `h`, banned as an operator in 0045, returns as a
+reference DIRECTION: one h-reference is the exact syntactic marker of
+the N tier — decidable by case split (the 0/Ω guess = choosing the
+solution), undecidable by causal reduction. **The schema wall**: a
+guarded system's residuals are bounded by 2^k, and x·y measures 4^p,
+so computing it to p bits forces **k ≥ 2p channels** — the fact-list
+must become a fact-SCHEMA (`c_i` for every i), no finite sentence pins
+the channels, and the school algorithm meets the bound with Θ(p) wires.
+**The wall as an expression: the line between a conjunction and a
+schema** — quantifying over the schema index is exactly what an
+induction axiom licenses. **W4 dissolves**: `x·(1/3)`, stuck in 0053,
+is the two-channel triangular system `x ^ m ^ a(m) ^ a(c)` /
+`c ^ m·a(m) ^ (m^a(m))·a(c)` — 3 is a 2-adic unit, unique solution for
+every x, verified on 3000 values: division by three with no operator,
+no lasso, no rule. A rule LIST can never be exhaustive; a SENTENCE
+either has a finite guarded channel list or it does not — a property
+of each statement, checkable by scan. **The trichotomy**: all
+references past = reducible, residue = contingency (known unknown);
+an h-reference = one case split per channel, reduction provably
+insufficient; an indexed family = knowably unknowable by any finite
+fact-list, and the sentence SHOWS it. Limits: the schema lower bound
+rests on measured residuals (p ≤ 4, standard argument beyond); the
+coalescing engine has not been rebuilt over channel sentences (the
+k-one derivation is the template, the rest is a program); relaxed
+guardedness (triangular cross-references) verified in use, theory
+stated not developed. Open: rebuild the engine over channels (0051's
+certificates should reappear as co-guarded obstructions); bounded
+schemas as the counted tier's home; a minimal-co-guarded-channel
+normal form ("how much N-ness a statement carries"); and induction as
+a controlled axiom — one designated schema shape, reasoned about as a
+single object, with the syntax displaying where the line was stepped
+over.
 
 
 
