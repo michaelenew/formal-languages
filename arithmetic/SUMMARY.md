@@ -364,6 +364,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
 - `output/the_deficit.py` — counter/counter pairs = lcm exactly,
   the state-by-state recurrent/transient verification, the exact
   linearity of the joint cost, and the conclusion. Run directly.
+- `exploration/0058_contextuality_and_probabilistic_bits.md` — the
+  Specker triangle and Mermin–Peres square realized in the frame,
+  paradox as forced entropy under probabilistic bits, and the wall
+  under noise: thin per bit, solid per word.
+- `output/contextuality_and_noise.py` — the triangle's context table,
+  the 2⁹ brute force of the magic-square skeleton, distributional
+  fixed points of the trichotomy, and the carry-chain tail with the
+  windowed-carry and blocked-adder measurements. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2078,6 +2086,47 @@ overlap type or close the decomposition theorem (δ = arithmetic ⊕
 temporal, always); the cliff's approach scaling; and contextuality
 proper — a KS triangle for the frame (each pair jointly realizable,
 the triple not), with odd cycles as the candidate obstruction.
+
+**Contextuality proper, and the wall under probabilistic bits (0058).**
+0057's dares executed. The **Specker triangle** is in the frame
+already: three negation constraints `nᵢ = ¬nⱼ` as contexts — every
+pair jointly satisfiable (2 solutions), the triple not (0) — the
+minimal contextual system, which is 0056's cycle-parity law staged as
+contexts. The **Mermin–Peres square drops in verbatim**: nine bits,
+six parity contexts (rows sum 0; columns 0, 0, 1); brute force over
+2⁹ shows the best assignment satisfies 5 of 6, every 5-subset is
+satisfiable, and all six sum to 0 = 1 — the corpus's representation
+IS GF(2) linear algebra, and the obstruction is the same parity scan
+that detects liars. Contextual fraction 1/6 (logical skeleton only;
+no operator realization claimed). **Probabilistic bits**: taking
+channel bits Bernoulli and solving for consistent distributions, the
+grounded tier keeps a unique delta (entropy 0), the truth-teller a
+continuum, and the **liar — zero deterministic solutions — has
+exactly one distributional solution, the fair coin**: paradox becomes
+compulsory maximal uncertainty, 1 bit per edge (the Specker triangle
+costs exactly 3). That is Kochen–Specker's actual content — no
+dispersion-free states while mixed states exist — reproduced
+quantitatively. **The wall under noise splits**: carry *influence*
+chains (generate then propagate; regeneration passes no information)
+halve per unit length, so a bounded feedback window of w positions
+gets any single bit wrong with probability 2^-(w+1) (measured to
+three decimals) — per bit, the wall is exponentially thin. But the
+carry into a random position is asymptotically a fair coin, so an
+adder dropping ONE boundary carry is wrong on ~half of all words
+regardless of block size — per word, the wall does not thin.
+**Randomness relocates the obstruction from expectation to certainty;
+it does not remove it** — Gödel constrains certainty, not
+expectation, the 0057 cliff measured along the average-vs-worst-case
+axis. The audit caught both first-draft conjectures wrong (carry
+*presence* persists at 3/4 per step and is the wrong statistic;
+blocked-adder whole-word error does not collapse) and both
+corrections became the finding. Limits: product distributions only
+in the entropy section; Monte Carlo (seeded) in the noise section;
+logical skeleton, not Hilbert space. Open: correlated distributions
+(can they buy back forced entropy — the classical/quantum boundary);
+contextual fraction vs the minimal-ungrounded-channels measure;
+noise in the *semantics* (flipping bits during resolution) rather
+than the inputs.
 
 
 
