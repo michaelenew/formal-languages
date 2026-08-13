@@ -357,6 +357,13 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   verification of the trichotomy, the ungrounded census, exact
   minimal automata by signature BFS, and the transient/persistent
   joint-cost tables. Run directly.
+- `exploration/0057_the_deficit_decomposes.md` — the deficit's exact
+  decomposition into arithmetic overlap (CRT) and temporal overlap
+  (transient fraction), the no-finite-ℏ conclusion, and the
+  Kochen–Specker-not-Robertson verdict.
+- `output/the_deficit.py` — counter/counter pairs = lcm exactly,
+  the state-by-state recurrent/transient verification, the exact
+  linearity of the joint cost, and the conclusion. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2039,6 +2046,38 @@ resonant in p, m); δ(A,B) = 1 − pairs/product as a commutator-like
 object (0 for time-separated, measuring shared structure for
 co-living); the minimal-ungrounded-channels measure at the statement
 level; the liar as a resource (falsity by parity, no evaluation).
+
+**The deficit decomposes: there is no finite ℏ (0057).** 0056's open
+question — does the reachable-pair deficit δ tend to 1, to a constant
+(a commutator norm), or resonate — answers: none; **it decomposes
+exactly into classical parts**. Counter vs counter: reachable pairs =
+lcm(m₁,m₂) in every cell, so **δ = 1 − 1/gcd — the deficit between
+compatible observables is the Chinese Remainder Theorem**; coprime
+counters are fully independent. Multiplier vs counter: the joint cost
+is **exactly linear in m** (joint = 2m+1, 7m+5, 29m+21 for p = 1,2,3),
+verified state-by-state — every RECURRENT state of the multiplier
+pairs with every count residue, every TRANSIENT (learning-phase) state
+with a fixed finite set — so **δ converges to the transient fraction**
+(0.333, 0.417, 0.420): temporal overlap, nothing else. Conclusion:
+once arithmetic and temporal overlap are subtracted, every joint state
+is realizable and the budget is a plain sum of logs with no cross
+term — **the finite-level ℏ of this frame is zero**. The
+incompatibility is real but lives entirely at the unbounded limit (the
+Minsky wall): undecidable at infinity, unconstrained at every finite
+scale. So the Heisenberg question resolves by measurement: **the
+frame's uncertainty is Kochen–Specker-shaped (all-or-nothing
+obstruction to joint refinement), not Robertson-shaped (graded trade)**
+— consistent with the liar-cycle/contextuality bridge of 0056 Part A
+and inconsistent with a Δx·Δp reading. In the workstream's vocabulary:
+the wall is a cliff, not a slope — finite sentences trade resources
+classically and freely, and the schema boundary ends the landscape
+without ever steepening it. Limits: measured grids m ≤ 8, p ≤ 3 with
+per-state verification inside them; linearity beyond m = 7 by argument;
+order/order pairs unexamined. Open: sweep mixed pairs for a third
+overlap type or close the decomposition theorem (δ = arithmetic ⊕
+temporal, always); the cliff's approach scaling; and contextuality
+proper — a KS triangle for the frame (each pair jointly realizable,
+the triple not), with odd cycles as the candidate obstruction.
 
 
 
