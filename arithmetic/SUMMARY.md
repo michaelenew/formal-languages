@@ -349,6 +349,14 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   the 16-function agreement table, the diagonal identity, minimal
   Mealy state counts for x·y mod 2^p, and the 0-tail vs &-tail
   comparison. Run directly.
+- `exploration/0056_order_count_and_the_trichotomy.md` — the
+  liar/truth-teller/grounded trichotomy verified exhaustively, the
+  cycle-parity law, and the corrected complementarity: additive for
+  time-separated observables, ~70% of product for co-living ones.
+- `output/order_count_complementarity.py` — solution-count
+  verification of the trichotomy, the ungrounded census, exact
+  minimal automata by signature BFS, and the transient/persistent
+  joint-cost tables. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -1992,6 +2000,45 @@ carries (decide everything, wrongly on a measured set — does the error
 concentrate on the sentences the exact system got stuck on?); the
 price-list asymptotics (ratio ~2.3 — the carry's intrinsic entropy);
 position-uniformity as a separate resource from data state.
+
+**The trichotomy verified, and complementarity binds the co-living
+(0056).** Part A: solution counts of channel definitions against
+reference structure, exhaustive at width 7. **Grounded ⟹ exactly one
+solution, always** (351 census instances, no exceptions — negation
+under a guard is harmless: `n = ~a(n) & x` is unique). **The liar
+needs BOTH ungroundedness and negation** (`n = n ^ Ω`: zero
+solutions); **the truth-teller's two solutions are the 0/Ω guard
+choice** (`n = x | h(n)`: least = down-closure, greatest = all-ones —
+the free top bit IS the missing boundary at infinity). **The
+cycle-parity law**: depth-0 reference cycles have solutions by the
+parity of negations — 2^w / 2^w / 0 for zero/two/one flips,
+exhaustive — the paradox is a parity of Ω-flips around a loop,
+checkable by scan, exactly the liar-cycle shape Abramsky et al. tie to
+quantum contextuality. Ungrounded census: 12% liars, 11% accidentally
+unique, 77% many — uncertainty enters exactly where groundedness
+leaves. Part B: exact minimal Mealy automata (signature BFS, horizons
+stability-checked), joint cost = reachable pairs of minimized
+components. **The conjectured product law FAILS for the transient
+pair, and the failure is the finding**: `x·y mod 2^p` + `popcount mod
+m` costs states+m−1 (exact at p ≤ 2, near at p = 3) — the truncated
+observable dies above bit p, the count lives forever, and observables
+occupying different epochs share state across time. A dying observable
+evades the uncertainty trade. **For co-living observables the trade is
+real**: `(x mod 2^p)·y` (persistent carry) + count climbs to ~70% of
+the full product (79/100, 108/150, 137/200). Corrected statement:
+**complementarity binds simultaneous observation** — the budget
+inequality holds between observables that stay alive together, with
+measured ~30% slack, and says nothing about time-separated ones; the
+unbounded limit is still the Minsky wall. More Heisenberg-like than
+the original conjecture, not less: QM's uncertainty also constrains
+simultaneous measurement, and the frame reproduced that distinction
+from pure state counting. Limits: small parameters (p ≤ 3, m ≤ 4),
+three data points on the deficit, cycle-parity verified for pure
+copy/negate cycles. Open: the deficit's fate (→1, constant, or
+resonant in p, m); δ(A,B) = 1 − pairs/product as a commutator-like
+object (0 for time-separated, measuring shared structure for
+co-living); the minimal-ungrounded-channels measure at the statement
+level; the liar as a resource (falsity by parity, no evaluation).
 
 
 
