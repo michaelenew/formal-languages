@@ -415,6 +415,28 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   gauge/observable split (XOR invariant and exact), two triangles'
   agreement invariance, and the two-odometer graded echo. Run
   directly.
+- `exploration/0064_the_epistricted_wall.md` — the trust wall on
+  classical points reproduces the stabilizer fragment (toy bit) and
+  stops exactly at the parity; the triangle's minimal negativity is
+  1/2, located on the phase fiber.
+- `output/the_epistricted_wall.py` — the toy bit's uncertainty and
+  disturbance checks, the empty-support wall, and the exact
+  1-parameter quasidistribution solve with minimal negativity. Run
+  directly.
+- `exploration/0065_the_reference_tower.md` — gauge-fixing costs
+  exactly the tax and the tower never closes; the four buckets
+  (decided ⟺ deck-invariant, independents in dual pairs); guarded
+  loops carry no holonomy — the cliff located.
+- `output/the_reference_tower.py` — reference-gauge exactness with
+  conserved floor, the hexagon four-bucket classification, and the
+  one-point cores of guarded odd loops. Run directly.
+- `exploration/0066_braided_holonomy.md` — the group tax
+  (log₂ smallest orbit of ⟨σ,τ⟩; first non-cyclic coin log₂3),
+  order observability via the commutator, and the exact door:
+  braiding needs a second loop through a shared multi-bit channel.
+- `output/braided_holonomy.py` — generated-group orbit checks
+  against exact stationary dimensions, the commutator residue, and
+  the binary-cannot-braid proof. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2228,6 +2250,40 @@ braid word (anyons). Open: gauge-fixing via a reference channel
 (should cost exactly the 1-bit tax); where the frame's cyclic
 holonomy could become braided (needs ≥ 2 interacting channels, by
 0060's causal-conjugacy theorem).
+
+**The four probes (0064–0066).** All four queued threads executed.
+**Epistricted wall (0064)**: the trust wall on four classical points
+reproduces the stabilizer fragment's structure (6 states / 3
+mutually unbiased questions / 24 Cliffords; uncertainty and
+disturbance from the wall alone) and stops exactly at the parity —
+the triangle's model needs empty ontic support; the epistemic
+program's boundary IS the contextual fraction. **Sign problem
+(0064)**: exact 1-parameter solve; minimal negativity of the
+triangle model = **1/2 exactly**, witness −1/4 on each constant
+world — the negative mass sits on the phase fiber; noncontextual
+best has negativity 0; the triangle's nonclassicality coordinates:
+(contextual fraction 1/3, negativity 1/2). **Reference tower
+(0065)**: gauge-fixing converts all relative bits to exact values at
+cost exactly 1 bit, conserved under adding any number of references
+— the tower never closes (iterated incompleteness as dynamics). The
+**four buckets**: decided ⟺ deck-invariant; independent statements
+come in deck-dual pairs; "true but inexpressibly so" = truth on the
+intended sheet where "intended" is not deck-invariant — provable =
+true on every sheet; the Gödel sentence is a relative bit read as
+absolute. Guarded odd loops have one-point cores (depth kills
+holonomy): paradox requires same-level closure — depth-0 syntax or
+the boundary; Gödel's diagonal closes through the unbounded proof
+search, and the cliff (0057) is because holonomy is a class, not a
+quantity. **Braided holonomy (0066)**: two loops through a shared
+fiber generalize the tax verbatim to log₂(smallest orbit of the
+generated group) — S₃ taxes log₂3, the first non-cyclic coin —
+order of audits becomes observable through the commutator (abelian
+pairs: parity was the only path-memory), and binary channels cannot
+braid: the door is the second loop through a shared ≥2-bit channel.
+Open: frame-syntax realization of the braided pair; the amplitude
+enrichment (noncommuting unitaries — the first candidate paradox
+whose quantum tax is nonzero); negativity vs log₂(holonomy) for
+graded paradoxes; the epistricted hexagon.
 
 **Correlation and the paradox tax (0059).** 0058's open question —
 does correlation buy back forced entropy — answered exactly. The
