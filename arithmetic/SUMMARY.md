@@ -397,6 +397,15 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   residuals, parity sufficiency, the Fisher-efficiency table, the
   three-edge disjointness, and the Kalman verification of the
   √ laws (influence, memory, oracle gap). Run directly.
+- `exploration/0062_the_second_loop.md` — double covers (the odd
+  cycle's obstruction dies on C₂ₖ; T^k = deck flip), the holonomy
+  ledger (joint tax = log₂ lcm of clocks; floor = Haar on the deck
+  group), the knot counter identified as chord interlacement, and
+  Grandi's ½ as the Plemelj boundary value.
+- `output/the_second_loop.py` — exhaustive double-cover checks,
+  T^k = complement, the lcm ledger with Haar verification, the
+  32k-diagram counter sweep with the Gauss-parity oddness proof,
+  and the numeric half-winding. Run directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2152,6 +2161,37 @@ logical skeleton, not Hilbert space. Open: correlated distributions
 contextual fraction vs the minimal-ungrounded-channels measure;
 noise in the *semantics* (flipping bits during resolution) rather
 than the inputs.
+
+**The second loop (0062).** Three user threads verified. **Double
+cover**: the odd context cycle has no global section but its double
+cover C₂ₖ has exactly two, swapped by the deck rotation — and the
+frame already unrolls this: **T^k = complement, T^{2k} = identity**
+(one traversal of the definitions is the deck flip), the 2k-orbits
+are the unrolled double traversal, the constants are the pure-phase
+fiber, and 0059's ± cat states are the cover's two sectors
+(deck-symmetric/antisymmetric — the spinor split). "Going around
+twice" is consistent; the price is one unobservable bit (which
+sheet), which IS the 1-bit tax. **Holonomy ledger**: joint tax of
+product paradoxes = log₂ lcm of the component clocks (never the
+sum) — liars share the diagonal deck group, a triangle rides a liar
+free, two odometers cost max(w₁,w₂) — and the floor distribution
+verifies as **Haar measure on the cyclic group the joint traversal
+generates**: the paradox tax is the entropy of Haar on the holonomy.
+**Knot counter**: the user's over/under counter has full-loop score 0
+in all 32,052 chord diagrams ≤ 5 crossings (each chord has two ends —
+the diagram is its own double cover), and first-return score = own
+visit + signed sum over interleaved chords — chord-diagram
+interlacement, the substrate of finite-type invariants; Gauss's
+planarity parity forces the score odd (±1 balanced; ±3, ±5 occur).
+**Half winding**: winding about points alternately inside/outside a
+circle is 2π,0,2π,0,…; at the boundary point the principal value is
+exactly π, and Abel/Cesàro give ½ — Grandi's ½ = the
+Sokhotski–Plemelj boundary value, verified numerically. Limits:
+Gauss evenness is necessary-not-sufficient for planarity (±5 codes
+may be virtual); literature mappings (Kontsevich, Chern–Simons
+framing) are context not verification. Open: is the tax the minimal
+covering degree (a converse); the counter multiset under Reidemeister
+moves; sequential audits around the loop in the noisy-read model.
 
 **Correlation and the paradox tax (0059).** 0058's open question —
 does correlation buy back forced entropy — answered exactly. The
