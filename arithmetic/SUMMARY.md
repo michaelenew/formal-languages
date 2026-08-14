@@ -406,6 +406,15 @@ flagged (`2025-06-28 Refocusing.md`'s one-step add formula).
   T^k = complement, the lcm ledger with Haar verification, the
   32k-diagram counter sweep with the Gauss-parity oddness proof,
   and the numeric half-winding. Run directly.
+- `exploration/0063_the_relational_sheet.md` — the odd power pins
+  every marginal at ½ (the even power pins nothing), observation
+  parity as the cover's bipartition, absolute sheet = gauge vs
+  relative sheet = exact observable, and the d-fold echo.
+- `output/the_relational_sheet.py` — complement-symmetry of all
+  stationary beliefs, path-parity checks on the cover, the two-liar
+  gauge/observable split (XOR invariant and exact), two triangles'
+  agreement invariance, and the two-odometer graded echo. Run
+  directly.
 - `output/canonicity_under_the_measure.py` — the bit-length measure
   table, the failed Pareto construction with the language's Nerode
   index, and the unimodular register basis change with its singular
@@ -2192,6 +2201,33 @@ may be virtual); literature mappings (Kontsevich, Chern–Simons
 framing) are context not verification. Open: is the tax the minimal
 covering degree (a converse); the counter multiset under Reidemeister
 moves; sequential audits around the loop in the noisy-read model.
+
+**The relational sheet (0063).** The user's two readings of
+T^k = ¬, verified. **N pins ½, 2N pins nothing**: stationarity
+implies invariance under the deck flip, so every channel's marginal
+is exactly ½ — the forced coin is the odd power alone — while
+invariance under T^{2k} = id is vacuous (a point mass survives 2k
+moves). **Observation has a parity**: reading through the constraint
+chain complements once per hop; even paths = the value, odd = its
+dual; 0-hop ≡ 2-hop observation (the cover's bipartition). **The
+sheet is relational**: for two liars the joint traversal generates
+only the diagonal flip, so the absolute sheet is *gauge* — either
+liar's value is forced fair, no observable refers to it — while the
+XOR is invariant and exact in every floor solution (1 bit total, not
+2); two triangles' "do their worlds agree" is likewise invariant
+while "which world is mine" is not. Absolute parity is gauge;
+relative parity is physical — the frame's neutron-interferometry
+fact. **"Exactly two" is the Z₂ case**: two odometers have deck
+group Z_{2^w}; the difference is invariant and exact, each absolute
+position forced-uniform — everything is its own d-fold echo, dual
+pairs dominating because the cheapest paradox has period 2. Physics
+registrations (context): spin–statistics exchange parity,
+fermion-parity superselection, the relational 2π sign (neutron
+interferometry), Majorana pairs; in 2+1D parity enriches to the
+braid word (anyons). Open: gauge-fixing via a reference channel
+(should cost exactly the 1-bit tax); where the frame's cyclic
+holonomy could become braided (needs ≥ 2 interacting channels, by
+0060's causal-conjugacy theorem).
 
 **Correlation and the paradox tax (0059).** 0058's open question —
 does correlation buy back forced entropy — answered exactly. The
