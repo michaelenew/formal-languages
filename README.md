@@ -20,6 +20,13 @@ one-sided — true / undecided, never false.
   (first target: addition, now done for ground terms), toward deciding
   infinite-Clue-style games. See `arithmetic/SUMMARY.md`;
   `exploration/0004` maps its notation to the clue/ corpus.
+- `elementary/` — Odrzywołek's one-operator basis for elementary
+  functions (`eml(x,y) = exp(x) − ln(y)`, constant 1): why it works (a
+  packaging lemma: abelian group + bijection), the family of other such
+  bases, the eigen-frame reading (exp-generators are eigenvectors of
+  differentiation, log-generators its Jordan chains), and integration on
+  EML trees as Risch — convex relative to the constant field, where
+  Schanuel's conjecture enters. See `elementary/SUMMARY.md`.
 
 New workstream folders carry a `SUMMARY.md` (exact current state),
 `exploration/` (numbered working files, later = more recent), and
