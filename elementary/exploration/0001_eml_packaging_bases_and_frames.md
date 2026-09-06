@@ -63,10 +63,12 @@ sin/cos by Euler's formula. All of these words are built and checked in
 | e | 1 | | x + y | 13 |
 | exp x | 1 | | x · y | 20 |
 | ln x | 3 | | 1/x | 12 |
-| 0 | 3 | | x / y | 40 |
-| x − y | 5 | | √x | 43 |
-| −x | 8 | | π | 54 |
-| −1 | 8 | | sin x | 240 |
+| 0 | 3 | | x / y | 32 |
+| x − y | 5 | | x^y | 24 |
+| −x | 8 | | √x | 49 |
+| −1 | 8 | | ±i | 57 |
+| ln(−1) = ±iπ | 11 | | π | 99 |
+| 2 | 13 | | sin x, cos x | 291, 222 |
 
 (The paper's own words may be shorter; these are the lemma's words,
 built mechanically.)
@@ -133,8 +135,9 @@ A single operator F with constant c generating the EL class must satisfy:
 3. **Multivaluedness.** If F is single-valued with isolated singularities
    (e.g. `exp(x) − y`), every generated function is single-valued, so Log
    and √ are unreachable. F must contain a branch point.
-4. **An inverse.** `exp(x) + Log(y)` from constant 1 maps (1, ∞)² into
-   (1, ∞) (checked on 2000+ generated functions), so no negative constant,
+4. **An inverse.** `exp(x) + Log(y)` from constant 1 maps [1, ∞)² into
+   [e, ∞) (e^a ≥ e, Log b ≥ 0; checked on 353 generated functions), so no
+   negative constant,
    no −x, no x − y, no i, no π. `sinh(x) − asinh(y)` from 0: every generated
    f satisfies f(−x, −y) = −f(x, y) (leaves 0, x, y are odd; sinh, asinh
    are odd; − preserves it), so exp, x·y and every nonzero constant are
@@ -152,21 +155,26 @@ Fingerprint closure of {c, x, y} under F at 10 random complex points,
 full pairing to depth 3 and one asymmetric level (everything × depth ≤ 2)
 to depth 4; `eml_bases.py` §3.
 
-| operator, constant | exp x | ln x | 0 | x − y | others by depth 4 |
-|---|---|---|---|---|---|
-| exp(x) − ln(y), 1 [EML] | 1 | 3 | 3 | 4 | — |
-| exp(x) / ln(y), e [EDL], near-real region | 1 | 3 | — | — | 1/x-type words |
-| exp(x) − ln(y), e | — | — | — | — | nothing |
-| ln(x) − exp(y), 1 [mirror] | — | — | — | — | nothing |
-| exp(x) + ln(y), 1 | 1 | — | — | — | nothing (positivity) |
-| exp(x) · ln(y), e | 1 | — | — | — | nothing |
-| exp(x) − y, 1 | — | — | — | — | nothing (entire) |
-| x − ln(y), 1 | — | — | — | — | nothing (growth) |
-| sinh(x) − asinh(y), 0 | — | — | 0 | — | −x at 2 (parity) |
-| x^y − y, 2 | — | — | — | — | nothing |
-| x^y − 1, 2 | — | — | — | — | −1 at 3 |
+| operator, constant | closure size at depth 4 | found by depth 4 (depth) |
+|---|---|---|
+| exp(x) − ln(y), 1 [EML] | 682,197 | exp 1, e 1, ln 3, 0 3, x − y 4 |
+| exp(x) / ln(y), e [EDL], generic region | 432,673 | exp 1, 0 4 |
+| exp(x) / ln(y), e [EDL], near-real region | 168,172 | exp 1, ln 3, x / y 4 |
+| exp(x) − ln(y), e | 514,192 | nothing |
+| ln(x) − exp(y), 1 [mirror] | 6,329,857 | nothing |
+| exp(x) + ln(y), 1 | 281,532 | exp 1 (positivity: nothing else can appear) |
+| exp(x) · ln(y), e | 2,571,461 | exp 1, 0 4 |
+| exp(x) − y, 1 | 2,283,519 | nothing (entire) |
+| x − ln(y), 1 | 511,812 | nothing (growth) |
+| sinh(x) − asinh(y), 0 | 3,406,231 | 0 0, −x 2, x − y 4, x + y 4 (parity: nothing even can appear) |
+| x^y − y, 2 | 3,186,338 | nothing |
+| x^y − 1, 2 | 5,575,212 | −1 3, 0 4 |
+| exp(x) − ln(y) − 1, 1 | 3,052,938 | nothing |
 
-(Filled from the run; see the script output for the exact rows.)
+Two readings. EML is the only candidate that reaches ln, 0 and subtraction
+by depth 4 from constant 1; and the sinh row shows the packaging lemma
+working (it reaches + and − exactly as promised) while the parity
+invariant caps it there.
 
 ### 2d. Universal algebra placement
 

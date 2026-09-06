@@ -371,9 +371,11 @@ def check_words():
         ("0", lambda: (w["zero"], 0)),
         ("-1", lambda: (w["minus1"], -1)),
         ("2", lambda: (w["two"], 2)),
-        ("L(-1) [exact: -i*pi]", lambda: (w["ipi"], -1j * mp.pi)),
+        # the -1 word carries a rounding-sized imaginary residue, so Log lands on
+        # one side of the cut or the other: accept +-, report which (see 5.)
+        ("L(-1) = +-i*pi", lambda: (w["ipi"], 1j * mp.pi * mp.sign(mp.im(w["ipi"].val)))),
         ("pi", lambda: (w["pi"], mp.pi)),
-        ("i-word [exact: -i]", lambda: (w["i"], -1j)),
+        ("i-word = +-i", lambda: (w["i"], 1j * mp.sign(mp.im(w["i"].val)))),
         ("exp x", lambda: (lambda a: (w["exp"](a), mp.exp(a.val)))(X())),
         ("ln x", lambda: (lambda a: (w["ln"](a), mp.log(a.val)))(X())),
         ("x-y", lambda: (lambda a, b: (w["sub"](a, b), a.val - b.val))(X(), X())),
@@ -387,6 +389,8 @@ def check_words():
         ("sin x", lambda: (lambda a: (w["sin"](a), mp.sin(a.val)))(X())),
         ("cos x", lambda: (lambda a: (w["cos"](a), mp.cos(a.val)))(X())),
     ]
+    r = w["minus1"].val
+    print(f"  the -1 word evaluates to {mp.nstr(r, 8)}: imaginary residue {mp.nstr(mp.im(r), 3)} picks the branch")
     for name, mk in checks:
         ok, n = True, None
         for _ in range(20):
@@ -422,8 +426,9 @@ def check_invariants():
                 if np.all(np.isfinite(v)):
                     new.append(v)
         vals = vals + new[:200]
-    assert all(np.all(v > 1) for v in vals)
-    print("  exp(x)+ln(y), c=1: all", len(vals), "generated functions map (1,3)^2 into (1,inf)")
+    # leaves are >= 1 (the constant 1 itself); every generated value is then > e
+    assert all(np.all(v >= 1) for v in vals) and all(np.all(v >= math.e) for v in vals[3:])
+    print("  exp(x)+ln(y), c=1: all", len(vals) - 3, "generated functions map [1,3]^2 into [e,inf)")
     print("      => no negative constant, no -x, no x-y, no i, no pi  (positivity invariant)")
     # growth: x - ln(y) closure: |T(x)| <= C (1+|x|) -- exp x is unreachable.
     print("  x-ln(y), c=1: |T| <= |T1| + ln|T2| + pi gives |T(x)| <= C_T (1+|x|) by induction")
@@ -505,7 +510,8 @@ def check_integration():
         res = risch_integrate(f, x)
         verdict = "NON-ELEMENTARY" if res.has(NonElementaryIntegral) else f"= {sp.sstr(res)}"
         if not res.has(NonElementaryIntegral):
-            assert sp.simplify(sp.diff(res, x) - f) == 0
+            # the certificate: D(G) - f rewrites to 0 (log(exp(x)) -> x is a germ identity)
+            assert sp.simplify(sp.expand_log(sp.diff(res, x) - f, force=True)) == 0
         print(f"  {str(t):24s} tower[{tower}]")
         print(f"      integral {verdict}")
     for name, f in extra:
@@ -538,7 +544,9 @@ def check_intertwiner():
 if __name__ == "__main__":
     check_eml_identities()
     check_packaging_lemma()
-    check_closure_search()
+    import os
+    if not os.environ.get("QUICK"):
+        check_closure_search()
     check_words()
     check_invariants()
     check_differentiation()

@@ -68,7 +68,7 @@ conjecture that some algebraic numbers are not EL).
   candidate operators, explicit words with node counts for the whole
   calculator basis, the non-universality invariants, differentiation
   and Risch on EML trees, the intertwiner. Run directly (~15 min, the
-  search dominates).
+  search dominates; `QUICK=1` skips the search and runs in seconds).
 
 ## Next steps, in order of leverage
 
