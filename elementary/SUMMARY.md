@@ -54,6 +54,17 @@ integration procedure.
   luck. EML identities are identities of germs / in the differential
   field, not of functions on ℂ.
 
+- **The Gödel ladder (0002).** The integers enter the exp-log world as
+  the kernel of exp: x ∈ ℤ ⇔ exp(2πi x) = 1, so the map that makes one
+  operator universal (+ carried to ×) is the map that names ℤ. Risch's
+  undecidable corner is the ground-term constant problem, which sits
+  *below* the Gödel line (no quantifier; open, decidable under Schanuel);
+  the line is crossed the moment "has a zero" is asked (Richardson 1968,
+  undecidable with sin and |·| over ℝ; Th(ℂ, exp) undecidable since it
+  defines ℤ). Ax is the completeness theorem for exp-log rewriting at the
+  function level (proved); Schanuel is the same at the constant level
+  (conjectured).
+
 **Plausible, not proved:** the EL class is not closed under elementary
 integration (∫dx/(x⁵ − x − 1) needs the S₅ roots; an instance of Chow's
 conjecture that some algebraic numbers are not EL).
@@ -63,6 +74,9 @@ conjecture that some algebraic numbers are not EL).
 - `exploration/0001_eml_packaging_bases_and_frames.md` — the lemma, the
   basis family and necessary conditions, the search table, the
   eigen-frame reading, the integration audit, branch cuts, open items.
+- `exploration/0002_the_godel_ladder.md` — where undecidability enters
+  (the kernel of exp), the decidability ladder with the status of each
+  rung, and the exact correspondence with this repository's ceiling.
 - `output/eml_bases.py` — identities and the cut defect (exact and
   float), the lemma on four instances, the closure search over twelve
   candidate operators, explicit words with node counts for the whole
