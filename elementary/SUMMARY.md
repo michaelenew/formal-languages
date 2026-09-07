@@ -89,6 +89,18 @@ integration procedure.
   is d/ds, a pole shrinks the strip (all checked). The monodromy of log
   is unipotent, (M − I)² = 0 — the same obstruction as the unipotent
   translations of `arithmetic/0024`, cured the same way, by a lift.
+- **Literature check (0005).** That pairing is standard on both sides:
+  unipotent monodromy ⇔ logarithmic pole with nilpotent residue
+  (Deligne's canonical extension; the monodromy theorem gives the
+  Jordan decomposition into roots-of-unity phases and log blocks;
+  Kato's log structures build N in), and representations of p-groups
+  in characteristic p are unipotent with Brauer/Teichmüller characters
+  as the lift. Recognised instance, not new; what is the repository's
+  own is the reason both arose: unipotence is the obstruction to an
+  eigenbasis, and eigenbases are what make rewriting canonical.
+  Rosenberg's criterion has no finite form on infinite domains, so a
+  Post-style sufficiency for EL-universality cannot come from clone
+  theory alone.
 
 **Plausible, not proved:** the EL class is not closed under elementary
 integration (∫dx/(x⁵ − x − 1) needs the S₅ roots; an instance of Chow's
@@ -108,6 +120,8 @@ conjecture that some algebraic numbers are not EL).
 - `exploration/0004_two_bridges_post_and_the_theta_spectrum.md` — the
   invariants as Post classes; the obstructions as the local spectrum of
   x d/dx and its Mellin picture; the shared unipotent block with 0024.
+- `exploration/0005_literature_check_the_unipotent_lift.md` — the
+  literature behind 0004 §3 and §1, with pointers; the claim downgraded.
 - `output/eml_bases.py` — identities and the cut defect (exact and
   float), the lemma on four instances, the closure search over twelve
   candidate operators, explicit words with node counts for the whole
