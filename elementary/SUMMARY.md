@@ -77,6 +77,19 @@ integration procedure.
   mutually inverse bijections and every EML identity holds at every
   point: the cut is a projection artifact.
 
+- **Two bridges (0004).** Every non-universality invariant is a clone
+  membership argument (Pol–Inv; positivity ↔ Post's T₁, parity ↔ the
+  self-dual class D), so 0001 §2b is the necessary half of a Post-style
+  criterion whose sufficient half is open over an infinite domain. The
+  packaging lemma is the EL analogue of a Webb function. Totality and
+  single-valuedness are spectral properties of θ = x d/dx at a point:
+  poles = negative eigenvalues, roots = non-integer eigenvalues, log =
+  the Jordan block at eigenvalue 0, essential singularities = spectrum
+  unbounded below; in the Mellin domain θ is multiplication by −s, log
+  is d/ds, a pole shrinks the strip (all checked). The monodromy of log
+  is unipotent, (M − I)² = 0 — the same obstruction as the unipotent
+  translations of `arithmetic/0024`, cured the same way, by a lift.
+
 **Plausible, not proved:** the EL class is not closed under elementary
 integration (∫dx/(x⁵ − x − 1) needs the S₅ roots; an instance of Chow's
 conjecture that some algebraic numbers are not EL).
@@ -92,6 +105,9 @@ conjecture that some algebraic numbers are not EL).
 - `exploration/0003_everywhere_invertible_bases.md` — why no basis can
   consist of everywhere-invertible generators, the real Latin-square
   operator and how far it gets, and invertibility on the log surface.
+- `exploration/0004_two_bridges_post_and_the_theta_spectrum.md` — the
+  invariants as Post classes; the obstructions as the local spectrum of
+  x d/dx and its Mellin picture; the shared unipotent block with 0024.
 - `output/eml_bases.py` — identities and the cut defect (exact and
   float), the lemma on four instances, the closure search over twelve
   candidate operators, explicit words with node counts for the whole
