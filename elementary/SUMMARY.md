@@ -65,6 +65,18 @@ integration procedure.
   function level (proved); Schanuel is the same at the constant level
   (conjectured).
 
+- **No everywhere-invertible basis (0003).** Two theorems: words in
+  total functions are total (but x/y, ln, 1/x are partial), and words in
+  single-valued functions are single-valued (but ln, √ are not); over ℂ
+  an injective entire function is affine, so no transcendental generator
+  is injective at all, and for exp the failure is exactly ker(exp) =
+  2πiℤ. Over ℝ, `sinh(x) − asinh(y)` is a bijection in each slot and,
+  with constant asinh(1/2), generates 0, +, −, sinh, asinh and e^{±x}
+  exactly (e^x = sinh x + sinh(x+c) − sinh(x−c), checked), but provably
+  never ln or division. On the log Riemann surface exp and ln are
+  mutually inverse bijections and every EML identity holds at every
+  point: the cut is a projection artifact.
+
 **Plausible, not proved:** the EL class is not closed under elementary
 integration (∫dx/(x⁵ − x − 1) needs the S₅ roots; an instance of Chow's
 conjecture that some algebraic numbers are not EL).
@@ -77,6 +89,9 @@ conjecture that some algebraic numbers are not EL).
 - `exploration/0002_the_godel_ladder.md` — where undecidability enters
   (the kernel of exp), the decidability ladder with the status of each
   rung, and the exact correspondence with this repository's ceiling.
+- `exploration/0003_everywhere_invertible_bases.md` — why no basis can
+  consist of everywhere-invertible generators, the real Latin-square
+  operator and how far it gets, and invertibility on the log surface.
 - `output/eml_bases.py` — identities and the cut defect (exact and
   float), the lemma on four instances, the closure search over twelve
   candidate operators, explicit words with node counts for the whole
